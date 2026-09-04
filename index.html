@@ -6,5 +6,47 @@
     <link rel="stylesheet" href="styles.css" />
     <title>Rune-amabot</title>
   </head>
-  <body></body>
+  <body>
+    <header>
+      <h1>Rune-amabot</h1>
+      <p>Spørg mig om alt!</p>
+    </header>
+
+    <main>
+      <section class="chat" aria-label="Chatbot">
+        <!-- Beskedhistorik -->
+        <div
+          class="messages"
+          role="log"
+          aria-live="polite"
+          aria-label="Chat historik"
+        >
+          <article class="message message--bot">
+            <p>Hej! Spørg mig!</p>
+          </article>
+
+          <article class="message message--user">
+            <p>Hvad er dit yndlingsprogrammeringssprog?</p>
+          </article>
+        </div>
+
+        <!-- Input-område -->
+        <form class="chat-input" method="post">
+          <label for="user-message">Skriv din besked</label>
+          <input
+            type="text"
+            id="user-message"
+            name="message"
+            placeholder="Skriv en besked..."
+            required
+          />
+          <button type="submit">Send</button>
+        </form>
+      </section>
+    </main>
+
+    <footer>
+      <p>Lavet af Rune</p>
+    </footer>
+  </body>
 </html>

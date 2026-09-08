@@ -21,27 +21,46 @@
           aria-live="polite"
           aria-label="Chat historik"
         >
-          <article class="message message--bot">
-            <p>Hej! Spørg mig!</p>
+          <article class="answer">
+            <p>Hej! Spørg mig om hvad som helst!</p>
           </article>
 
-          <article class="message message--user">
-            <p>Hvad er dit yndlingsprogrammeringssprog?</p>
-          </article>
+          <% for (const message of messages) { %>
+            <article class="<%= message.type %>">
+              <time><%= message.createdAt.toLocaleTimeString("da-DK") %></time>
+              <p><%= message.text %></p>
+            </article>
+          <% } %>
         </div>
 
         <!-- Input-område -->
-        <form class="chat-input" method="post">
-          <label for="user-message">Skriv din besked</label>
+        <form class="chat-input" method="post" action="/ask">
+          <label for="question">Skriv din besked</label>
           <input
+            id="question"
+            name="question"
             type="text"
-            id="user-message"
-            name="message"
             placeholder="Skriv en besked..."
             required
           />
           <button type="submit">Send</button>
         </form>
+        <form method="POST" action="/clear-messages">
+  <button type="submit">Ryd beskeder</button>
+</form>
+        <% if (error) { %>
+  <p role="alert"><%= error %></p>
+<% } %>
+        <% if (error) { %>
+  <p role="alert"><%= error %></p>
+<% } %>
+
+        <div class="stats">
+          <p>Navn: <%= topicStats.navn %></p>
+          <p>Bosted: <%= topicStats.bosted %></p>
+          <p>Fritid: <%= topicStats.fritid %></p>
+        </div>
+      </section>
       </section>
     </main>
 

@@ -132,3 +132,24 @@ footer {
     margin-top: 2rem;
   }
 }
+
+.question {
+  padding: 0.6rem 0.9rem;
+  border-radius: 12px;
+  max-width: 80%;
+  font-size: 0.95rem;
+  background: #007aff;
+  color: #fff;
+  align-self: flex-end;
+  border-bottom-right-radius: 2px;
+}
+
+.answer {
+  padding: 0.6rem 0.9rem;
+  border-radius: 12px;
+  max-width: 80%;
+  font-size: 0.95rem;
+  background: #e9e9eb;
+  align-self: flex-start;
+  border-bottom-left-radius: 2px;
+}

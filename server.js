@@ -71,7 +71,7 @@ function findBestAnswer(question) {
     const score = countMatches(answerGroup.keywords, normalizedQuestion);
     if (score > bestScore) {
       bestScore = score;
-      bestAnswer = answerGroup.answers[0];
+      bestAnswer = answerGroup.answers;
       bestCategory = answerGroup.category;
     }
   }

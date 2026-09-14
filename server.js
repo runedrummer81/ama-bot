@@ -98,6 +98,24 @@ app.post("/clear-messages", async (request, response) => {
   response.redirect("/");
 });
 
+app.post("/capabilities", async (request, response) => {
+  const messages = await loadMessages();
+
+  messages.push({
+    type: "question",
+    text: "Hvad kan du?",
+    createdAt: new Date(),
+  });
+  messages.push({
+    type: "answer",
+    text: "Du kan spørge mig om mit navn, hvor jeg bor, eller hvad jeg laver i min fritid — jo mere du spørger, jo bedre lærer du mig at kende!",
+    createdAt: new Date(),
+  });
+
+  await saveMessages(messages);
+  response.redirect("/");
+});
+
 app.post("/ask", async (request, response) => {
   const topicStats = await loadTopicStats();
   const messages = await loadMessages();

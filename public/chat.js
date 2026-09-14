@@ -50,26 +50,24 @@ function setupCharCounterAndSendButton() {
 }
 
 const SCRAMBLE_CHARS = "!<>-_\\/[]{}—=+*^?#$%&01"; // Symboler brugt til "støjen" før teksten afkodes.
-const SCRAMBLE_DELAY = 300; // ms — hvor længe der går før scramblet begynder.
-const SCRAMBLE_FRAME_MS = 30; // ms mellem hvert "frame" i animationen — lavere tal = hurtigere/mere flimrende.
-const SCRAMBLE_DURATION = 600; // ms — HELE afkodningen tager altid præcis denne tid, uanset svarets længde.
-const SCRAMBLE_TOTAL_FRAMES = Math.round(SCRAMBLE_DURATION / SCRAMBLE_FRAME_MS);
 
 function randomScrambleChar() {
   return SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
 }
 
-function scrambleLatestAnswer() {
-  const answerParagraphs = document.querySelectorAll(
-    ".messages article.answer p",
-  );
-  if (answerParagraphs.length === 0) return;
+// Genbrugelig scramble-funktion. Kan bruges på ethvert element med tekst i —
+// fx et svar fra botten, eller en overskrift.
+function scrambleText(
+  target,
+  { delay = 300, duration = 600, frameMs = 30 } = {},
+) {
+  if (!target) return;
 
-  const target = answerParagraphs[answerParagraphs.length - 1]; // Den seneste af botens svar.
   const finalText = target.textContent;
+  const totalFrames = Math.round(duration / frameMs);
 
   // Skjul den rigtige tekst med det samme (før man når at se den),
-  // og vis i stedet tilfældige symboler i samme længde som svaret.
+  // og vis i stedet tilfældige symboler i samme længde som teksten.
   target.textContent = finalText
     .split("")
     .map((char) => (char === " " ? " " : randomScrambleChar()))
@@ -81,9 +79,7 @@ function scrambleLatestAnswer() {
     const intervalId = setInterval(() => {
       // Hvor mange bogstaver skal være afsløret ved dette frame, baseret på
       // hvor langt vi er i det FASTE antal frames — ikke i tegn-antallet.
-      const revealCount = Math.floor(
-        (frame / SCRAMBLE_TOTAL_FRAMES) * finalText.length,
-      );
+      const revealCount = Math.floor((frame / totalFrames) * finalText.length);
 
       target.textContent = finalText
         .split("")
@@ -96,55 +92,116 @@ function scrambleLatestAnswer() {
 
       frame++;
 
-      if (frame > SCRAMBLE_TOTAL_FRAMES) {
+      if (frame > totalFrames) {
         target.textContent = finalText; // Sikrer at slutresultatet altid er 100% korrekt.
         clearInterval(intervalId);
       }
-    }, SCRAMBLE_FRAME_MS);
-  }, SCRAMBLE_DELAY);
+    }, frameMs);
+  }, delay);
+}
+
+function scrambleLatestAnswer() {
+  const answerParagraphs = document.querySelectorAll(
+    ".messages article.answer p",
+  );
+  if (answerParagraphs.length === 0) return;
+
+  const target = answerParagraphs[answerParagraphs.length - 1]; // Den seneste af botens svar.
+  scrambleText(target); // Bruger default-timingen (300ms delay, 600ms varighed).
+}
+
+function scrambleWelcomeHeading() {
+  const heading = document.getElementById("welcome-heading");
+  if (!heading) return; // Findes kun på velkomst-skærmen.
+
+  // Lidt længere delay end svar-boblerne, så den kører EFTER
+  // hjørne-brackets'ene er låst fast (se cornerIn-animationen i CSS).
+  scrambleText(heading, { delay: 500, duration: 700 });
 }
 
 const POWER_DOWN_DURATION = 350; // ms — SKAL matche varigheden af powerDown-animationen i styles.css.
 const POWER_TRANSITION_FLAG = "justClickedNewChat"; // Nøglen vi bruger i sessionStorage.
+
+// Fælles funktion: spil power-down-effekten, husk (via sessionStorage) at
+// den næste side skal spille power-up, og send så formularen for rigtigt.
+function triggerPowerTransition(form) {
+  document.body.classList.add("powering-down");
+  sessionStorage.setItem(POWER_TRANSITION_FLAG, "true");
+
+  setTimeout(() => {
+    form.submit(); // .submit() trigger IKKE "submit"-eventet igen, så vi undgår en uendelig løkke.
+  }, POWER_DOWN_DURATION);
+}
 
 function setupNewChatTransition() {
   const newChatForm = document.querySelector('form[action="/clear-messages"]');
   if (!newChatForm) return;
 
   newChatForm.addEventListener("submit", (event) => {
-    event.preventDefault(); // Stop den normale, øjeblikkelige side-navigation.
+    event.preventDefault();
+    triggerPowerTransition(newChatForm);
+  });
+}
 
-    document.body.classList.add("powering-down"); // Trigger power-down-animationen.
+function setupWelcomeTransition() {
+  const welcomeForm = document.querySelector(".welcome-input"); // Findes kun på velkomst-skærmen.
+  if (!welcomeForm) return;
 
-    // Sæt et flag der overlever selve navigationen (sessionStorage nulstilles
-    // ikke ved et almindeligt page-load), så vi ved på den NÆSTE side at det
-    // var "Ny chat"-knappen der bragte os hertil, og kun DA skal power-up
-    // effekten afspilles.
-    sessionStorage.setItem(POWER_TRANSITION_FLAG, "true");
-
-    // Vent til animationen er færdig, før vi rent faktisk sender
-    // formularen og navigerer væk fra siden.
-    setTimeout(() => {
-      newChatForm.submit(); // .submit() (i modsætning til .requestSubmit()) trigger IKKE "submit"-eventet igen, så vi undgår en uendelig løkke.
-    }, POWER_DOWN_DURATION);
+  welcomeForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    triggerPowerTransition(welcomeForm);
   });
 }
 
 function playPowerUpIfNeeded() {
   if (sessionStorage.getItem(POWER_TRANSITION_FLAG) === "true") {
-    document.body.classList.add("powering-up"); // Trigger power-up-animationen KUN denne ene gang.
-    sessionStorage.removeItem(POWER_TRANSITION_FLAG); // Ryd flaget, så almindelige reloads ikke trigger den igen.
+    document.body.classList.add("powering-up");
+    sessionStorage.removeItem(POWER_TRANSITION_FLAG);
   }
+}
+
+const BOOT_FLAG = "hasSeenBootIntro"; // Nøglen vi bruger i sessionStorage.
+const BOOT_TOTAL_DURATION = 2700; // ms — SKAL matche timingen i styles.css (sidste linjes delay + fade-out).
+
+function setupBootIntro() {
+  const overlay = document.getElementById("boot-overlay");
+  if (!overlay) return;
+
+  if (sessionStorage.getItem(BOOT_FLAG) === "true") {
+    overlay.classList.add("boot-skip"); // Allerede set denne session — skip uden animation.
+    return;
+  }
+
+  sessionStorage.setItem(BOOT_FLAG, "true"); // Så den ikke vises igen resten af sessionen.
+  overlay.classList.add("booting"); // Trigger CSS-sekvensen (linjerne + fade-out).
+
+  setTimeout(() => {
+    overlay.remove(); // Fjern overlayet helt fra DOM'en, når animationen er færdig.
+  }, BOOT_TOTAL_DURATION);
 }
 
 // DOMContentLoaded fyrer så snart HTML'en er parset, altså tidligere end
 // "load" (som også venter på fonte/billeder) — det minimerer risikoen for
 // at man når at se toppen af chatten, før vi rykker ned.
+function setupCapabilitiesTransition() {
+  const form = document.querySelector('form[action="/capabilities"]');
+  if (!form) return; // Findes kun på velkomst-skærmen.
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    triggerPowerTransition(form); // Samme power-down/power-up-overgang som "Ny chat".
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  setupBootIntro();
   scrollChatToBottom();
   focusInput();
   setupCharCounterAndSendButton();
   scrambleLatestAnswer();
+  scrambleWelcomeHeading();
   setupNewChatTransition();
+  setupWelcomeTransition();
+  setupCapabilitiesTransition();
   playPowerUpIfNeeded();
 });

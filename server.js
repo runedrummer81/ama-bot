@@ -61,25 +61,6 @@ function countMatches(keywords, normalizedQuestion) {
   return matches.length;
 }
 
-function findAnswer(question) {
-  const normalizedQuestion = question.toLowerCase();
-
-  for (const answerGroup of answers) {
-    const hasMatch = answerGroup.keywords.some((keyword) =>
-      normalizedQuestion.includes(keyword),
-    );
-
-    if (hasMatch) {
-      const randomIndex = Math.floor(
-        Math.random() * answerGroup.answers.length,
-      );
-      return answerGroup.answers[randomIndex];
-    }
-  }
-
-  return "Det kender jeg desværre ikke svaret på endnu. Beklager!";
-}
-
 function findBestAnswer(question) {
   const normalizedQuestion = normalizeQuestion(question);
   let bestScore = 0;

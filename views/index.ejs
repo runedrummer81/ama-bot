@@ -8,13 +8,22 @@
   </head>
   <body>
     <header>
-      <h1>Rune-amabot</h1>
-      <p>Spørg mig om alt!</p>
-    </header>
+  <h1 data-text="Rune-amabot">Rune-amabot</h1>
+</header>
 
-    <main>
-      <section class="chat" aria-label="Chatbot">
-        <!-- Beskedhistorik -->
+<main>
+  <section class="chat" aria-label="Chatbot">
+    <div class="chat-toolbar">
+      <form method="POST" action="/clear-messages">
+        <button type="submit" class="icon-btn" aria-label="Ny chat">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+        </button>
+      </form>
+    </div>
+    <!-- Beskedhistorik -->
         <div
           class="messages"
           role="log"
@@ -26,31 +35,28 @@
           </article>
 
           <% for (const message of messages) { %>
-            <article class="<%= message.type %>">
-              <time><%= new Date(message.createdAt).toLocaleTimeString("da-DK") %></time>
-              <p><%= message.text %></p>
-            </article>
-          <% } %>
+  <article class="<%= message.type %>">
+  <time><%= new Date(message.createdAt).toLocaleTimeString("da-DK", { hour: "2-digit", minute: "2-digit" }) %></time>
+  <p><%= message.text %></p>
+</article>
+<% } %>
         </div>
 
         <!-- Input-område -->
         <form class="chat-input" method="post" action="/ask">
-          <label for="question">Skriv din besked</label>
-          <input
-            id="question"
-            name="question"
-            type="text"
-            placeholder="Skriv en besked..."
-            required
-          />
-          <button type="submit">Send</button>
-        </form>
-        <form method="POST" action="/clear-messages">
-  <button type="submit">Ryd beskeder</button>
+  <label for="question">Skriv din besked</label>
+  <input
+    id="question"
+    name="question"
+    type="text"
+    placeholder="Skriv en besked..."
+    required
+    maxlength="280"
+  />
+  <button type="submit" id="send-btn" disabled>Send</button>
 </form>
-        <% if (error) { %>
-  <p role="alert"><%= error %></p>
-<% } %>
+<p id="char-counter" class="char-counter">0/280</p>
+        
         <% if (error) { %>
   <p role="alert"><%= error %></p>
 <% } %>
@@ -61,11 +67,12 @@
           <p>Fritid: <%= topicStats.fritid %></p>
         </div>
       </section>
-      </section>
+      
     </main>
 
     <footer>
       <p>Lavet af Rune</p>
     </footer>
+    <script src="/chat.js" defer></script>
   </body>
 </html>

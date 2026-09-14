@@ -1,4 +1,5 @@
 import express from "express";
+import fs from "node:fs/promises";
 
 const app = express();
 const port = 3004;
@@ -9,7 +10,25 @@ app.set("view engine", "ejs");
 
 app.use(express.urlencoded({ extended: true }));
 
-const messages = [];
+async function loadMessages() {
+  const data = await fs.readFile("./data/messages.json", "utf8"); // Læs data/messages.json med fs.readFile() ("utf8").
+  return JSON.parse(data); // Parse JSON-teksten til et array, og returnér det.
+}
+
+async function saveMessages(messages) {
+  const json = JSON.stringify(messages, null, 2); // Omdan messages til formateret JSON-tekst med JSON.stringify().
+  await fs.writeFile("./data/messages.json", json); // Skriv teksten til data/messages.json med fs.writeFile().
+}
+
+async function loadTopicStats() {
+  const data = await fs.readFile("./data/topic-stats.json", "utf8");
+  return JSON.parse(data);
+}
+
+async function saveTopicStats(topicStats) {
+  const json = JSON.stringify(topicStats, null, 2);
+  await fs.writeFile("./data/topic-stats.json", json);
+}
 
 const answers = [
   {
@@ -62,7 +81,7 @@ function findAnswer(question) {
 }
 
 function findBestAnswer(question) {
-  const normalizedQuestion = question.toLowerCase();
+  const normalizedQuestion = normalizeQuestion(question);
   let bestScore = 0;
   let bestAnswer = "Det kender jeg ikke svaret på endnu.";
   let bestCategory = "";
@@ -71,7 +90,10 @@ function findBestAnswer(question) {
     const score = countMatches(answerGroup.keywords, normalizedQuestion);
     if (score > bestScore) {
       bestScore = score;
-      bestAnswer = answerGroup.answers;
+      const randomIndex = Math.floor(
+        Math.random() * answerGroup.answers.length,
+      );
+      bestAnswer = answerGroup.answers[randomIndex];
       bestCategory = answerGroup.category;
     }
   }
@@ -86,18 +108,18 @@ function sanitizeQuestion(input) {
   return input.replace(/[\u0000-\u001F\u007F]/g, "");
 }
 
-const topicStats = {
-  navn: 0,
-  bosted: 0,
-  fritid: 0,
-};
+function normalizeQuestion(question) {
+  return question.trim().toLowerCase().replace(/\s+/g, " ");
+}
 
-app.post("/clear-messages", (request, response) => {
-  messages.length = 0;
+app.post("/clear-messages", async (request, response) => {
+  await saveMessages([]);
   response.redirect("/");
 });
 
-app.post("/ask", (request, response) => {
+app.post("/ask", async (request, response) => {
+  const topicStats = await loadTopicStats();
+  const messages = await loadMessages();
   const rawQuestion = request.body.question;
   const question = sanitizeQuestion(rawQuestion).trim();
   let error = "";
@@ -118,10 +140,14 @@ app.post("/ask", (request, response) => {
       topicStats[result.category] = topicStats[result.category] + 1;
     }
   }
+  await saveMessages(messages);
+  await saveTopicStats(topicStats);
   response.render("index", { messages, error, topicStats });
 });
 
-app.get("/", (request, response) => {
+app.get("/", async (request, response) => {
+  const messages = await loadMessages();
+  const topicStats = await loadTopicStats();
   response.render("index", { messages, error: "", topicStats });
 });
 

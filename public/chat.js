@@ -160,6 +160,27 @@ function playPowerUpIfNeeded() {
   }
 }
 
+function setupEscapeClear() {
+  const input = document.getElementById("question");
+  if (!input) return;
+
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      input.value = "";
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+
+      const wrapper = input.closest(".chat-input"); // find den omkringliggende formular
+      if (wrapper) {
+        wrapper.classList.add("clearing"); // tilføj klassen — trigger CSS-animationen
+
+        setTimeout(() => {
+          wrapper.classList.remove("clearing"); // fjern den igen, så den kan trigges næste gang
+        }, 300); // skal matche animationens varighed i CSS (0.3s)
+      }
+    }
+  });
+}
+
 const BOOT_FLAG = "hasSeenBootIntro"; // Nøglen vi bruger i sessionStorage.
 const BOOT_TOTAL_DURATION = 2700; // ms — SKAL matche timingen i styles.css (sidste linjes delay + fade-out).
 
@@ -204,4 +225,12 @@ document.addEventListener("DOMContentLoaded", () => {
   setupWelcomeTransition();
   setupCapabilitiesTransition();
   playPowerUpIfNeeded();
+  setupEscapeClear();
+});
+
+document.addEventListener("keydown", function (event) {
+  console.log("Tast trykket:", event.key);
+  if (event.key === "Escape") {
+    console.log("Escape blev trykket");
+  }
 });

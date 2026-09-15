@@ -492,6 +492,35 @@ main {
     border-color 0.2s ease;
 }
 
+/* Kort glitch-ryst når feltet ryddes med Escape — tilføjes/fjernes via JS */
+
+form.chat-input.clearing {
+  animation: clearGlitch 0.3s ease;
+}
+
+@keyframes clearGlitch {
+  0% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-4px);
+    border-color: var(--color-coral);
+  }
+  40% {
+    transform: translateX(4px);
+  }
+  60% {
+    transform: translateX(-2px);
+    border-color: var(--color-aqua);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
 .chat-input:focus-within {
   border-color: var(--color-aqua);
   animation: glowPulse 2s ease-in-out infinite;

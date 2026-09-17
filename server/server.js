@@ -4,11 +4,7 @@ import fs from "node:fs/promises";
 const app = express();
 const port = 3004;
 
-app.use(express.static("public"));
-
-app.set("view engine", "ejs");
-
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 async function loadMessages() {
   const data = await fs.readFile("./data/messages.json", "utf8"); // Læs data/messages.json med fs.readFile() ("utf8").
@@ -93,61 +89,51 @@ function normalizeQuestion(question) {
   return question.trim().toLowerCase().replace(/\s+/g, " ");
 }
 
-app.post("/clear-messages", async (request, response) => {
-  await saveMessages([]);
-  response.redirect("/");
-});
-
-app.post("/capabilities", async (request, response) => {
+app.get("/messages", async (request, response) => {
   const messages = await loadMessages();
 
-  messages.push({
-    type: "question",
-    text: "Hvad kan du?",
-    createdAt: new Date(),
-  });
-  messages.push({
-    type: "answer",
-    text: "Du kan spørge mig om mit navn, hvor jeg bor, eller hvad jeg laver i min fritid — jo mere du spørger, jo bedre lærer du mig at kende!",
-    createdAt: new Date(),
-  });
-
-  await saveMessages(messages);
-  response.redirect("/");
+  response.json(messages);
 });
 
-app.post("/ask", async (request, response) => {
+app.post("/messages", async (request, response) => {
+  const messages = await loadMessages();
   const topicStats = await loadTopicStats();
-  const messages = await loadMessages();
-  const rawQuestion = request.body.question;
-  const question = sanitizeQuestion(rawQuestion).trim();
-  let error = "";
+  const question = request.body.question.trim();
 
   if (!question) {
-    error = "Skriv et spørgsmål, før du sender";
-  } else if (question.length > 280) {
-    error = "Spørgsmålet må højst være 280 tegn.";
-  } else {
-    messages.push({ type: "question", text: question, createdAt: new Date() });
-    const result = findBestAnswer(question);
-    messages.push({
-      type: "answer",
-      text: result.answer,
-      createdAt: new Date(),
-    });
-    if (result.category) {
-      topicStats[result.category] = topicStats[result.category] + 1;
-    }
+    response.json({ error: "Skriv et spørgsmål, før du sender." });
+    return;
   }
+
+  const message = {
+    type: "question",
+    text: question,
+    createdAt: new Date().toISOString(),
+  };
+  messages.push(message);
+
+  const result = findBestAnswer(question);
+  const answerMessage = {
+    type: "answer",
+    text: result.answer,
+    createdAt: new Date().toISOString(),
+  };
+  messages.push(answerMessage);
+
+  if (result.category) {
+    topicStats[result.category] = topicStats[result.category] + 1;
+  }
+
   await saveMessages(messages);
   await saveTopicStats(topicStats);
-  response.render("index", { messages, error, topicStats });
+
+  response.json({ question: message, answer: answerMessage });
 });
 
-app.get("/", async (request, response) => {
-  const messages = await loadMessages();
-  const topicStats = await loadTopicStats();
-  response.render("index", { messages, error: "", topicStats });
+app.delete("/messages", async (request, response) => {
+  await saveMessages([]);
+
+  response.send();
 });
 
 app.listen(port, () => {

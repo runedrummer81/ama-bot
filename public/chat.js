@@ -181,6 +181,17 @@ function setupEscapeClear() {
   });
 }
 
+function setupArrowUpRecall() {
+  const input = document.getElementById("question");
+  if (!input) return;
+
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "ArrowUp") {
+      // her skal vi hente sidste spørgsmål — det kommer i næste trin
+    }
+  });
+}
+
 const BOOT_FLAG = "hasSeenBootIntro"; // Nøglen vi bruger i sessionStorage.
 const BOOT_TOTAL_DURATION = 2700; // ms — SKAL matche timingen i styles.css (sidste linjes delay + fade-out).
 

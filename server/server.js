@@ -26,29 +26,15 @@ async function saveTopicStats(topicStats) {
   await fs.writeFile("./data/topic-stats.json", json);
 }
 
-const answers = [
-  {
-    category: "navn",
-    keywords: ["navn", "hedder", "hvem er du"],
-    answers: ["Jeg hedder Rune", "Mit fulde navn er Rune Frisch Knudsen"],
-  },
-  {
-    category: "bosted",
-    keywords: ["bor", "by", "fra"],
-    answers: [
-      "Jeg bor i Højbjerg",
-      "Jeg bor i Højbjerg som er en del af Aarhus",
-    ],
-  },
-  {
-    category: "fritid",
-    keywords: ["fritid", "hobby", "kan lide"],
-    answers: [
-      "I min fritid kan jeg godt lide at sprede demokrati og spille trommer.",
-      "Jeg elsker at læse!",
-    ],
-  },
-];
+async function loadAnswers() {
+  const data = await fs.readFile("./data/answers.json", "utf8");
+  return JSON.parse(data);
+}
+
+async function saveAnswers(answers) {
+  const json = JSON.stringify(answers, null, 2);
+  await fs.writeFile("./data/answers.json", json);
+}
 
 function countMatches(keywords, normalizedQuestion) {
   const matches = keywords.filter((keyword) => {
@@ -57,7 +43,7 @@ function countMatches(keywords, normalizedQuestion) {
   return matches.length;
 }
 
-function findBestAnswer(question) {
+function findBestAnswer(question, answers) {
   const normalizedQuestion = normalizeQuestion(question);
   let bestScore = 0;
   let bestAnswer = "Det kender jeg ikke svaret på endnu.";
@@ -112,7 +98,8 @@ app.post("/messages", async (request, response) => {
   };
   messages.push(message);
 
-  const result = findBestAnswer(question);
+  const answers = await loadAnswers();
+  const result = findBestAnswer(question, answers);
   const answerMessage = {
     type: "answer",
     text: result.answer,
@@ -130,8 +117,59 @@ app.post("/messages", async (request, response) => {
   response.json({ question: message, answer: answerMessage });
 });
 
+app.post("/answers", async (request, response) => {
+  const answers = await loadAnswers();
+
+  const newAnswerRule = {
+    category: request.body.category,
+    keywords: request.body.keywords,
+    answers: request.body.answers,
+  };
+  answers.push(newAnswerRule);
+  await saveAnswers(answers);
+
+  response.json(newAnswerRule);
+});
+
+app.put("/answers/:category", async (request, response) => {
+  const answers = await loadAnswers();
+  const answerRule = answers.find(
+    (a) => a.category === request.params.category,
+  );
+
+  answerRule.keywords = request.body.keywords;
+  answerRule.answers = request.body.answers;
+  await saveAnswers(answers);
+
+  response.json(answerRule);
+});
+
+app.get("/answers", async (request, response) => {
+  const answers = await loadAnswers();
+
+  response.json(answers);
+});
+
+app.get("/answers/:category", async (request, response) => {
+  const answers = await loadAnswers();
+  const answerRule = answers.find(
+    (a) => a.category === request.params.category,
+  );
+
+  response.json(answerRule);
+});
+
 app.delete("/messages", async (request, response) => {
   await saveMessages([]);
+
+  response.send();
+});
+
+app.delete("/answers/:category", async (request, response) => {
+  let answers = await loadAnswers();
+
+  answers = answers.filter((a) => a.category !== request.params.category);
+  await saveAnswers(answers);
 
   response.send();
 });

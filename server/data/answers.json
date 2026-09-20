@@ -1,0 +1,49 @@
+[
+  {
+    "category": "navn",
+    "keywords": [
+      "navn",
+      "hedder",
+      "hvem er du"
+    ],
+    "answers": [
+      "Jeg hedder Rune",
+      "Mit fulde navn er Rune Frisch Knudsen"
+    ]
+  },
+  {
+    "category": "bosted",
+    "keywords": [
+      "bor",
+      "fra",
+      "by"
+    ],
+    "answers": [
+      "Jeg bor i Højbjerg",
+      "Jeg bor i Aarhus kommune"
+    ]
+  },
+  {
+    "category": "fritid",
+    "keywords": [
+      "fritid",
+      "hobby",
+      "kan lide"
+    ],
+    "answers": [
+      "I min fritid spiller jeg trommer og hører musik",
+      "Jeg elsker virkelig at læse en god bog"
+    ]
+  },
+  {
+    "category": "alder",
+    "keywords": [
+      "alder",
+      "gammel",
+      "fødselsdag"
+    ],
+    "answers": [
+      "Jeg er 25 år."
+    ]
+  }
+]

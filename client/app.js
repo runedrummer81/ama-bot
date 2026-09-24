@@ -6,8 +6,9 @@ const clearMessagesButton = document.querySelector("#clear-messages-button");
 
 function displayMessage(message) {
   const html = /*html*/ `<article class="${message.type}"><p>${message.text}</p></article>`;
-  console.log(html);
+
   messagesContainer.insertAdjacentHTML("beforeend", html);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
 async function getMessages() {
@@ -21,7 +22,10 @@ async function getMessages() {
   console.log(messages);
 }
 
-getMessages();
+clearMessagesButton.addEventListener("click", async () => {
+  await fetch(`${API_URL}/messages`, { method: "DELETE" });
+  messagesContainer.innerHTML = "";
+});
 
 questionForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -36,5 +40,10 @@ questionForm.addEventListener("submit", async (event) => {
 
   const data = await response.json();
 
-  console.log(data);
+  displayMessage(data.question);
+  displayMessage(data.answer);
+
+  questionInput.value = "";
 });
+
+getMessages();

@@ -1,5 +1,15 @@
 import express from "express";
-import { loadMessages, saveMessages } from "../data/messages";
+import {
+  loadMessages,
+  saveMessages,
+  loadTopicStats,
+  saveTopicStats,
+} from "../data/messages.js";
+import { loadAnswers, findBestAnswer } from "../data/answers.js";
+
+function sanitizeQuestion(input) {
+  return input.replace(/[\u0000-\u001F\u007F]/g, "");
+}
 
 const router = express.Router();
 
@@ -11,7 +21,7 @@ router.get("/", async (request, response) => {
 router.post("/", async (request, response) => {
   const messages = await loadMessages();
   const topicStats = await loadTopicStats();
-  const question = request.body.question.trim();
+  const question = sanitizeQuestion(request.body.question).trim();
 
   if (!question) {
     response.json({ error: "Skriv et spørgsmål, før du sender." });

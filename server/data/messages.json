@@ -48,5 +48,25 @@
     "type": "answer",
     "text": "Jeg hedder Rune",
     "createdAt": "2026-09-24T10:09:20.594Z"
+  },
+  {
+    "type": "question",
+    "text": "hvem er Trier?",
+    "createdAt": "2026-09-24T14:11:56.397Z"
+  },
+  {
+    "type": "answer",
+    "text": "Det kender jeg ikke svaret på endnu.",
+    "createdAt": "2026-09-24T14:11:56.399Z"
+  },
+  {
+    "type": "question",
+    "text": "virkelig?",
+    "createdAt": "2026-09-24T14:12:09.525Z"
+  },
+  {
+    "type": "answer",
+    "text": "Det kender jeg ikke svaret på endnu.",
+    "createdAt": "2026-09-24T14:12:09.526Z"
   }
 ]

@@ -51,12 +51,12 @@ router.post("/", async (request, response) => {
   await saveMessages(messages);
   await saveTopicStats(topicStats);
 
-  response.json({ question: message, answer: answerMessage });
+  response.status(201).json({ question: message, answer: answerMessage });
 });
 
 router.delete("/", async (request, response) => {
   await saveMessages([]);
-  response.send();
+  response.status(204).send();
 });
 
 export default router;

@@ -14,7 +14,7 @@ router.post("/", async (request, response) => {
   answers.push(newAnswerRule);
   await saveAnswers(answers);
 
-  response.json(newAnswerRule);
+  response.status(201).json(newAnswerRule);
 });
 
 router.put("/:category", async (request, response) => {
@@ -34,6 +34,15 @@ router.get("/", async (request, response) => {
   const answers = await loadAnswers();
 
   response.json(answers);
+});
+
+router.delete("/:category", async (request, response) => {
+  let answers = await loadAnswers();
+
+  answers = answers.filter((a) => a.category !== request.params.category);
+  await saveAnswers(answers);
+
+  response.status(204).send();
 });
 
 router.get("/:category", async (request, response) => {

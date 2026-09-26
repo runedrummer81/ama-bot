@@ -49,44 +49,6 @@ body {
   overflow: hidden;
 }
 
-/* Tilføjes via JS KUN når siden loader som et resultat af et
-   "Ny chat"-klik — ikke ved almindelige beskeder. */
-
-body.powering-up {
-  animation: powerUp 0.4s ease-out;
-}
-
-@keyframes powerUp {
-  from {
-    opacity: 0;
-    filter: blur(4px);
-  }
-  to {
-    opacity: 1;
-    filter: blur(0);
-  }
-}
-
-/* Tilføjes via JS lige inden vi navigerer væk ved "Ny chat"-klik,
-   så overgangen føles bevidst i stedet for et hårdt sidehop. */
-
-body.powering-down {
-  animation: powerDown 0.35s ease-in forwards;
-}
-
-@keyframes powerDown {
-  from {
-    opacity: 1;
-    filter: blur(0);
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    filter: blur(6px);
-    transform: scale(0.97);
-  }
-}
-
 /* --- Header --- */
 
 header {
@@ -205,26 +167,41 @@ main {
   min-height: 0;
 }
 
-/* --- Velkomst-skærm — vises kun når messages.length === 0 --- */
+/* Når velkomstskærmen vises: kun heading + input er synlige, og de
+   centreres som gruppe midt på skærmen i stedet for at input sidder
+   fastlåst i bunden. */
+.chat.is-welcome {
+  justify-content: center;
+}
+
+.chat.is-welcome .chat-input input {
+  padding: 1.1rem 1.5rem;
+  font-size: 1.05rem;
+}
+
+.chat-toolbar {
+  display: flex;
+  justify-content: flex-start;
+  flex-shrink: 0;
+}
+
+/* --- Velkomstskærm — vist når der ikke er nogen beskeder endnu --- */
 
 .welcome {
-  flex: 1;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 2rem 1rem;
+  text-align: center;
 }
 
 .welcome-frame {
-  width: 100%;
-  max-width: 680px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.75rem;
-  text-align: center;
-  padding: 2rem;
+  gap: 0.75rem;
+  max-width: 480px;
 }
 
 .welcome-heading {
@@ -232,53 +209,21 @@ main {
   font-size: 1.6rem;
   font-weight: 500;
   letter-spacing: 0.05em;
-  color: var(--color-text);
+  color: var(--color-aqua);
+  text-shadow: var(--glow-sm);
   margin: 0;
 }
 
-/* Velkomst-inputtet bruger den SAMME styling som det normale chat-input
-   (samme border, baggrund, fokus-adfærd) — bare bredere. Ingen speciel
-   animation her; formen skal være rolig og genkendelig først. */
-
-.chat-input.welcome-input {
-  width: 100%;
-  max-width: 640px;
-}
-
-.welcome-input input {
-  padding: 1.1rem 1.5rem;
-  font-size: 1.05rem;
-}
-
-.welcome-suggestion {
-  background: transparent;
-  border: 1px solid var(--color-text-dim);
-  border-radius: var(--radius);
+.welcome-text {
   color: var(--color-text-dim);
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  padding: 0.45rem 1rem;
-  cursor: pointer;
-  opacity: 0.5;
-  transition:
-    opacity 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin: 0;
 }
 
-.welcome-suggestion:hover,
-.welcome-suggestion:focus-visible {
-  opacity: 1;
-  color: var(--color-aqua);
-  border-color: var(--color-aqua);
-  background: var(--color-aqua-dim);
-}
-
-.chat-toolbar {
-  display: flex;
-  justify-content: flex-start;
-  flex-shrink: 0;
+/* Fælles hjælpeklasse til at skjule velkomst/beskeder efter behov */
+.is-hidden {
+  display: none !important;
 }
 
 /* Beskedcontaineren har et gradient-lag (navy -> storm) for dybde,
@@ -412,10 +357,7 @@ main {
 }
 
 .messages article.answer:nth-last-child(-n + 2) {
-  /* 300ms delay matcher SCRAMBLE_DELAY i chat.js, så boblen og
-     tekst-afkodningen starter præcis samtidig. "backwards" holder
-     boblen usynlig i ventetiden i stedet for at vise den tomt. */
-  animation: spawnAnswer 0.5s ease-out 300ms backwards;
+  animation: spawnAnswer 0.5s ease-out backwards;
 }
 
 @keyframes spawnQuestion {
@@ -492,33 +434,35 @@ main {
     border-color 0.2s ease;
 }
 
-/* Kort glitch-ryst når feltet ryddes med Escape — tilføjes/fjernes via JS */
-
-form.chat-input.clearing {
-  animation: clearGlitch 0.3s ease;
+.input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-shrink: 0;
 }
 
-@keyframes clearGlitch {
-  0% {
-    transform: translateX(0);
-  }
-  20% {
-    transform: translateX(-4px);
-    border-color: var(--color-coral);
-  }
-  40% {
-    transform: translateX(4px);
-  }
-  60% {
-    transform: translateX(-2px);
-    border-color: var(--color-aqua);
-  }
-  80% {
-    transform: translateX(2px);
-  }
-  100% {
-    transform: translateX(0);
-  }
+.capabilities-btn {
+  align-self: flex-end;
+  background: transparent;
+  border: 1px solid var(--color-text-dim);
+  border-radius: var(--radius);
+  color: var(--color-text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.capabilities-btn:hover,
+.capabilities-btn:focus-visible {
+  color: var(--color-aqua);
+  border-color: var(--color-aqua);
+  background: var(--color-aqua-dim);
 }
 
 .chat-input:focus-within {
@@ -585,8 +529,7 @@ form.chat-input.clearing {
    Send-knappen har ingen synlig "disabled, men klikbar"-fornemmelse —
    den er der simpelthen ikke, før man har noget at sende. */
 .chat-input button:disabled {
-  opacity: 0;
-  transform: scale(0.6);
+  opacity: 0.5;
   pointer-events: none;
 }
 
@@ -601,29 +544,11 @@ form.chat-input.clearing {
   color: var(--color-text-dim);
   padding: 0 0.5rem;
   white-space: nowrap;
-  transition: color 0.2s ease;
 }
-
-/* Grænsen er nået — svær at overse, pulserer indtil man sletter tegn igen */
 
 .char-counter--limit {
   color: var(--color-error);
   font-weight: bold;
-  animation: counterPulse 0.9s ease-in-out infinite;
-}
-
-@keyframes counterPulse {
-  0%,
-  100% {
-    text-shadow: 0 0 2px var(--color-error);
-    opacity: 1;
-  }
-  50% {
-    text-shadow:
-      0 0 10px var(--color-error),
-      0 0 18px var(--color-error);
-    opacity: 0.75;
-  }
 }
 
 /* --- Knapper (generelt) --- */
@@ -654,7 +579,8 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
-/* "Ny chat" — cirkulær ikon-knap med custom tooltip i stedet for tekst */
+/* "Ny chat" / "Hvad kan du?" — cirkulære ikon-knapper med custom tooltip
+   i stedet for tekst */
 
 .icon-btn {
   position: relative;
@@ -703,39 +629,6 @@ button:focus-visible {
   transform: translateY(0);
 }
 
-/* --- Fejlbesked --- */
-
-[role="alert"] {
-  color: var(--color-error);
-  font-size: 0.85rem;
-  margin: 0;
-  animation: glitch 0.3s ease;
-}
-
-@keyframes glitch {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-2px);
-  }
-  50% {
-    transform: translateX(2px);
-  }
-  75% {
-    transform: translateX(-1px);
-  }
-}
-
-/* --- Stats ---
-   Skjult for nu — se tidligere diskussion om at det er mere relevant
-   som admin-info end noget brugeren behøver se i selve chatten. */
-
-.stats {
-  display: none;
-}
-
 /* --- Footer --- */
 
 footer {
@@ -743,83 +636,4 @@ footer {
   padding: 1rem;
   font-size: 0.75rem;
   color: var(--color-text-dim);
-}
-
-/* --- Boot-up intro ---
-   Vises kun ved allerførste besøg i browser-sessionen (styret via JS +
-   sessionStorage). Fire linjer "boot-tekst" popper ind én ad gangen via
-   nth-child-forsinkelser, hvorefter hele overlayet fader væk. */
-
-.boot-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-primary);
-}
-
-/* Bruges når man allerede har set introen denne session — ingen
-   animation, overlayet er bare væk med det samme. */
-.boot-overlay.boot-skip {
-  display: none;
-}
-
-.boot-lines {
-  font-family: var(--font-mono);
-  font-size: 1rem;
-  color: var(--color-aqua);
-  text-shadow: var(--glow-sm);
-}
-
-.boot-line {
-  margin: 0 0 0.5rem;
-  opacity: 0;
-}
-
-.boot-overlay.booting .boot-line {
-  animation: bootLineIn 0.3s ease forwards;
-}
-
-.boot-overlay.booting .boot-line:nth-child(1) {
-  animation-delay: 0.1s;
-}
-.boot-overlay.booting .boot-line:nth-child(2) {
-  animation-delay: 0.6s;
-}
-.boot-overlay.booting .boot-line:nth-child(3) {
-  animation-delay: 1.1s;
-}
-.boot-overlay.booting .boot-line:nth-child(4) {
-  animation-delay: 1.6s;
-}
-
-@keyframes bootLineIn {
-  from {
-    opacity: 0;
-    transform: translateY(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Hele overlayet fader ud, efter sidste linje har vist sig + en kort pause */
-
-.boot-overlay.booting {
-  animation: bootOverlayOut 0.5s ease forwards;
-  animation-delay: 2.2s;
-}
-
-@keyframes bootOverlayOut {
-  from {
-    opacity: 1;
-    visibility: visible;
-  }
-  to {
-    opacity: 0;
-    visibility: hidden;
-  }
 }

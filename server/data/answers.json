@@ -1,23 +1,12 @@
 [
   {
     "category": "bosted",
-    "keywords": [
-      "bor",
-      "fra",
-      "by"
-    ],
-    "answers": [
-      "Jeg bor i Højbjerg",
-      "Jeg bor i Aarhus kommune"
-    ]
+    "keywords": ["bor", "fra", "by"],
+    "answers": ["Jeg bor i Højbjerg", "Jeg bor i Aarhus kommune"]
   },
   {
     "category": "fritid",
-    "keywords": [
-      "fritid",
-      "hobby",
-      "kan lide"
-    ],
+    "keywords": ["fritid", "hobby", "kan lide"],
     "answers": [
       "I min fritid spiller jeg trommer og hører musik",
       "Jeg elsker virkelig at læse en god bog"
@@ -25,36 +14,24 @@
   },
   {
     "category": "alder",
-    "keywords": [
-      "alder",
-      "gammel",
-      "fødselsdag"
-    ],
-    "answers": [
-      "Jeg er 25 år."
-    ]
+    "keywords": ["alder", "gammel", "fødselsdag"],
+    "answers": ["Jeg er 25 år."]
   },
   {
     "category": "livret",
-    "keywords": [
-      "mad",
-      "dessert",
-      "kok"
-    ],
-    "answers": [
-      "Jeg elsker lasagne",
-      "jeg er desuden vegetar"
-    ]
+    "keywords": ["mad", "dessert", "kok"],
+    "answers": ["Jeg elsker lasagne", "jeg er desuden vegetar"]
   },
   {
     "category": "navn",
-    "keywords": [
-      "navn",
-      "hedder",
-      "hvem er du"
-    ],
+    "keywords": ["navn", "hedder", "hvem er du"],
+    "answers": ["Jeg hedder Rune"]
+  },
+  {
+    "category": "capabilities",
+    "keywords": ["hvad kan du", "hvad kan jeg spørge", "hjælp"],
     "answers": [
-      "Jeg hedder Rune"
+      "Jeg kan svare på spørgsmål om mig selv — fx hvor jeg bor, min alder, min fritid og min livret. Spørg bare løs!"
     ]
   }
 ]

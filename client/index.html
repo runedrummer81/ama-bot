@@ -36,6 +36,19 @@
           </button>
         </div>
 
+        <!-- Velkomstskærm — vist når der ikke er nogen beskeder endnu -->
+        <div id="welcome" class="welcome">
+          <div class="welcome-frame">
+            <h2 id="welcome-heading" class="welcome-heading">
+              Hej, jeg er Rune-amabot
+            </h2>
+            <p class="welcome-text">
+              Spørg mig om stort set hvad som helst — eller tryk på "Hvad kan
+              du?" herunder for en hurtig intro.
+            </p>
+          </div>
+        </div>
+
         <!-- Beskedhistorik -->
         <div
           id="messages"
@@ -45,33 +58,39 @@
           aria-label="Chat historik"
         ></div>
 
-        <!-- Input-område -->
-        <form class="chat-input" id="question-form">
-          <label for="question">Skriv din besked</label>
-          <input
-            id="question"
-            name="question"
-            type="text"
-            placeholder="Skriv en besked..."
-            required
-            maxlength="280"
-          />
-          <span id="char-counter" class="char-counter">0/280</span>
-          <button type="submit" id="send-btn" aria-label="Send">
-            <svg
-              viewBox="0 0 24 24"
-              width="18"
-              height="18"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <line x1="12" y1="19" x2="12" y2="5" />
-              <polyline points="5 12 12 5 19 12" />
-            </svg>
+                <!-- Input-område -->
+        <div class="input-area">
+          <form class="chat-input" id="question-form">
+            <label for="question">Skriv din besked</label>
+            <input
+              id="question"
+              name="question"
+              type="text"
+              placeholder="Skriv en besked..."
+              required
+              maxlength="280"
+            />
+            <span id="char-counter" class="char-counter">0/280</span>
+            <button type="submit" id="send-btn" aria-label="Send">
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="19" x2="12" y2="5" />
+                <polyline points="5 12 12 5 19 12" />
+              </svg>
+            </button>
+          </form>
+          <button type="button" id="capabilities-btn" class="capabilities-btn">
+            Hvad kan du?
           </button>
+        </div>
         </form>
       </section>
     </main>

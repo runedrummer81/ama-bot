@@ -1,6 +1,7 @@
 {
-  "navn": 55,
-  "bosted": 31,
+  "navn": 57,
+  "bosted": 32,
   "fritid": 32,
-  "test": 1
+  "test": 1,
+  "capabilities": 5
 }

@@ -56,15 +56,5 @@
     "answers": [
       "Jeg hedder Rune"
     ]
-  },
-  {
-    "category": "test",
-    "keywords": [
-      "test",
-      "prøve"
-    ],
-    "answers": [
-      "Dette er et test-svar."
-    ]
   }
 ]

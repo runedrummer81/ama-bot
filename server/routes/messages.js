@@ -11,6 +11,15 @@ function sanitizeQuestion(input) {
   return input.replace(/[\u0000-\u001F\u007F]/g, "");
 }
 
+function escapeHtml(text) {
+  return text
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
 const router = express.Router();
 
 router.get("/", async (request, response) => {
@@ -30,7 +39,7 @@ router.post("/", async (request, response) => {
 
   const message = {
     type: "question",
-    text: question,
+    text: escapeHtml(question),
     createdAt: new Date().toISOString(),
   };
   messages.push(message);
@@ -39,7 +48,7 @@ router.post("/", async (request, response) => {
   const result = findBestAnswer(question, answers);
   const answerMessage = {
     type: "answer",
-    text: result.answer,
+    text: escapeHtml(result.answer),
     createdAt: new Date().toISOString(),
   };
   messages.push(answerMessage);

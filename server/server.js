@@ -12,6 +12,15 @@ app.use(cors());
 app.use("/messages", messagesRouter);
 app.use("/answers", answersRouter);
 
+app.use((request, response) => {
+  response.status(404).json({ error: "Ukendt sti" });
+});
+
+app.use((error, request, response, next) => {
+  console.error(error);
+  response.status(500).json({ error: error.message });
+});
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });

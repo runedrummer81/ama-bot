@@ -24,7 +24,7 @@ router.post("/", async (request, response) => {
   const question = sanitizeQuestion(request.body.question).trim();
 
   if (!question) {
-    response.json({ error: "Skriv et spørgsmål, før du sender." });
+    response.status(400).json({ error: "Skriv et spørgsmål, før du sender." });
     return;
   }
 

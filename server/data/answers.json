@@ -1,17 +1,5 @@
 [
   {
-    "category": "navn",
-    "keywords": [
-      "navn",
-      "hedder",
-      "hvem er du"
-    ],
-    "answers": [
-      "Jeg hedder Rune",
-      "Mit fulde navn er Rune Frisch Knudsen"
-    ]
-  },
-  {
     "category": "bosted",
     "keywords": [
       "bor",
@@ -56,6 +44,27 @@
     "answers": [
       "Jeg elsker lasagne",
       "jeg er desuden vegetar"
+    ]
+  },
+  {
+    "category": "navn",
+    "keywords": [
+      "navn",
+      "hedder",
+      "hvem er du"
+    ],
+    "answers": [
+      "Jeg hedder Rune"
+    ]
+  },
+  {
+    "category": "test",
+    "keywords": [
+      "test",
+      "prøve"
+    ],
+    "answers": [
+      "Dette er et test-svar."
     ]
   }
 ]

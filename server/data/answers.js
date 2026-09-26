@@ -12,8 +12,14 @@ function normalizeQuestion(question) {
 }
 
 export async function loadAnswers() {
-  const data = await fs.readFile("./data/answers.json", "utf8");
-  return JSON.parse(data);
+  try {
+    const data = await fs.readFile("./data/answers.json", "utf8");
+    return JSON.parse(data);
+  } catch (error) {
+    throw new Error(
+      "Kunne ikke hente svarmuligheder. data/answers.json mangler eller er ugyldig",
+    );
+  }
 }
 
 export async function saveAnswers(answers) {

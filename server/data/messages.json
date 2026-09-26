@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "type": "question",
+    "text": "hvem har lavet denne bot?",
+    "createdAt": "2026-09-26T09:36:44.694Z"
+  },
+  {
+    "type": "answer",
+    "text": "Det kender jeg ikke svaret på endnu.",
+    "createdAt": "2026-09-26T09:36:44.695Z"
+  }
+]

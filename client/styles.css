@@ -441,30 +441,6 @@ main {
   flex-shrink: 0;
 }
 
-.capabilities-btn {
-  align-self: flex-end;
-  background: transparent;
-  border: 1px solid var(--color-text-dim);
-  border-radius: var(--radius);
-  color: var(--color-text-dim);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  padding: 0.35rem 0.8rem;
-  cursor: pointer;
-  transition:
-    opacity 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease;
-}
-
-.capabilities-btn:hover,
-.capabilities-btn:focus-visible {
-  color: var(--color-aqua);
-  border-color: var(--color-aqua);
-  background: var(--color-aqua-dim);
-}
-
 .chat-input:focus-within {
   border-color: var(--color-aqua);
   animation: glowPulse 2s ease-in-out infinite;
@@ -627,6 +603,64 @@ button:focus-visible {
 .icon-btn:focus-visible::after {
   opacity: 1;
   transform: translateY(0);
+}
+
+.suggestions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.suggestion-chip {
+  flex: 1;
+  text-align: center;
+  background: transparent;
+  border: 1px solid var(--color-text-dim);
+  border-radius: var(--radius);
+  color: var(--color-text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.suggestion-chip:hover,
+.suggestion-chip:focus-visible {
+  color: var(--color-aqua);
+  border-color: var(--color-aqua);
+  background: var(--color-aqua-dim);
+}
+
+/* --- Top-actions (lyd / sprog / tema) ---
+   Rent visuelle togglere for nu — funktionaliteten kobles på senere. */
+
+.top-actions {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 50;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.utility-btn .icon-off {
+  display: none;
+}
+
+.utility-btn[aria-pressed="true"] .icon-on {
+  display: none;
+}
+
+.utility-btn[aria-pressed="true"] .icon-off {
+  display: block;
+}
+
+.lang-btn {
+  font-size: 0.75rem;
+  font-weight: bold;
 }
 
 /* --- Footer --- */

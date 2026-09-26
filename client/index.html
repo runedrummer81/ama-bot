@@ -8,6 +8,58 @@
     <script src="app.js" defer></script>
   </head>
   <body>
+        <div class="top-actions" aria-label="Indstillinger">
+      <button
+        type="button"
+        id="sound-toggle-btn"
+        class="icon-btn utility-btn"
+        aria-pressed="false"
+        aria-label="Lyd til/fra"
+      >
+        <svg class="icon-on" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="4 9 4 15 8 15 13 20 13 4 8 9 4 9" />
+          <path d="M16 8a5 5 0 0 1 0 8" />
+        </svg>
+        <svg class="icon-off" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="4 9 4 15 8 15 13 20 13 4 8 9 4 9" />
+          <line x1="17" y1="8" x2="22" y2="13" />
+          <line x1="22" y1="8" x2="17" y2="13" />
+        </svg>
+      </button>
+
+      <button
+        type="button"
+        id="language-toggle-btn"
+        class="icon-btn utility-btn lang-btn"
+        aria-pressed="false"
+        aria-label="Skift sprog"
+      >
+        DA
+      </button>
+
+      <button
+        type="button"
+        id="theme-toggle-btn"
+        class="icon-btn utility-btn"
+        aria-pressed="false"
+        aria-label="Skift tema"
+      >
+        <svg class="icon-on" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="4" />
+          <line x1="12" y1="1" x2="12" y2="3" />
+          <line x1="12" y1="21" x2="12" y2="23" />
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+          <line x1="1" y1="12" x2="3" y2="12" />
+          <line x1="21" y1="12" x2="23" y2="12" />
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </svg>
+        <svg class="icon-off" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
+        </svg>
+      </button>
+    </div>
     <header>
       <h1 data-text="Rune-amabot">Rune-amabot</h1>
     </header>
@@ -59,7 +111,7 @@
         ></div>
 
                 <!-- Input-område -->
-        <div class="input-area">
+                <div class="input-area">
           <form class="chat-input" id="question-form">
             <label for="question">Skriv din besked</label>
             <input
@@ -87,9 +139,18 @@
               </svg>
             </button>
           </form>
-          <button type="button" id="capabilities-btn" class="capabilities-btn">
-            Hvad kan du?
-          </button>
+
+          <div class="suggestions">
+            <button type="button" class="suggestion-chip" data-question="Hvor bor du?">
+              Hvor bor du?
+            </button>
+            <button type="button" class="suggestion-chip" data-question="Hvad laver du i din fritid?">
+              Hvad laver du i din fritid?
+            </button>
+            <button type="button" class="suggestion-chip" data-question="Hvad kan du?">
+              Hvad kan du?
+            </button>
+          </div>
         </div>
         </form>
       </section>

@@ -6,7 +6,7 @@ const messagesContainer = document.querySelector("#messages");
 const questionForm = document.querySelector("#question-form");
 const questionInput = document.querySelector("#question");
 const clearMessagesButton = document.querySelector("#clear-messages-button");
-const capabilitiesButton = document.querySelector("#capabilities-btn");
+const suggestionsEl = document.querySelector(".suggestions");
 
 // Viser enten velkomstskærmen (centreret, ingen "Ny chat"-knap) eller
 // den normale chat-visning (historik + input i bunden), aldrig begge.
@@ -17,7 +17,7 @@ function updateView(messageCount) {
   chatToolbar.classList.toggle("is-hidden", !hasMessages);
   welcomeEl.classList.toggle("is-hidden", hasMessages);
   messagesContainer.classList.toggle("is-hidden", !hasMessages);
-  capabilitiesButton.classList.toggle("is-hidden", hasMessages);
+  suggestionsEl.classList.toggle("is-hidden", hasMessages);
 }
 
 function displayMessage(message) {
@@ -79,8 +79,11 @@ clearMessagesButton.addEventListener("click", async () => {
   updateView(0);
 });
 
-capabilitiesButton.addEventListener("click", () => {
-  sendQuestion("Hvad kan du?");
+suggestionsEl.addEventListener("click", (event) => {
+  const chip = event.target.closest(".suggestion-chip");
+  if (!chip) return;
+
+  sendQuestion(chip.dataset.question);
 });
 
 questionForm.addEventListener("submit", async (event) => {
@@ -95,5 +98,34 @@ questionForm.addEventListener("submit", async (event) => {
   updateCharCounter();
 });
 
+// Rene UI-togglere for nu — ingen af dem er koblet til rigtig lyd,
+// sprogskift eller tema endnu. De skifter bare visuel tilstand
+// (ikon + aria-pressed), klar til at blive koblet til rigtig logik senere.
+function setupUtilityToggle(selector) {
+  const button = document.querySelector(selector);
+  if (!button) return;
+
+  button.addEventListener("click", () => {
+    const isPressed = button.getAttribute("aria-pressed") === "true";
+    button.setAttribute("aria-pressed", String(!isPressed));
+  });
+}
+
+setupUtilityToggle("#sound-toggle-btn");
+setupUtilityToggle("#theme-toggle-btn");
+
+const languageToggleButton = document.querySelector("#language-toggle-btn");
+if (languageToggleButton) {
+  languageToggleButton.addEventListener("click", () => {
+    const isEnglish =
+      languageToggleButton.getAttribute("aria-pressed") === "true";
+    const next = !isEnglish;
+
+    languageToggleButton.setAttribute("aria-pressed", String(next));
+    languageToggleButton.textContent = next ? "EN" : "DA";
+  });
+}
+
 getMessages();
 updateCharCounter();
+questionInput.focus();

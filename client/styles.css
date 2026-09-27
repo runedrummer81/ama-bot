@@ -663,6 +663,353 @@ button:focus-visible {
   font-weight: bold;
 }
 
+.hero-photo-wrap {
+  position: fixed;
+  left: -110px;
+  bottom: 0;
+  height: 100vh;
+  aspect-ratio: 1250 / 1400;
+  z-index: 0;
+  pointer-events: auto;
+  user-select: none;
+  cursor: default;
+
+  animation: heroJolt 6.4s infinite linear;
+}
+
+.hero-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-photo-tint {
+  position: absolute;
+  inset: 0;
+  background: var(--color-aqua);
+  mix-blend-mode: color;
+  opacity: 0.6;
+  -webkit-mask-image: url("rune.png");
+  mask-image: url("rune.png");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.hero-photo-wrap:hover .hero-photo-tint {
+  opacity: 0.45;
+  transition: opacity 0.4s ease;
+}
+
+/* --- Glitch-event: skiver + RGB-split + støj, ét samlet burst hvert 6,4s --- */
+
+.hero-slice,
+.hero-rgb {
+  position: absolute;
+  inset: 0;
+  background-image: url("rune.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  opacity: 0;
+
+  -webkit-mask-image: url("rune.png");
+  mask-image: url("rune.png");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.hero-slice--1 {
+  clip-path: inset(0 0 75% 0);
+}
+.hero-slice--2 {
+  clip-path: inset(25% 0 50% 0);
+}
+.hero-slice--3 {
+  clip-path: inset(50% 0 25% 0);
+}
+.hero-slice--4 {
+  clip-path: inset(75% 0 0 0);
+}
+
+.hero-slice--1 {
+  animation: heroSlice1 6.4s infinite linear;
+}
+.hero-slice--2 {
+  animation: heroSlice2 6.4s infinite linear;
+}
+.hero-slice--3 {
+  animation: heroSlice3 6.4s infinite linear;
+}
+.hero-slice--4 {
+  animation: heroSlice4 6.4s infinite linear;
+}
+
+@keyframes heroSlice1 {
+  0%,
+  91%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  92% {
+    opacity: 1;
+    transform: translateX(-14px);
+  }
+  93% {
+    opacity: 1;
+    transform: translateX(10px);
+  }
+  94% {
+    opacity: 0.8;
+    transform: translateX(-4px);
+  }
+  95% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+@keyframes heroSlice2 {
+  0%,
+  91.5%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  92.5% {
+    opacity: 1;
+    transform: translateX(12px);
+  }
+  93.5% {
+    opacity: 1;
+    transform: translateX(-16px);
+  }
+  94.5% {
+    opacity: 0.7;
+    transform: translateX(6px);
+  }
+  95.5% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+@keyframes heroSlice3 {
+  0%,
+  92%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  93% {
+    opacity: 1;
+    transform: translateX(-18px);
+  }
+  94% {
+    opacity: 1;
+    transform: translateX(8px);
+  }
+  95% {
+    opacity: 0.6;
+    transform: translateX(-10px);
+  }
+  96% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+@keyframes heroSlice4 {
+  0%,
+  92.5%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  93.5% {
+    opacity: 1;
+    transform: translateX(16px);
+  }
+  94.5% {
+    opacity: 1;
+    transform: translateX(-12px);
+  }
+  95.5% {
+    opacity: 0.7;
+    transform: translateX(4px);
+  }
+  96.5% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+
+.hero-rgb--r {
+  filter: url(#glitch-red-channel);
+  mix-blend-mode: screen;
+  animation: heroRgbR 6.4s infinite linear;
+}
+.hero-rgb--b {
+  filter: url(#glitch-blue-channel);
+  mix-blend-mode: screen;
+  animation: heroRgbB 6.4s infinite linear;
+}
+
+@keyframes heroRgbR {
+  0%,
+  91%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  92%,
+  96% {
+    opacity: 0.85;
+  }
+  93% {
+    transform: translateX(6px);
+  }
+  95% {
+    transform: translateX(-3px);
+  }
+  97% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+@keyframes heroRgbB {
+  0%,
+  91%,
+  100% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  92%,
+  96% {
+    opacity: 0.85;
+  }
+  93% {
+    transform: translateX(-6px);
+  }
+  95% {
+    transform: translateX(3px);
+  }
+  97% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+}
+
+.hero-noise {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0;
+  animation: heroNoiseFlash 6.4s infinite steps(1);
+
+  -webkit-mask-image: url("rune.png");
+  mask-image: url("rune.png");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+@keyframes heroNoiseFlash {
+  0%,
+  91%,
+  97%,
+  100% {
+    opacity: 0;
+  }
+  92% {
+    opacity: 0.35;
+  }
+  93% {
+    opacity: 0.15;
+  }
+  94% {
+    opacity: 0.45;
+  }
+  95% {
+    opacity: 0.1;
+  }
+  96% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes heroJolt {
+  0%,
+  91%,
+  97%,
+  100% {
+    filter: none;
+  }
+  93% {
+    filter: contrast(1.5) brightness(1.25);
+  }
+  95% {
+    filter: contrast(1.2) brightness(0.9);
+  }
+}
+
+/* --- Konstant, meget svag static-tekstur i hvile (adskilt fra glitch-eventet) --- */
+
+/* --- Konstant, svag static-tekstur i hvile (adskilt fra glitch-eventet) --- */
+
+.hero-idle-static {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+  opacity: 50.8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 250px 250px;
+  animation: heroIdleStatic 0.2s steps(1) infinite;
+
+  -webkit-mask-image: url("rune.png");
+  mask-image: url("rune.png");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+@keyframes heroIdleStatic {
+  0% {
+    background-position: 0px 0px;
+  }
+  20% {
+    background-position: 37px -19px;
+  }
+  40% {
+    background-position: -22px 41px;
+  }
+  60% {
+    background-position: 58px 12px;
+  }
+  80% {
+    background-position: -31px -27px;
+  }
+  100% {
+    background-position: 0px 0px;
+  }
+}
+
+header,
+main,
+footer {
+  position: relative;
+  z-index: 1;
+}
+
 /* --- Footer --- */
 
 footer {

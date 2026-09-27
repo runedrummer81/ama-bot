@@ -6,47 +6,57 @@
     <link rel="stylesheet" href="/styles.css" />
     <title>Rune-amabot</title>
     <script src="app.js" defer></script>
+    <script src="bg.js" defer></script>
   </head>
   <body>
+    <canvas id="bg-layer-0" class="bg-layer"></canvas>
+    <canvas id="bg-layer-1" class="bg-layer"></canvas>
+    <canvas id="bg-layer-2" class="bg-layer"></canvas>
+    <canvas id="bg-layer-3" class="bg-layer"></canvas>
+    <canvas id="bg-layer-4" class="bg-layer"></canvas>
+
     <div class="hero-photo-wrap">
-  <img src="rune.png" alt="" class="hero-photo" />
+      <img src="rune.png" alt="" class="hero-photo" />
 
-  <div class="hero-slice hero-slice--1"></div>
-  <div class="hero-slice hero-slice--2"></div>
-  <div class="hero-slice hero-slice--3"></div>
-  <div class="hero-slice hero-slice--4"></div>
+      <div class="hero-slice hero-slice--1"></div>
+      <div class="hero-slice hero-slice--2"></div>
+      <div class="hero-slice hero-slice--3"></div>
+      <div class="hero-slice hero-slice--4"></div>
 
-  <div class="hero-rgb hero-rgb--r"></div>
-  <div class="hero-rgb hero-rgb--b"></div>
+      <div class="hero-rgb hero-rgb--r"></div>
+      <div class="hero-rgb hero-rgb--b"></div>
 
-  <div class="hero-photo-tint"></div>
+      <div class="hero-photo-tint"></div>
 
-    <div class="hero-photo-tint"></div>
+      <div class="hero-idle-static"></div>
 
-  <div class="hero-idle-static"></div>
+      <div class="hero-noise"></div>
+    </div>
 
-  <div class="hero-noise"></div>
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <filter id="glitch-red-channel">
+        <feColorMatrix
+          type="matrix"
+          values="
+          1 0 0 0 0
+          0 0 0 0 0
+          0 0 0 0 0
+          0 0 0 1 0"
+        />
+      </filter>
+      <filter id="glitch-blue-channel">
+        <feColorMatrix
+          type="matrix"
+          values="
+          0 0 0 0 0
+          0 0 0 0 0
+          0 0 1 0 0
+          0 0 0 1 0"
+        />
+      </filter>
+    </svg>
 
-  <div class="hero-noise"></div>
-</div>
-
-<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-  <filter id="glitch-red-channel">
-    <feColorMatrix type="matrix" values="
-      1 0 0 0 0
-      0 0 0 0 0
-      0 0 0 0 0
-      0 0 0 1 0" />
-  </filter>
-  <filter id="glitch-blue-channel">
-    <feColorMatrix type="matrix" values="
-      0 0 0 0 0
-      0 0 0 0 0
-      0 0 1 0 0
-      0 0 0 1 0" />
-  </filter>
-</svg>
-        <div class="top-actions" aria-label="Indstillinger">
+    <div class="top-actions" aria-label="Indstillinger">
       <button
         type="button"
         id="sound-toggle-btn"
@@ -54,11 +64,31 @@
         aria-pressed="false"
         aria-label="Lyd til/fra"
       >
-        <svg class="icon-on" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          class="icon-on"
+          viewBox="0 0 24 24"
+          width="18"
+          height="18"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <polygon points="4 9 4 15 8 15 13 20 13 4 8 9 4 9" />
           <path d="M16 8a5 5 0 0 1 0 8" />
         </svg>
-        <svg class="icon-off" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          class="icon-off"
+          viewBox="0 0 24 24"
+          width="18"
+          height="18"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <polygon points="4 9 4 15 8 15 13 20 13 4 8 9 4 9" />
           <line x1="17" y1="8" x2="22" y2="13" />
           <line x1="22" y1="8" x2="17" y2="13" />
@@ -82,7 +112,17 @@
         aria-pressed="false"
         aria-label="Skift tema"
       >
-        <svg class="icon-on" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          class="icon-on"
+          viewBox="0 0 24 24"
+          width="18"
+          height="18"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <circle cx="12" cy="12" r="4" />
           <line x1="12" y1="1" x2="12" y2="3" />
           <line x1="12" y1="21" x2="12" y2="23" />
@@ -93,14 +133,21 @@
           <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
         </svg>
-        <svg class="icon-off" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg
+          class="icon-off"
+          viewBox="0 0 24 24"
+          width="18"
+          height="18"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
         </svg>
       </button>
     </div>
-    <header>
-      <h1 data-text="Rune-amabot">Rune-amabot</h1>
-    </header>
 
     <main>
       <section class="chat" aria-label="Chatbot">
@@ -129,13 +176,47 @@
         <!-- Velkomstskærm — vist når der ikke er nogen beskeder endnu -->
         <div id="welcome" class="welcome">
           <div class="welcome-frame">
-            <h2 id="welcome-heading" class="welcome-heading">
-              Hej, jeg er Rune-amabot
-            </h2>
-            <p class="welcome-text">
-              Spørg mig om stort set hvad som helst — eller tryk på "Hvad kan
-              du?" herunder for en hurtig intro.
-            </p>
+            <div class="welcome-panel">
+              <span class="panel-corner panel-corner--tl"></span>
+              <span class="panel-corner panel-corner--tr"></span>
+              <span class="panel-corner panel-corner--bl"></span>
+              <span class="panel-corner panel-corner--br"></span>
+              <h1
+                id="welcome-heading"
+                class="welcome-heading"
+                data-text="RUNE_INDEX"
+              >
+                RUNE_INDEX
+              </h1>
+
+              <form class="chat-input" id="question-form">
+                <label for="question">Skriv din besked</label>
+                <input
+                  id="question"
+                  name="question"
+                  type="text"
+                  placeholder=""
+                  required
+                  maxlength="280"
+                />
+                <span id="char-counter" class="char-counter">0/280</span>
+                <button type="submit" id="send-btn" aria-label="Send">
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="22"
+                    height="22"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="12" y1="19" x2="12" y2="5" />
+                    <polyline points="5 12 12 5 19 12" />
+                  </svg>
+                </button>
+              </form>
+            </div>
           </div>
         </div>
 
@@ -148,49 +229,32 @@
           aria-label="Chat historik"
         ></div>
 
-                <!-- Input-område -->
-                <div class="input-area">
-          <form class="chat-input" id="question-form">
-            <label for="question">Skriv din besked</label>
-            <input
-              id="question"
-              name="question"
-              type="text"
-              placeholder="Skriv en besked..."
-              required
-              maxlength="280"
-            />
-            <span id="char-counter" class="char-counter">0/280</span>
-            <button type="submit" id="send-btn" aria-label="Send">
-              <svg
-                viewBox="0 0 24 24"
-                width="18"
-                height="18"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <line x1="12" y1="19" x2="12" y2="5" />
-                <polyline points="5 12 12 5 19 12" />
-              </svg>
-            </button>
-          </form>
-
+        <!-- Input-område -->
+        <div class="input-area">
           <div class="suggestions">
-            <button type="button" class="suggestion-chip" data-question="Hvor bor du?">
-              Hvor bor du?
+            <button
+              type="button"
+              class="suggestion-chip"
+              data-question="Hvor bor du?"
+            >
+              Fortæl om Rune
             </button>
-            <button type="button" class="suggestion-chip" data-question="Hvad laver du i din fritid?">
-              Hvad laver du i din fritid?
+            <button
+              type="button"
+              class="suggestion-chip"
+              data-question="Hvad laver du i din fritid?"
+            >
+              Her står noget sejt
             </button>
-            <button type="button" class="suggestion-chip" data-question="Hvad kan du?">
+            <button
+              type="button"
+              class="suggestion-chip"
+              data-question="Hvad kan du?"
+            >
               Hvad kan du?
             </button>
           </div>
         </div>
-        </form>
       </section>
     </main>
 

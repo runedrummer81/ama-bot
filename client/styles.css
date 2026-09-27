@@ -4,7 +4,7 @@
    + neon-accenter (aqua/coral), glow-puls og scanlines.
    ========================================================================== */
 
-@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
 
 :root {
   /* --- Baggrunds-lag (mørk til lys, bruges til dybde) --- */
@@ -34,6 +34,32 @@
   --glow-md: 0 0 16px var(--color-aqua-dim);
 }
 
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  display: block;
+  pointer-events: none;
+}
+
+#bg-layer-0 {
+  filter: blur(6px);
+}
+#bg-layer-1 {
+  filter: blur(3.5px);
+}
+#bg-layer-2 {
+  filter: blur(1.5px);
+}
+#bg-layer-3 {
+  filter: blur(0.5px);
+}
+#bg-layer-4 {
+  pointer-events: auto;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -47,53 +73,6 @@ body {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-}
-
-/* --- Header --- */
-
-header {
-  padding: 2.5rem 1rem 1.5rem;
-  text-align: center;
-  background: linear-gradient(
-    180deg,
-    var(--color-midnight),
-    var(--color-primary)
-  );
-}
-
-header h1 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 2.8rem;
-  letter-spacing: 0.15em;
-  color: var(--color-aqua);
-  text-shadow: var(--glow-md);
-  margin: 0;
-  position: relative;
-  display: inline-block;
-}
-
-/* Glitch-lag: to farvede kopier af teksten der kun "popper" kortvarigt
-   hvert par sekunder, i stedet for at ryste konstant. */
-
-header h1::before,
-header h1::after {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  opacity: 0;
-}
-
-header h1::before {
-  color: var(--color-coral);
-  animation: glitch-burst-1 5s infinite linear;
-}
-
-header h1::after {
-  color: var(--color-aqua);
-  animation: glitch-burst-2 5s infinite linear;
 }
 
 @keyframes glitch-burst-1 {
@@ -159,7 +138,7 @@ main {
 
 .chat {
   width: 100%;
-  max-width: 640px;
+  max-width: min(90vw, 880px);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -172,17 +151,20 @@ main {
    fastlåst i bunden. */
 .chat.is-welcome {
   justify-content: center;
+  gap: 0.8rem;
 }
 
 .chat.is-welcome .chat-input input {
-  padding: 1.1rem 1.5rem;
-  font-size: 1.05rem;
+  padding: 0.85rem 0.2rem;
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
 }
 
 .chat-toolbar {
   display: flex;
   justify-content: flex-start;
   flex-shrink: 0;
+  position: relative;
+  z-index: 3;
 }
 
 /* --- Velkomstskærm — vist når der ikke er nogen beskeder endnu --- */
@@ -192,7 +174,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1rem;
+  padding: 0.5rem 0;
   text-align: center;
 }
 
@@ -201,24 +183,149 @@ main {
   flex-direction: column;
   align-items: center;
   gap: 0.75rem;
-  max-width: 480px;
+  width: 100%;
 }
 
 .welcome-heading {
   font-family: var(--font-display);
-  font-size: 1.6rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
+  font-weight: 700;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  letter-spacing: 0.15em;
   color: var(--color-aqua);
-  text-shadow: var(--glow-sm);
+  text-shadow: var(--glow-md);
   margin: 0;
+  position: relative;
+  display: inline-block;
 }
 
-.welcome-text {
+.welcome-heading::before,
+.welcome-heading::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+}
+
+.welcome-heading::before {
+  color: var(--color-coral);
+  animation: glitch-burst-1 5s infinite linear;
+}
+
+.welcome-heading::after {
+  color: var(--color-aqua);
+  animation: glitch-burst-2 5s infinite linear;
+}
+
+.welcome-panel {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  background: rgba(6, 9, 31, 0.82);
+  border: 1px solid var(--color-aqua-dim);
+  border-radius: var(--radius);
+  padding: clamp(1.75rem, 5vw, 3.5rem);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 0 24px rgba(0, 0, 0, 0.35);
+}
+
+.welcome-panel .chat-input {
+  width: 100%;
+}
+
+.welcome-panel-label {
+  position: absolute;
+  top: -0.6rem;
+  left: 1rem;
+  background: var(--color-primary);
+  padding: 0 0.5rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
   color: var(--color-text-dim);
-  font-size: 0.9rem;
-  line-height: 1.5;
-  margin: 0;
+}
+
+.panel-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  opacity: 0.5;
+  transition:
+    top 0.25s ease,
+    right 0.25s ease,
+    bottom 0.25s ease,
+    left 0.25s ease,
+    opacity 0.25s ease;
+}
+
+.panel-corner--tl {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid var(--color-aqua);
+  border-left: 2px solid var(--color-aqua);
+}
+
+.panel-corner--tr {
+  top: -1px;
+  right: -1px;
+  border-top: 2px solid var(--color-aqua);
+  border-right: 2px solid var(--color-aqua);
+}
+
+.panel-corner--bl {
+  bottom: -1px;
+  left: -1px;
+  border-bottom: 2px solid var(--color-aqua);
+  border-left: 2px solid var(--color-aqua);
+}
+
+.panel-corner--br {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid var(--color-aqua);
+  border-right: 2px solid var(--color-aqua);
+}
+
+.welcome-panel.is-active .panel-corner {
+  opacity: 1;
+  animation: cornerPulse 1.6s ease-in-out infinite;
+}
+
+.welcome-panel.is-active .panel-corner--tl {
+  top: -12px;
+  left: -12px;
+}
+
+.welcome-panel.is-active .panel-corner--tr {
+  top: -12px;
+  right: -12px;
+}
+
+.welcome-panel.is-active .panel-corner--bl {
+  bottom: -12px;
+  left: -12px;
+}
+
+.welcome-panel.is-active .panel-corner--br {
+  bottom: -12px;
+  right: -12px;
+}
+
+@keyframes cornerPulse {
+  0%,
+  100% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 4px var(--color-aqua));
+  }
 }
 
 /* Fælles hjælpeklasse til at skjule velkomst/beskeder efter behov */
@@ -425,13 +532,12 @@ main {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  background: var(--color-navy);
-  border: 1px solid var(--color-aqua-dim);
-  border-radius: var(--radius);
-  overflow: hidden;
-  transition:
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-aqua-dim);
+  border-radius: 0;
+  overflow: visible;
+  transition: border-color 0.2s ease;
 }
 
 .input-area {
@@ -439,11 +545,12 @@ main {
   flex-direction: column;
   gap: 5px;
   flex-shrink: 0;
+  position: relative;
+  z-index: 2;
 }
 
 .chat-input:focus-within {
   border-color: var(--color-aqua);
-  animation: glowPulse 2s ease-in-out infinite;
 }
 
 @keyframes glowPulse {
@@ -478,6 +585,7 @@ main {
   font-family: var(--font-mono);
   font-size: 1rem;
   outline: none;
+  caret-color: var(--color-aqua);
 }
 
 .chat-input input::placeholder {
@@ -501,6 +609,10 @@ main {
     background 0.2s ease;
 }
 
+.chat-input input:focus {
+  color: var(--color-aqua);
+}
+
 /* Skjult (usynlig + skaleret ned) indtil feltet indeholder mindst ét tegn.
    Send-knappen har ingen synlig "disabled, men klikbar"-fornemmelse —
    den er der simpelthen ikke, før man har noget at sende. */
@@ -516,7 +628,7 @@ main {
 
 .char-counter {
   flex-shrink: 0;
-  font-size: 0.7rem;
+  font-size: 1rem;
   color: var(--color-text-dim);
   padding: 0 0.5rem;
   white-space: nowrap;
@@ -613,25 +725,35 @@ button:focus-visible {
 .suggestion-chip {
   flex: 1;
   text-align: center;
-  background: transparent;
-  border: 1px solid var(--color-text-dim);
-  border-radius: var(--radius);
-  color: var(--color-text-dim);
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  padding: 0.5rem 0.75rem;
+  background: rgba(6, 9, 31, 0.82);
+  border: 1px solid var(--color-aqua-dim);
+  color: var(--color-aqua);
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.9vw, 1.15rem);
+  letter-spacing: 0.03em;
+  padding: clamp(0.85rem, 2vw, 1.3rem) 1rem;
   cursor: pointer;
+  box-shadow: 0 0 12px rgba(51, 194, 204, 0.12);
+  clip-path: polygon(
+    0 0,
+    calc(100% - 14px) 0,
+    100% 14px,
+    100% 100%,
+    14px 100%,
+    0 calc(100% - 14px)
+  );
   transition:
+    background 0.2s ease,
     color 0.2s ease,
-    border-color 0.2s ease,
-    background 0.2s ease;
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .suggestion-chip:hover,
 .suggestion-chip:focus-visible {
-  color: var(--color-aqua);
-  border-color: var(--color-aqua);
-  background: var(--color-aqua-dim);
+  background: var(--color-aqua);
+  color: var(--color-primary);
+  box-shadow: 0 0 16px var(--color-aqua);
 }
 
 /* --- Top-actions (lyd / sprog / tema) ---
@@ -669,7 +791,7 @@ button:focus-visible {
   bottom: 0;
   height: 100vh;
   aspect-ratio: 1250 / 1400;
-  z-index: 0;
+  z-index: 1;
   pointer-events: auto;
   user-select: none;
   cursor: default;
@@ -1003,11 +1125,13 @@ button:focus-visible {
   }
 }
 
-header,
 main,
 footer {
-  position: relative;
-  z-index: 1;
+  pointer-events: none;
+}
+
+.chat {
+  pointer-events: auto;
 }
 
 /* --- Footer --- */

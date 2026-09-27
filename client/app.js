@@ -7,6 +7,7 @@ const questionForm = document.querySelector("#question-form");
 const questionInput = document.querySelector("#question");
 const clearMessagesButton = document.querySelector("#clear-messages-button");
 const suggestionsEl = document.querySelector(".suggestions");
+const welcomePanel = document.querySelector(".welcome-panel");
 
 // Viser enten velkomstskærmen (centreret, ingen "Ny chat"-knap) eller
 // den normale chat-visning (historik + input i bunden), aldrig begge.
@@ -39,7 +40,16 @@ function updateCharCounter() {
   charCounter.classList.toggle("char-counter--limit", length >= MAX_LENGTH);
 }
 
-questionInput.addEventListener("input", updateCharCounter);
+questionInput.addEventListener("input", () => {
+  updateCharCounter();
+
+  if (questionInput.value.length > 0) {
+    pauseTypewriter();
+    questionInput.placeholder = "";
+  } else {
+    resumeTypewriter();
+  }
+});
 
 async function getMessages() {
   try {
@@ -125,6 +135,73 @@ if (languageToggleButton) {
     languageToggleButton.textContent = next ? "EN" : "DA";
   });
 }
+
+const TYPEWRITER_EXAMPLES = [
+  "Hvor bor du?",
+  "Hvad kan du?",
+  "Hvad laver du i din fritid?",
+];
+const TYPE_SPEED = 55;
+const DELETE_SPEED = 30;
+const HOLD_MS = 1800;
+
+let twIndex = 0;
+let twCharIndex = 0;
+let twDeleting = false;
+let twTimeout = null;
+let twPaused = false;
+
+function typewriterTick() {
+  if (twPaused) return;
+
+  const current = TYPEWRITER_EXAMPLES[twIndex];
+
+  if (!twDeleting) {
+    twCharIndex++;
+    questionInput.placeholder = current.slice(0, twCharIndex);
+
+    if (twCharIndex === current.length) {
+      twTimeout = setTimeout(() => {
+        twDeleting = true;
+        typewriterTick();
+      }, HOLD_MS);
+      return;
+    }
+    twTimeout = setTimeout(typewriterTick, TYPE_SPEED);
+  } else {
+    twCharIndex--;
+    questionInput.placeholder = current.slice(0, twCharIndex);
+
+    if (twCharIndex === 0) {
+      twDeleting = false;
+      twIndex = (twIndex + 1) % TYPEWRITER_EXAMPLES.length;
+      twTimeout = setTimeout(typewriterTick, 400);
+      return;
+    }
+    twTimeout = setTimeout(typewriterTick, DELETE_SPEED);
+  }
+}
+
+function pauseTypewriter() {
+  twPaused = true;
+  clearTimeout(twTimeout);
+}
+
+function resumeTypewriter() {
+  if (questionInput.value.length > 0) return;
+  twPaused = false;
+  typewriterTick();
+}
+
+questionInput.addEventListener("focus", () => {
+  welcomePanel?.classList.add("is-active");
+});
+
+questionInput.addEventListener("blur", () => {
+  welcomePanel?.classList.remove("is-active");
+});
+
+typewriterTick();
 
 getMessages();
 updateCharCounter();

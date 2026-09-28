@@ -8,6 +8,39 @@ const questionInput = document.querySelector("#question");
 const clearMessagesButton = document.querySelector("#clear-messages-button");
 const suggestionsEl = document.querySelector(".suggestions");
 const welcomePanel = document.querySelector(".welcome-panel");
+const heroWrap = document.querySelector(".hero-photo-wrap");
+
+const EXIT_TIMING = {
+  collapse: 250,
+  fly: 250 + 450,
+  done: 250 + 450 + 350,
+};
+
+function playWelcomeExit() {
+  heroWrap?.classList.add("is-exiting");
+  suggestionsEl.classList.add("is-exiting");
+  welcomePanel?.classList.add("is-sending");
+
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      welcomePanel?.classList.remove("is-sending");
+      welcomePanel?.classList.add("is-collapsing");
+    }, EXIT_TIMING.collapse);
+
+    setTimeout(() => {
+      welcomePanel?.classList.remove("is-collapsing");
+      welcomePanel?.classList.add("is-flying");
+    }, EXIT_TIMING.fly);
+
+    setTimeout(resolve, EXIT_TIMING.done);
+  });
+}
+
+function resetWelcomeExit() {
+  heroWrap?.classList.remove("is-exiting");
+  suggestionsEl.classList.remove("is-exiting");
+  welcomePanel?.classList.remove("is-sending", "is-collapsing", "is-flying");
+}
 
 // Viser enten velkomstskærmen (centreret, ingen "Ny chat"-knap) eller
 // den normale chat-visning (historik + input i bunden), aldrig begge.
@@ -68,17 +101,21 @@ async function getMessages() {
 }
 
 async function sendQuestion(question) {
-  const response = await fetch(`${API_URL}/messages`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ question }),
-  });
+  const isWelcome = chatSection.classList.contains("is-welcome");
+  const exitPromise = isWelcome ? playWelcomeExit() : Promise.resolve();
+
+  const [response] = await Promise.all([
+    fetch(`${API_URL}/messages`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question }),
+    }),
+    exitPromise,
+  ]);
 
   const data = await response.json();
 
-  // Første besked i chatten — skift fra velkomst til chat-visning.
   updateView(1);
-
   displayMessage(data.question);
   displayMessage(data.answer);
 }
@@ -87,6 +124,7 @@ clearMessagesButton.addEventListener("click", async () => {
   await fetch(`${API_URL}/messages`, { method: "DELETE" });
   messagesContainer.innerHTML = "";
   updateView(0);
+  resetWelcomeExit();
 });
 
 suggestionsEl.addEventListener("click", (event) => {

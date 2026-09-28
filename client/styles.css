@@ -717,6 +717,15 @@ button:focus-visible {
   box-shadow: var(--glow-sm);
 }
 
+.utility-btn::after {
+  content: none;
+}
+
+.utility-btn:hover::after,
+.utility-btn:focus-visible::after {
+  transform: translate(-50%, 0);
+}
+
 .icon-btn:hover::after,
 .icon-btn:focus-visible::after {
   opacity: 1;
@@ -767,11 +776,52 @@ button:focus-visible {
 
 .top-actions {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
+  top: 1.5rem;
+  right: 1.25rem;
   z-index: 50;
   display: flex;
-  gap: 0.5rem;
+  align-items: stretch;
+  background: rgba(6, 9, 31, 0.82);
+  border: 1px solid var(--color-aqua-dim);
+  border-radius: var(--radius);
+  box-shadow: 0 0 14px rgba(51, 194, 204, 0.12);
+  padding: 6px;
+}
+
+.utility-btn {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--color-text-dim);
+}
+
+.utility-btn:hover,
+.utility-btn:focus-visible {
+  color: var(--color-aqua);
+  background: rgba(51, 194, 204, 0.12);
+  border-color: transparent;
+}
+
+.utility-btn + .utility-btn {
+  margin-left: 6px;
+}
+
+.utility-btn + .utility-btn::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: var(--color-aqua-dim);
+}
+
+.lang-btn {
+  font-size: 0.95rem;
+  font-weight: bold;
 }
 
 .utility-btn .icon-off {
@@ -784,11 +834,6 @@ button:focus-visible {
 
 .utility-btn[aria-pressed="true"] .icon-off {
   display: block;
-}
-
-.lang-btn {
-  font-size: 0.75rem;
-  font-weight: bold;
 }
 
 .hero-photo-wrap {
@@ -1151,6 +1196,221 @@ footer {
 
 .chat {
   pointer-events: auto;
+}
+
+/* ==========================================================================
+   OVERGANG: velkomst -> chat (hero, panel og chips glitcher/folder væk)
+   ========================================================================== */
+
+@keyframes glitchExitLeft {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-140px);
+  }
+}
+@keyframes glitchExitRight {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(140px);
+  }
+}
+
+/* --- Hero glitcher væk --- */
+
+.hero-photo-wrap.is-exiting {
+  animation: none;
+  pointer-events: none;
+}
+
+.hero-photo-wrap.is-exiting .hero-photo,
+.hero-photo-wrap.is-exiting .hero-photo-tint,
+.hero-photo-wrap.is-exiting .hero-idle-static {
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.hero-photo-wrap.is-exiting .hero-rgb,
+.hero-photo-wrap.is-exiting .hero-noise {
+  animation: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.hero-photo-wrap.is-exiting .hero-slice--1 {
+  animation: glitchExitLeft 0.5s ease-in forwards;
+}
+.hero-photo-wrap.is-exiting .hero-slice--2 {
+  animation: glitchExitRight 0.5s ease-in 0.03s forwards;
+}
+.hero-photo-wrap.is-exiting .hero-slice--3 {
+  animation: glitchExitLeft 0.5s ease-in 0.06s forwards;
+}
+.hero-photo-wrap.is-exiting .hero-slice--4 {
+  animation: glitchExitRight 0.5s ease-in 0.09s forwards;
+}
+
+/* --- Panel: puls -> fold sammen -> flyv ud --- */
+
+@keyframes panelPulseFeedback {
+  0%,
+  100% {
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.35);
+  }
+  30% {
+    box-shadow: 0 0 36px rgba(51, 194, 204, 0.7);
+  }
+  60% {
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.35);
+  }
+  80% {
+    box-shadow: 0 0 30px rgba(51, 194, 204, 0.55);
+  }
+}
+
+.welcome-panel.is-sending {
+  animation: panelPulseFeedback 0.25s ease-out 1;
+}
+
+.welcome-panel.is-sending .panel-corner {
+  opacity: 1;
+  animation: cornerPulse 0.25s ease-out 1;
+}
+
+@keyframes panelCollapse {
+  0% {
+    transform: scaleY(1) scaleX(1);
+    opacity: 1;
+  }
+  55% {
+    transform: scaleY(0.03) scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(0.03) scaleX(0.02);
+    opacity: 1;
+  }
+}
+
+.welcome-panel.is-collapsing {
+  animation: panelCollapse 0.45s cubic-bezier(0.6, 0, 0.8, 0.2) forwards;
+  transform-origin: center center;
+}
+
+@keyframes panelFlyOut {
+  0% {
+    transform: scaleY(0.03) scaleX(0.02) translateY(0);
+    opacity: 1;
+    filter: blur(0);
+  }
+  100% {
+    transform: scaleY(0.03) scaleX(0.02) translateY(-260%);
+    opacity: 0;
+    filter: blur(6px);
+  }
+}
+
+.welcome-panel.is-flying {
+  animation: panelFlyOut 0.35s ease-in forwards;
+  transform-origin: center center;
+}
+
+/* --- Forslagschips glitcher væk (samme teknik som hero) --- */
+
+.suggestion-chip {
+  position: relative;
+}
+
+.chip-label {
+  position: relative;
+}
+
+.chip-slice {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 9, 31, 0.82);
+  border: 1px solid var(--color-aqua-dim);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.chip-slice--1 {
+  clip-path: inset(0 0 75% 0);
+}
+.chip-slice--2 {
+  clip-path: inset(25% 0 50% 0);
+}
+.chip-slice--3 {
+  clip-path: inset(50% 0 25% 0);
+}
+.chip-slice--4 {
+  clip-path: inset(75% 0 0 0);
+}
+
+.suggestions.is-exiting .suggestion-chip {
+  clip-path: none;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.suggestions.is-exiting .chip-label {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.suggestions.is-exiting .chip-slice--1 {
+  animation: glitchExitLeft 0.4s ease-in forwards;
+}
+.suggestions.is-exiting .chip-slice--2 {
+  animation: glitchExitRight 0.4s ease-in 0.03s forwards;
+}
+.suggestions.is-exiting .chip-slice--3 {
+  animation: glitchExitLeft 0.4s ease-in 0.06s forwards;
+}
+.suggestions.is-exiting .chip-slice--4 {
+  animation: glitchExitRight 0.4s ease-in 0.09s forwards;
+}
+
+/* Kaskade: chip 2 og 3 starter lidt senere end chip 1 */
+.suggestions.is-exiting .suggestion-chip:nth-child(2) .chip-slice {
+  animation-delay: 0.08s;
+}
+.suggestions.is-exiting .suggestion-chip:nth-child(2) .chip-slice--2 {
+  animation-delay: 0.11s;
+}
+.suggestions.is-exiting .suggestion-chip:nth-child(2) .chip-slice--3 {
+  animation-delay: 0.14s;
+}
+.suggestions.is-exiting .suggestion-chip:nth-child(2) .chip-slice--4 {
+  animation-delay: 0.17s;
+}
+
+.suggestions.is-exiting .suggestion-chip:nth-child(3) .chip-slice {
+  animation-delay: 0.16s;
+}
+.suggestions.is-exiting .suggestion-chip:nth-child(3) .chip-slice--2 {
+  animation-delay: 0.19s;
+}
+.suggestions.is-exiting .suggestion-chip:nth-child(3) .chip-slice--3 {
+  animation-delay: 0.22s;
+}
+.suggestions.is-exiting .suggestion-chip:nth-child(3) .chip-slice--4 {
+  animation-delay: 0.25s;
 }
 
 /* --- Footer --- */

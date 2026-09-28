@@ -442,7 +442,17 @@
   // Justerer canvas'ets FAKTISKE CSS-højde (overstyrer 25vh fra
   // styles.css), så horisonten reelt flytter sig — ikke bare beskæres
   // visuelt. Kun et style-write når værdien rykker sig mærkbart.
+  //
+  // Mens panelet folder sig åbent (.is-opening, se styles.css/app.js)
+  // ændrer rect.height sig hele tiden — springer vi til den "rigtige"
+  // højde for hver frame her, hopper/ryster gulvet urolig under hele
+  // åbningen. Så vi fryser gulvets højde indtil den animation er
+  // færdig, og lader den så snappe (blødt, via CSS-transition) til den
+  // endelige størrelse på én gang.
   function syncFloorHeight() {
+    if (messagesEl && messagesEl.classList.contains("is-opening")) {
+      return;
+    }
     const target = Math.round(desiredFloorHeight());
     const current = canvas.getBoundingClientRect().height;
     if (Math.abs(target - current) > 1) {
@@ -550,7 +560,7 @@
     for (let i = 0; i < rows; i++) {
       const t = ((i + gridOffset * 0.02) % rows) / rows;
       const y = t * t * gh;
-      const alpha = 0.45 * (1 - t);
+      const alpha = 0.45;
       ctx.strokeStyle = `rgba(${aquaRgb},${alpha})`;
       ctx.lineWidth = 1;
       ctx.beginPath();

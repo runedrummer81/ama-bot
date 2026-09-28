@@ -144,7 +144,7 @@ main {
 
 .chat {
   width: 100%;
-  max-width: min(90vw, 880px);
+  max-width: min(90vw, 1040px);
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -348,18 +348,66 @@ main {
   position: relative;
   flex: 1;
   min-height: 0;
-  background: linear-gradient(
-    to top,
-    rgba(51, 194, 204, 0.14),
-    rgba(51, 194, 204, 0.04)
-  );
+  /* Flad, let aqua-tonet transparens i stedet for en mørk baggrund —
+     panelet skal læse som farvet lys, ikke som en mørk skærm. Ingen blur:
+     et hologram er skarpt, ikke diskret/glas-agtigt. Transparensen (0.1)
+     er det der gør det til hologram frem for solid flade — man aner
+     stadig scenen bagved. */
+  background: rgba(51, 194, 204, 0.1);
   border: 1px solid rgba(51, 194, 204, 0.55);
   border-radius: var(--radius);
   box-shadow:
     0 0 30px rgba(51, 194, 204, 0.35),
     inset 0 0 24px rgba(51, 194, 204, 0.12);
   overflow: hidden;
-  animation: messagesFlicker 6s infinite;
+  /* To animationer med forskellig varighed (6s / 9s) i stedet for én —
+     de driver ud af fase med hinanden (mødes først igen efter 18s), så
+     det ikke føles som ét fast, forudsigeligt loop. box-shadow og
+     outline er IKKE påvirket af overflow:hidden ovenfor, så glitchet
+     kan ligge udenfor kanten uden at blive klippet væk. */
+  animation:
+    messagesFlicker 6s infinite,
+    messagesEdgeGlitch 9s infinite;
+}
+
+@keyframes messagesEdgeGlitch {
+  /* Roligt i langt de fleste af de 9 sekunder... */
+  0%,
+  90%,
+  100% {
+    outline: 0px solid transparent;
+    outline-offset: 0px;
+    box-shadow:
+      0 0 30px rgba(51, 194, 204, 0.35),
+      inset 0 0 24px rgba(51, 194, 204, 0.12);
+  }
+  /* ...og så et kort chromatic-split-glimt på selve kanten, à la
+     RGB-split-glitchet på hero-billedet. */
+  91% {
+    outline: 2px solid rgba(234, 72, 132, 0.65);
+    outline-offset: 2px;
+    box-shadow:
+      0 0 30px rgba(51, 194, 204, 0.35),
+      inset 0 0 24px rgba(51, 194, 204, 0.12),
+      -3px 0 0 rgba(51, 194, 204, 0.55),
+      3px 0 0 rgba(234, 72, 132, 0.55);
+  }
+  92.5% {
+    outline: 2px solid rgba(51, 194, 204, 0.55);
+    outline-offset: -1px;
+    box-shadow:
+      0 0 30px rgba(51, 194, 204, 0.35),
+      inset 0 0 24px rgba(51, 194, 204, 0.12),
+      3px 0 0 rgba(51, 194, 204, 0.5),
+      -3px 0 0 rgba(234, 72, 132, 0.5);
+  }
+  94% {
+    outline: 0px solid transparent;
+    outline-offset: 0px;
+    box-shadow:
+      0 0 30px rgba(51, 194, 204, 0.35),
+      inset 0 0 24px rgba(51, 194, 204, 0.12);
+  }
 }
 
 @keyframes messagesFlicker {
@@ -390,19 +438,11 @@ main {
 }
 
 .messages-scanlines {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.5;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    rgba(232, 246, 248, 0.05) 0px,
-    rgba(232, 246, 248, 0.05) 1px,
-    transparent 1px,
-    transparent 4px
-  );
-  animation: messagesScanMove 5s linear infinite;
+  /* Slået fra — konstant rullende scanlines gav ikke nok. Erstattet af
+     et lejlighedsvist glitch-glimt på kanten (messagesEdgeGlitch, se
+     .messages nedenfor) i stedet. Elementet ligger stadig i index.html,
+     men gør ingenting nu. */
+  display: none;
 }
 @keyframes messagesScanMove {
   0% {
@@ -414,15 +454,10 @@ main {
 }
 
 .messages-vignette {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: radial-gradient(
-    ellipse at center,
-    transparent 45%,
-    rgba(0, 0, 0, 0.5) 100%
-  );
+  /* Slået fra — den mørklagde hjørnerne, hvilket gav mening på den
+     gamle mørke baggrund, men ser mærkeligt/plettet ud oven på den
+     flade aqua-tone. */
+  display: none;
 }
 
 .messages-grain {
@@ -448,18 +483,11 @@ main {
   }
 }
 
-.messages-sheen {
-  position: absolute;
-  inset: -60%;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
-    120deg,
-    transparent 42%,
-    rgba(232, 246, 248, 0.05) 50%,
-    transparent 58%
-  );
-}
+/* .messages-sheen er bevidst ikke stylet længere — den diagonale
+   lys-refleksion er det der fik panelet til at føles som glas i stedet
+   for hologram. Selve elementet ligger stadig i index.html (harmløst,
+   usynligt uden denne regel); fjern det roligt fra markupet når du
+   støder på det, hvis du vil rydde op. */
 
 .messages-inner {
   position: absolute;
@@ -1565,6 +1593,7 @@ body.is-warping #bg-layer-6 {
 
 .grid-floor {
   position: fixed;
+  transition: height 260ms ease-out;
   left: 0;
   right: 0;
   bottom: 0;
@@ -1573,6 +1602,21 @@ body.is-warping #bg-layer-6 {
   z-index: 0;
   pointer-events: none;
   transform: translateY(100%);
+  /* Beskærer den nederste del af gulvet væk visuelt — den del der ligger
+     et godt stykke under hologram-keglens base og bare er tomt gitter.
+     Selve elementets højde (25vh) er urørt, så horisonten og keglens
+     geometri i bg.js forbliver nøjagtig som den er. Justér de to
+     procenttal for at gøre det synlige gulv kortere/længere: første tal
+     = hvor langt ned gitteret er helt skarpt, andet tal = hvor det er
+     helt væk. Bliver keglens spidse bund pludselig "skåret lige af" i
+     stedet for at ende naturligt, er tallene sat for lavt — sæt dem op. */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    black 0%,
+    black 60%,
+    transparent 80%
+  );
+  mask-image: linear-gradient(to bottom, black 0%, black 60%, transparent 80%);
 }
 
 .grid-floor.is-rising {

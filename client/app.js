@@ -16,6 +16,11 @@ const EXIT_TIMING = {
   done: 250 + 450 + 350,
 };
 
+// Skal matche varigheden (3.2s) på `body.is-warping`-keyframes i styles.css.
+const WARP_MS = 3200;
+// Skal matche varigheden (0.8s) på `.messages.is-opening` i styles.css.
+const CHAT_OPEN_MS = 800;
+
 function playWelcomeExit() {
   heroWrap?.classList.add("is-exiting");
   suggestionsEl.classList.add("is-exiting");
@@ -52,6 +57,7 @@ function updateView(messageCount) {
   welcomeEl.classList.toggle("is-hidden", hasMessages);
   messagesContainer.classList.toggle("is-hidden", !hasMessages);
   suggestionsEl.classList.toggle("is-hidden", hasMessages);
+  window.matrixBg?.setChatMode(hasMessages);
 }
 
 function displayMessage(message) {
@@ -102,22 +108,47 @@ async function getMessages() {
 
 async function sendQuestion(question) {
   const isWelcome = chatSection.classList.contains("is-welcome");
-  const exitPromise = isWelcome ? playWelcomeExit() : Promise.resolve();
 
-  const [response] = await Promise.all([
-    fetch(`${API_URL}/messages`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question }),
-    }),
-    exitPromise,
-  ]);
+  const fetchPromise = fetch(`${API_URL}/messages`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ question }),
+  }).then((res) => res.json());
 
-  const data = await response.json();
+  // Allerede inde i en chat: ingen overgang, bare vis svaret.
+  if (!isWelcome) {
+    const data = await fetchPromise;
+    updateView(1);
+    displayMessage(data.question);
+    displayMessage(data.answer);
+    return;
+  }
 
+  // Første besked: hele overgangen velkomst -> chat.
+  // 1) Hero, chips og panel glitcher/folder/flyver væk.
+  await playWelcomeExit();
+  const data = await fetchPromise;
+
+  // 2) Rejse ind i matrixen: zoom + fart op, spawning stopper ved topfart,
+  //    og tegnene glider derefter ud af skærmen indtil den er helt tom.
+  if (window.matrixBg) {
+    document.body.classList.add("is-warping");
+    await window.matrixBg.warp(WARP_MS); // resolver når skærmen er tom
+    document.body.classList.remove("is-warping");
+  }
+
+  // 3) Skærmen er tom: chatvinduet folder sig åbent.
   updateView(1);
+  messagesContainer.classList.add("is-opening");
   displayMessage(data.question);
   displayMessage(data.answer);
+
+  // 4) Når chatten er åbnet, regner den nye (større/roligere) chat-matrix
+  //    ind oppefra.
+  setTimeout(() => {
+    messagesContainer.classList.remove("is-opening");
+    window.matrixBg?.resumeSpawning({ fromTop: true });
+  }, CHAT_OPEN_MS);
 }
 
 clearMessagesButton.addEventListener("click", async () => {
@@ -125,13 +156,7 @@ clearMessagesButton.addEventListener("click", async () => {
   messagesContainer.innerHTML = "";
   updateView(0);
   resetWelcomeExit();
-});
-
-suggestionsEl.addEventListener("click", (event) => {
-  const chip = event.target.closest(".suggestion-chip");
-  if (!chip) return;
-
-  sendQuestion(chip.dataset.question);
+  window.matrixBg?.resumeSpawning();
 });
 
 questionForm.addEventListener("submit", async (event) => {

@@ -2,7 +2,10 @@ const API_URL = "http://localhost:3004";
 const chatSection = document.querySelector(".chat");
 const chatToolbar = document.querySelector(".chat-toolbar");
 const welcomeEl = document.querySelector("#welcome");
-const messagesContainer = document.querySelector("#messages");
+// Den ydre boks (kant, klip, effekter, is-hidden/is-opening) vs. den indre
+// scrollende boks (selve beskederne). Se styles.css for hvorfor de er delt op.
+const messagesPanel = document.querySelector("#messages");
+const messagesContainer = document.querySelector("#messages-inner");
 const questionForm = document.querySelector("#question-form");
 const questionInput = document.querySelector("#question");
 const clearMessagesButton = document.querySelector("#clear-messages-button");
@@ -18,8 +21,8 @@ const EXIT_TIMING = {
 
 // Skal matche varigheden (3.2s) på `body.is-warping`-keyframes i styles.css.
 const WARP_MS = 3200;
-// Skal matche varigheden (0.8s) på `.messages.is-opening` i styles.css.
-const CHAT_OPEN_MS = 800;
+// Skal matche varigheden (700ms) på `.messages.is-opening` i styles.css.
+const CHAT_OPEN_MS = 700;
 
 function playWelcomeExit() {
   heroWrap?.classList.add("is-exiting");
@@ -55,7 +58,7 @@ function updateView(messageCount) {
   chatSection.classList.toggle("is-welcome", !hasMessages);
   chatToolbar.classList.toggle("is-hidden", !hasMessages);
   welcomeEl.classList.toggle("is-hidden", hasMessages);
-  messagesContainer.classList.toggle("is-hidden", !hasMessages);
+  messagesPanel.classList.toggle("is-hidden", !hasMessages);
   suggestionsEl.classList.toggle("is-hidden", hasMessages);
   window.matrixBg?.setChatMode(hasMessages);
 }
@@ -143,14 +146,15 @@ async function sendQuestion(question) {
     await window.gridFloor.rise();
   }
 
-  // 4) Chatvinduet folder sig åbent oven på gulvet.
+  // 4) Chatvinduet (hele panelet, inkl. kant/effekter) folder sig åbent
+  //    nedefra, oven på gulvet.
   updateView(1);
-  messagesContainer.classList.add("is-opening");
+  messagesPanel.classList.add("is-opening");
   displayMessage(data.question);
   displayMessage(data.answer);
 
   setTimeout(() => {
-    messagesContainer.classList.remove("is-opening");
+    messagesPanel.classList.remove("is-opening");
   }, CHAT_OPEN_MS);
 }
 

@@ -42,8 +42,10 @@
     { fontSize: 20, speedMin: 1.8, speedMax: 2.6, alpha: 0.8, trail: 12 },
   ];
 
-  // "Chat-tilstand": større tegn, mere mellemrum, roligere fart — som om
-  // man nu er tættere på/inde i matrixen i stedet for at kigge udefra.
+  // "Chat-tilstand": større tegn, mere mellemrum, roligere fart. Bruges ikke
+  // længere til at genstarte regnen i chatten (den er erstattet af
+  // grid-gulvet nedenfor), men beholdes for setChatMode()'s skyld, hvis vi
+  // får brug for den et andet sted senere.
   const CHAT_LAYERS = LAYERS.map((layerDef) => ({
     ...layerDef,
     fontSize: Math.round(layerDef.fontSize * 1.6),
@@ -224,6 +226,8 @@
   }
 
   // Genstarter regnen. fromTop = true lader kolonnerne komme ind oppefra.
+  // Bruges nu kun ved "Ny chat" (retur til velkomstskærmen) — ikke længere
+  // ved chat-åbning, som i stedet viser grid-gulvet (se nedenfor).
   function resumeSpawning({ fromTop = false } = {}) {
     isDraining = false;
     speedMult = 1;
@@ -271,8 +275,9 @@
   }
 
   // Skifter til/fra "chat-tilstand": større tegn, mere mellemrum, roligere
-  // fart. Kaldes fra app.js via updateView(). Under et dræn genopbygges
-  // kolonnerne ikke her — det sker først i resumeSpawning().
+  // fart. Under et dræn genopbygges kolonnerne ikke her — det sker først i
+  // resumeSpawning(). Ubrugt lige nu (matrixen genstarter ikke i chatten
+  // længere), men skader ikke at beholde.
   function setChatMode(on) {
     const next = on ? CHAT_LAYERS : LAYERS;
     if (next === activeLayers) return;
@@ -366,4 +371,136 @@
   } else {
     startLoop();
   }
+})();
+
+// ==========================================================================
+// Grid-gulv — den permanente chat-baggrund. Tegner kontinuerligt (også mens
+// den er skjult under skærmkanten), så den allerede er i bevægelse, når den
+// glider op i sigte. Uafhængig af matrix-canvasene ovenfor.
+// ==========================================================================
+(() => {
+  const canvas = document.getElementById("grid-floor");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  function themeColor(varName, fallback) {
+    const val = getComputedStyle(document.documentElement)
+      .getPropertyValue(varName)
+      .trim();
+    return val || fallback;
+  }
+
+  const aquaRgb = "51,194,204"; // matcher --color-aqua (#33c2cc)
+  const coralRgb = "234,72,132"; // matcher --color-coral (#ea4884)
+
+  // Skal matche varigheden af `.grid-floor.is-rising` i styles.css.
+  const RISE_MS = 900;
+
+  let gw = 0,
+    gh = 0,
+    gdpr = 1;
+  let breathT = 0;
+  let gridOffset = 0;
+
+  function resize() {
+    gdpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    const rect = canvas.getBoundingClientRect();
+    gw = rect.width;
+    gh = rect.height;
+    canvas.width = gw * gdpr;
+    canvas.height = gh * gdpr;
+    ctx.setTransform(gdpr, 0, 0, gdpr, 0, 0);
+  }
+
+  // Canvas'et ER selve "gulvet" — toppen af canvas'et er horisonten, så der
+  // er ingen ekstra offset at regne med, modsat en fuldskærms-version.
+  function draw() {
+    if (!gw || !gh) {
+      requestAnimationFrame(draw);
+      return;
+    }
+
+    ctx.clearRect(0, 0, gw, gh);
+
+    breathT += 0.025;
+    const breathe = 0.5 + 0.5 * Math.sin(breathT);
+    const cols = 12;
+
+    // Glød der falder ned fra horisonten (= toppen af laget)
+    const glowH = gh * 0.6;
+    const grad = ctx.createLinearGradient(0, 0, 0, glowH);
+    grad.addColorStop(0, `rgba(${aquaRgb},${0.18 + 0.14 * breathe})`);
+    grad.addColorStop(1, `rgba(${aquaRgb},0)`);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, gw, glowH);
+
+    // Skarp, pulserende neon-linje ved horisonten
+    ctx.save();
+    ctx.shadowColor = `rgba(${aquaRgb},0.9)`;
+    ctx.shadowBlur = 8 + 6 * breathe;
+    ctx.strokeStyle = `rgba(${aquaRgb},${0.55 + 0.35 * breathe})`;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(0, 0.5);
+    ctx.lineTo(gw, 0.5);
+    ctx.stroke();
+    ctx.restore();
+
+    // Vandrette linjer, der ruller mod betragteren
+    const rows = 10;
+    for (let i = 0; i < rows; i++) {
+      const t = ((i + gridOffset * 0.02) % rows) / rows;
+      const y = t * t * gh;
+      const alpha = 0.45 * (1 - t);
+      ctx.strokeStyle = `rgba(${aquaRgb},${alpha})`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(gw, y);
+      ctx.stroke();
+    }
+    gridOffset += 1.4;
+
+    // Konvergerende lodrette linjer — hver 4. er coral
+    for (let i = 0; i <= cols; i++) {
+      const top = gw / 2 + (i - cols / 2) * (gw * 0.03);
+      const bottom = gw / 2 + (i - cols / 2) * (gw * 0.16);
+      const isCoral = i % 4 === 0;
+      ctx.strokeStyle = isCoral
+        ? `rgba(${coralRgb},0.28)`
+        : `rgba(${aquaRgb},0.22)`;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(top, 0);
+      ctx.lineTo(bottom, gh);
+      ctx.stroke();
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener("resize", resize);
+  resize();
+
+  if (!prefersReducedMotion) {
+    requestAnimationFrame(draw);
+  } else {
+    draw(); // én statisk frame
+  }
+
+  window.gridFloor = {
+    // Glider gulvet op i sigte. Resolver når animationen er færdig.
+    rise() {
+      canvas.classList.add("is-rising");
+      return new Promise((resolve) => setTimeout(resolve, RISE_MS));
+    },
+    // Skjuler gulvet igen uden animation, klar til at rejse sig næste gang.
+    reset() {
+      canvas.classList.remove("is-rising");
+    },
+  };
 })();

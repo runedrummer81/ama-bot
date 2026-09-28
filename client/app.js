@@ -133,21 +133,24 @@ async function sendQuestion(question) {
   //    og tegnene glider derefter ud af skærmen indtil den er helt tom.
   if (window.matrixBg) {
     document.body.classList.add("is-warping");
-    await window.matrixBg.warp(WARP_MS); // resolver når skærmen er tom
+    await window.matrixBg.warp(WARP_MS);
     document.body.classList.remove("is-warping");
+    await window.matrixBg.drain();
   }
 
-  // 3) Skærmen er tom: chatvinduet folder sig åbent.
+  // 3) Skærmen er tom for matrix-tegn: grid-gulvet glider op fra bunden.
+  if (window.gridFloor) {
+    await window.gridFloor.rise();
+  }
+
+  // 4) Chatvinduet folder sig åbent oven på gulvet.
   updateView(1);
   messagesContainer.classList.add("is-opening");
   displayMessage(data.question);
   displayMessage(data.answer);
 
-  // 4) Når chatten er åbnet, regner den nye (større/roligere) chat-matrix
-  //    ind oppefra.
   setTimeout(() => {
     messagesContainer.classList.remove("is-opening");
-    window.matrixBg?.resumeSpawning({ fromTop: true });
   }, CHAT_OPEN_MS);
 }
 
@@ -156,6 +159,7 @@ clearMessagesButton.addEventListener("click", async () => {
   messagesContainer.innerHTML = "";
   updateView(0);
   resetWelcomeExit();
+  window.gridFloor?.reset();
   window.matrixBg?.resumeSpawning();
 });
 

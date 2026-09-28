@@ -13,12 +13,12 @@
     ]
   },
   {
-  "category": "om-mig",
-  "keywords": ["fortæl", "om dig", "om rune", "hvem er rune"],
-  "answers": [
-    "Jeg hedder Rune, er 25 år og bor i Højbjerg. Jeg spiller trommer, læser gerne en god bog, og elsker lasagne (jeg er vegetar). Spørg endelig løs om mere!"
-  ]
-}
+    "category": "om-mig",
+    "keywords": ["fortæl", "om dig", "om rune", "hvem er rune"],
+    "answers": [
+      "Jeg hedder Rune, er 25 år og bor i Højbjerg. Jeg spiller trommer, læser gerne en god bog, og elsker lasagne (jeg er vegetar). Spørg endelig løs om mere!"
+    ]
+  },
   {
     "category": "alder",
     "keywords": ["alder", "gammel", "fødselsdag"],

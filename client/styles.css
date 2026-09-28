@@ -345,7 +345,11 @@ main {
    panelet her skal bare læse som lys, ikke som en boks. */
 
 .messages {
+  display: flex;
+  flex-direction: column;
   position: relative;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   flex: 1;
   min-height: 0;
   /* Flad, let aqua-tonet transparens i stedet for en mørk baggrund —
@@ -490,8 +494,9 @@ main {
    støder på det, hvis du vil rydde op. */
 
 .messages-inner {
-  position: absolute;
-  inset: 0;
+  position: relative;
+  flex: 1;
+  min-height: 0;
   z-index: 3;
   overflow-y: auto;
   display: flex;
@@ -501,6 +506,20 @@ main {
   scrollbar-width: thin;
   scrollbar-color: var(--color-aqua-dim) transparent;
 }
+
+.messages-input-bar {
+  position: relative;
+  z-index: 3;
+  flex: 0 0 auto;
+  margin: 0 1rem;
+}
+
+.messages-horizon-gap {
+  flex: 0 0 14%;
+  min-height: 0;
+  pointer-events: none;
+}
+
 .messages-inner::-webkit-scrollbar {
   width: 5px;
 }

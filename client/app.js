@@ -8,6 +8,8 @@ const messagesPanel = document.querySelector("#messages");
 const messagesContainer = document.querySelector("#messages-inner");
 const questionForm = document.querySelector("#question-form");
 const questionInput = document.querySelector("#question");
+const chatInputForm = document.querySelector("#chat-input-form");
+const chatQuestionInput = document.querySelector("#chat-question");
 const clearMessagesButton = document.querySelector("#clear-messages-button");
 const suggestionsEl = document.querySelector(".suggestions");
 const welcomePanel = document.querySelector(".welcome-panel");
@@ -73,14 +75,31 @@ function displayMessage(message) {
 const MAX_LENGTH = 280; // Skal matche maxlength på input-feltet i index.html.
 const charCounter = document.querySelector("#char-counter");
 const sendButton = document.querySelector("#send-btn");
+const chatCharCounter = document.querySelector("#chat-char-counter");
+const chatSendButton = document.querySelector("#chat-send-btn");
 
-function updateCharCounter() {
-  const length = questionInput.value.length;
+function updateCharCounter(input, counter, button) {
+  const length = input.value.length;
 
-  charCounter.textContent = `${length}/${MAX_LENGTH}`;
-  sendButton.disabled = length === 0;
-  charCounter.classList.toggle("char-counter--limit", length >= MAX_LENGTH);
+  counter.textContent = `${length}/${MAX_LENGTH}`;
+  button.disabled = length === 0;
+  counter.classList.toggle("char-counter--limit", length >= MAX_LENGTH);
 }
+
+questionInput.addEventListener("input", () => {
+  updateCharCounter(questionInput, charCounter, sendButton);
+
+  if (questionInput.value.length > 0) {
+    pauseTypewriter();
+    questionInput.placeholder = "";
+  } else {
+    resumeTypewriter();
+  }
+});
+
+chatQuestionInput.addEventListener("input", () => {
+  updateCharCounter(chatQuestionInput, chatCharCounter, chatSendButton);
+});
 
 questionInput.addEventListener("input", () => {
   updateCharCounter();
@@ -167,16 +186,26 @@ clearMessagesButton.addEventListener("click", async () => {
   window.matrixBg?.resumeSpawning();
 });
 
-questionForm.addEventListener("submit", async (event) => {
-  event.preventDefault();
-
-  const question = questionInput.value.trim();
+async function handleQuestionSubmit(input) {
+  const question = input.value.trim();
   if (!question) return;
 
   await sendQuestion(question);
 
-  questionInput.value = "";
-  updateCharCounter();
+  input.value = "";
+}
+
+questionForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  await handleQuestionSubmit(questionInput);
+  updateCharCounter(questionInput, charCounter, sendButton);
+});
+
+chatInputForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  await handleQuestionSubmit(chatQuestionInput);
+  updateCharCounter(chatQuestionInput, chatCharCounter, chatSendButton);
+  chatQuestionInput.focus();
 });
 
 // Rene UI-togglere for nu — ingen af dem er koblet til rigtig lyd,
@@ -275,5 +304,6 @@ questionInput.addEventListener("blur", () => {
 typewriterTick();
 
 getMessages();
-updateCharCounter();
+updateCharCounter(questionInput, charCounter, sendButton);
+updateCharCounter(chatQuestionInput, chatCharCounter, chatSendButton);
 questionInput.focus();

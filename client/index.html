@@ -237,7 +237,42 @@
           <div class="messages-vignette" aria-hidden="true"></div>
           <div class="messages-grain" aria-hidden="true"></div>
           <div class="messages-sheen" aria-hidden="true"></div>
+
           <div id="messages-inner" class="messages-inner"></div>
+
+          <form
+            class="chat-input messages-input-bar"
+            id="chat-input-form"
+            autocomplete="off"
+          >
+            <label for="chat-question">Skriv din besked</label>
+            <input
+              id="chat-question"
+              name="question"
+              type="text"
+              placeholder="Skriv din besked…"
+              required
+              maxlength="280"
+            />
+            <span id="chat-char-counter" class="char-counter">0/280</span>
+            <button type="submit" id="chat-send-btn" aria-label="Send" disabled>
+              <svg
+                viewBox="0 0 24 24"
+                width="22"
+                height="22"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <line x1="12" y1="19" x2="12" y2="5" />
+                <polyline points="5 12 12 5 19 12" />
+              </svg>
+            </button>
+          </form>
+
+          <div class="messages-horizon-gap" aria-hidden="true"></div>
         </div>
 
         <!-- Input-område -->

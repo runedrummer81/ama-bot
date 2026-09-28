@@ -406,6 +406,11 @@
   let breathT = 0;
   let gridOffset = 0;
 
+  // Beskedpanelet, som "spotlight"-trekanten skal flugte med (se draw()).
+  // Caches én gang — elementet forsvinder aldrig fra DOM'et, det skifter
+  // bare synlighed via .is-hidden.
+  const messagesEl = document.getElementById("messages");
+
   function resize() {
     gdpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const rect = canvas.getBoundingClientRect();
@@ -437,6 +442,54 @@
     grad.addColorStop(1, `rgba(${aquaRgb},0)`);
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, gw, glowH);
+
+    // "Spotlight"-trekant: spidsen forsvinder på horisonten (lokal y=0,
+    // midt for beskedpanelet), og basen rammer PANELETS EGNE bund-hjørner
+    // — ikke forkanten af gulvet. Panelets bundkant (rect.bottom) omregnes
+    // til gulv-canvas'ets lokale koordinater (canvasTop = skærm-y for lokal
+    // y=0), så trekanten stopper og "går i et med" panelets bundlinje
+    // præcis der hvor kanten allerede er, uanset hvor højt/lavt panelet
+    // sidder over gulvet. Fordi vi tegner den her — på selve gulv-canvas'et,
+    // FØR gitterlinjerne — arver den også samme streg-stil som gulvet, og
+    // gitteret tegnes ovenpå den.
+    if (
+      messagesEl &&
+      !messagesEl.classList.contains("is-hidden") &&
+      messagesEl.offsetParent !== null
+    ) {
+      const rect = messagesEl.getBoundingClientRect();
+      const canvasTop = window.innerHeight - gh; // skærm-y for lokal y=0
+      const baseY = Math.min(Math.max(rect.bottom - canvasTop, 0), gh);
+
+      if (rect.width > 0 && baseY > 0) {
+        const apexX = rect.left + rect.width / 2;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(apexX, 0);
+        ctx.lineTo(rect.right, baseY);
+        ctx.lineTo(rect.left, baseY);
+        ctx.closePath();
+        ctx.clip();
+
+        const beamGrad = ctx.createLinearGradient(0, 0, 0, baseY);
+        beamGrad.addColorStop(0, `rgba(${aquaRgb},${0.55 + 0.25 * breathe})`);
+        beamGrad.addColorStop(1, `rgba(${aquaRgb},0.05)`);
+        ctx.fillStyle = beamGrad;
+        ctx.fillRect(0, 0, gw, baseY);
+        ctx.restore();
+
+        // Svage kant-linjer langs trekantens to sider
+        ctx.strokeStyle = `rgba(232,246,248,${0.22 + 0.12 * breathe})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(apexX, 0);
+        ctx.lineTo(rect.right, baseY);
+        ctx.moveTo(apexX, 0);
+        ctx.lineTo(rect.left, baseY);
+        ctx.stroke();
+      }
+    }
 
     // Skarp, pulserende neon-linje ved horisonten
     ctx.save();

@@ -339,40 +339,25 @@ main {
   display: none !important;
 }
 
-/* Beskedcontaineren har et gradient-lag (navy -> storm) for dybde,
-   plus et scanlines-lag der ruller langsomt i baggrunden. */
+/* Beskedpanelet er nu selve hologrammets "brede top" — ingen solid
+   glas-baggrund længere. Den smalle kegle der forbinder panelet til
+   grid-gulvets horisontlinje tegnes af #hologram-beam (se bg.js);
+   panelet her skal bare læse som lys, ikke som en boks. */
 
 .messages {
   position: relative;
   flex: 1;
   min-height: 0;
-  background: rgba(6, 9, 31, 0.4);
-  border-top: 1px solid var(--color-aqua);
-  border-left: 1px solid var(--color-aqua);
-  border-right: 1px solid var(--color-aqua);
-  border-radius: var(--radius) var(--radius) 0 0;
+  background: linear-gradient(
+    to top,
+    rgba(51, 194, 204, 0.14),
+    rgba(51, 194, 204, 0.04)
+  );
+  border: 1px solid rgba(51, 194, 204, 0.55);
+  border-radius: var(--radius);
   box-shadow:
-    0 0 0 4px rgba(51, 194, 204, 0.06),
-    inset 0 0 20px rgba(0, 0, 0, 0.3);
-  clip-path: polygon(
-    0 0,
-    100% 0,
-    100% calc(100% - 26px),
-    calc(100% - 26px) 100%,
-    0 100%
-  );
-  -webkit-mask-image: linear-gradient(
-    to bottom,
-    black 0,
-    black calc(100% - 26vh),
-    transparent calc(100% - 4vh)
-  );
-  mask-image: linear-gradient(
-    to bottom,
-    black 0,
-    black calc(100% - 26vh),
-    transparent calc(100% - 4vh)
-  );
+    0 0 30px rgba(51, 194, 204, 0.35),
+    inset 0 0 24px rgba(51, 194, 204, 0.12);
   overflow: hidden;
   animation: messagesFlicker 6s infinite;
 }
@@ -1602,6 +1587,7 @@ body.is-warping #bg-layer-6 {
     transform: translateY(0);
   }
 }
+
 /* --- Chat-vinduet (beskedhistorikken) folder sig åbent — spejlvendt af
    velkomst-panelets luk-animation --- */
 

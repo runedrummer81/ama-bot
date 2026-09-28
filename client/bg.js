@@ -411,6 +411,46 @@
   // bare synlighed via .is-hidden.
   const messagesEl = document.getElementById("messages");
 
+  // Hvor stor en andel af PANELETS EGEN højde der må ligge under
+  // horisontlinjen (dvs. overlappe med gulvet og dermed være ulæselig).
+  // 0.1 = de nederste 10% af vinduet.
+  const HORIZON_OVERLAP_RATIO = 0.1;
+  // Fallback-højde (klassisk 25vh) mens beskedpanelet endnu er skjult —
+  // fx under velkomstskærmen, hvor gulvet rejser sig, før vi kender
+  // panelets rigtige position og højde.
+  const FALLBACK_HEIGHT_RATIO = 0.25;
+  const MIN_FLOOR_HEIGHT_PX = 60;
+
+  // Regner den ønskede gulvhøjde ud fra hvor panelet rent faktisk sidder
+  // lige nu, så horisonten altid lander HORIZON_OVERLAP_RATIO oppe fra
+  // panelets bund — i stedet for en fast 25vh der er ligeglad med panelet.
+  function desiredFloorHeight() {
+    if (
+      messagesEl &&
+      !messagesEl.classList.contains("is-hidden") &&
+      messagesEl.offsetParent !== null
+    ) {
+      const rect = messagesEl.getBoundingClientRect();
+      if (rect.height > 0) {
+        const horizonY = rect.bottom - HORIZON_OVERLAP_RATIO * rect.height;
+        return Math.max(window.innerHeight - horizonY, MIN_FLOOR_HEIGHT_PX);
+      }
+    }
+    return window.innerHeight * FALLBACK_HEIGHT_RATIO;
+  }
+
+  // Justerer canvas'ets FAKTISKE CSS-højde (overstyrer 25vh fra
+  // styles.css), så horisonten reelt flytter sig — ikke bare beskæres
+  // visuelt. Kun et style-write når værdien rykker sig mærkbart.
+  function syncFloorHeight() {
+    const target = Math.round(desiredFloorHeight());
+    const current = canvas.getBoundingClientRect().height;
+    if (Math.abs(target - current) > 1) {
+      canvas.style.height = target + "px";
+      resize();
+    }
+  }
+
   function resize() {
     gdpr = Math.min(window.devicePixelRatio || 1, 1.5);
     const rect = canvas.getBoundingClientRect();
@@ -424,6 +464,8 @@
   // Canvas'et ER selve "gulvet" — toppen af canvas'et er horisonten, så der
   // er ingen ekstra offset at regne med, modsat en fuldskærms-version.
   function draw() {
+    syncFloorHeight();
+
     if (!gw || !gh) {
       requestAnimationFrame(draw);
       return;

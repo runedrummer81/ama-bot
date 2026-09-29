@@ -1868,6 +1868,56 @@ body.is-warping #bg-layer-6 {
   }
 }
 
+/* --- Blød scroll i chatvinduet --- */
+
+@property --fade-top {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --fade-bottom {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+.messages-inner {
+  --fade-top: 0px;
+  --fade-bottom: 0px;
+  overscroll-behavior: contain;
+  scrollbar-color: rgba(51, 194, 204, 0.12) transparent;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--fade-top),
+    #000 calc(100% - var(--fade-bottom)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 var(--fade-top),
+    #000 calc(100% - var(--fade-bottom)),
+    transparent 100%
+  );
+  transition:
+    --fade-top 0.25s ease,
+    --fade-bottom 0.25s ease,
+    scrollbar-color 0.3s ease;
+}
+
+.messages-inner.can-scroll-up {
+  --fade-top: 40px;
+}
+.messages-inner.can-scroll-down {
+  --fade-bottom: 40px;
+}
+
+.messages-inner.is-scrolling {
+  scrollbar-color: var(--color-aqua) transparent;
+}
+
 /* --- Footer --- */
 
 footer {

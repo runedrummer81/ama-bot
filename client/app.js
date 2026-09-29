@@ -115,7 +115,7 @@ function scramble(text, revealed) {
 
 async function showAnswer(message) {
   const plainText = decodeHtml(message.text);
-  const article = displayMessage(message);
+  const article = displayMessage(message, { smooth: true });
   const bodyEl = article.querySelector("p");
   const timeEl = article.querySelector("time");
   const realTime = timeEl?.textContent;
@@ -158,7 +158,40 @@ function playDecode(element, text, { hold = 1000, duration = 900 } = {}) {
   });
 }
 
-function displayMessage(message) {
+// Udtoning i top/bund (kun når der er mere at scrolle til) og en scrollbar,
+// der lyser op, mens man scroller.
+let scrollTimer;
+
+function updateScrollFades() {
+  const el = messagesContainer;
+  const maxScroll = el.scrollHeight - el.clientHeight;
+
+  el.classList.toggle("can-scroll-up", el.scrollTop > 4);
+  el.classList.toggle("can-scroll-down", el.scrollTop < maxScroll - 4);
+}
+
+messagesContainer.addEventListener(
+  "scroll",
+  () => {
+    updateScrollFades();
+    messagesContainer.classList.add("is-scrolling");
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      messagesContainer.classList.remove("is-scrolling");
+    }, 700);
+  },
+  { passive: true },
+);
+
+function scrollToBottom({ smooth = false } = {}) {
+  messagesContainer.scrollTo({
+    top: messagesContainer.scrollHeight,
+    behavior: smooth ? "smooth" : "auto",
+  });
+  updateScrollFades();
+}
+
+function displayMessage(message, { smooth = false } = {}) {
   const time = formatTime(message.createdAt);
   const timeHtml = time
     ? /*html*/ `<time datetime="${message.createdAt}">${time}</time>`
@@ -166,7 +199,7 @@ function displayMessage(message) {
   const html = /*html*/ `<article class="${message.type}">${timeHtml}<p>${message.text}</p></article>`;
 
   messagesContainer.insertAdjacentHTML("beforeend", html);
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  scrollToBottom({ smooth });
   return messagesContainer.lastElementChild;
 }
 
@@ -209,6 +242,7 @@ async function getMessages() {
     }
 
     updateView(messages.length);
+    scrollToBottom();
     if (messages.length > 0) {
       heroWrap?.classList.add("is-hidden");
       chatQuestionInput.focus();
@@ -232,7 +266,7 @@ async function sendQuestion(question) {
   if (!isWelcome) {
     const data = await fetchPromise;
     updateView(1);
-    displayMessage(data.question);
+    displayMessage(data.question, { smooth: true });
     await showAnswer(data.answer);
     return;
   }
@@ -262,7 +296,6 @@ async function sendQuestion(question) {
   messagesPanel.classList.add("is-opening");
   chatQuestionInput.focus();
   displayMessage(data.question);
-  displayMessage(data.answer);
 
   setTimeout(() => {
     messagesPanel.classList.remove("is-opening");

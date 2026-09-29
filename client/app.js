@@ -53,6 +53,30 @@ function resetWelcomeExit() {
   welcomePanel?.classList.remove("is-sending", "is-collapsing", "is-flying");
 }
 
+// Skal matche varighederne i styles.css.
+const CHAT_CLOSE_MS = 400;
+const WELCOME_ENTER_MS = 220;
+const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+// CRT-sluk: vinduet klapper sammen til en streg og forsvinder.
+function playChatClose() {
+  if (reducedMotion.matches) return Promise.resolve();
+
+  messagesPanel.classList.add("is-closing");
+  return new Promise((resolve) => setTimeout(resolve, CHAT_CLOSE_MS));
+}
+
+// Velkomstskærmen glitcher ind igen.
+function playWelcomeEnter() {
+  if (reducedMotion.matches) return;
+
+  const targets = [welcomeEl, suggestionsEl];
+  targets.forEach((el) => el.classList.add("is-entering"));
+  setTimeout(() => {
+    targets.forEach((el) => el.classList.remove("is-entering"));
+  }, WELCOME_ENTER_MS);
+}
+
 // Viser enten velkomstskærmen (centreret, ingen "Ny chat"-knap) eller
 // den normale chat-visning (historik + input i bunden), aldrig begge.
 function updateView(messageCount) {
@@ -175,17 +199,6 @@ chatQuestionInput.addEventListener("input", () => {
   updateCharCounter(chatQuestionInput, chatCharCounter, chatSendButton);
 });
 
-questionInput.addEventListener("input", () => {
-  updateCharCounter();
-
-  if (questionInput.value.length > 0) {
-    pauseTypewriter();
-    questionInput.placeholder = "";
-  } else {
-    resumeTypewriter();
-  }
-});
-
 async function getMessages() {
   try {
     const response = await fetch(`${API_URL}/messages`);
@@ -196,7 +209,10 @@ async function getMessages() {
     }
 
     updateView(messages.length);
-    if (messages.length > 0) heroWrap?.classList.add("is-hidden");
+    if (messages.length > 0) {
+      heroWrap?.classList.add("is-hidden");
+      chatQuestionInput.focus();
+    }
   } catch (error) {
     console.error("Kunne ikke hente beskeder:", error);
     updateView(0); // fald tilbage til velkomstskærmen i stedet for at hænge
@@ -244,6 +260,7 @@ async function sendQuestion(question) {
   //    nedefra, oven på gulvet.
   updateView(1);
   messagesPanel.classList.add("is-opening");
+  chatQuestionInput.focus();
   displayMessage(data.question);
   displayMessage(data.answer);
 
@@ -254,13 +271,38 @@ async function sendQuestion(question) {
   await showAnswer(data.answer);
 }
 
+let isResetting = false;
+
 clearMessagesButton.addEventListener("click", async () => {
-  await fetch(`${API_URL}/messages`, { method: "DELETE" });
-  messagesContainer.innerHTML = "";
-  updateView(0);
-  resetWelcomeExit();
-  window.gridFloor?.reset();
-  window.matrixBg?.resumeSpawning();
+  if (isResetting) return; // ignorér dobbeltklik midt i animationen
+  isResetting = true;
+
+  try {
+    const deleting = fetch(`${API_URL}/messages`, { method: "DELETE" });
+
+    // 1) Chatvinduet slukker.
+    await playChatClose();
+    await deleting;
+
+    // 2) Ryd op og vis velkomstskærmen igen.
+    messagesContainer.innerHTML = "";
+    updateView(0);
+    messagesPanel.classList.remove("is-closing");
+    resetWelcomeExit();
+    window.gridFloor?.reset();
+    window.matrixBg?.resumeSpawning();
+
+    // 3) Velkomsten glitcher ind.
+    playWelcomeEnter();
+    questionInput.value = "";
+    updateCharCounter(questionInput, charCounter, sendButton);
+    questionInput.focus();
+    restartTypewriter();
+  } catch (error) {
+    console.error("Kunne ikke starte en ny chat:", error);
+  } finally {
+    isResetting = false;
+  }
 });
 
 async function handleQuestionSubmit(input) {
@@ -367,6 +409,17 @@ function typewriterTick() {
 function pauseTypewriter() {
   twPaused = true;
   clearTimeout(twTimeout);
+}
+
+// Starter forfra: bruges når velkomstskærmen kommer tilbage efter "Ny chat".
+function restartTypewriter() {
+  clearTimeout(twTimeout); // aldrig to loops på én gang
+  twPaused = false;
+  twIndex = 0;
+  twCharIndex = 0;
+  twDeleting = false;
+  questionInput.placeholder = "";
+  typewriterTick();
 }
 
 function resumeTypewriter() {

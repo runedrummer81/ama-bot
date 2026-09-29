@@ -65,11 +65,84 @@ function updateView(messageCount) {
   window.matrixBg?.setChatMode(hasMessages);
 }
 
+// "2026-09-29T08:38:42.670Z" -> "10:38" (lokal tid). Tomt hvis datoen mangler.
+function formatTime(isoString) {
+  const date = new Date(isoString);
+  if (Number.isNaN(date.getTime())) return "";
+
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  return `${hours}:${minutes}`;
+}
+
+const GLYPHS = "01ABCDEF#$%&*<>/=+?";
+
+function scramble(text, revealed) {
+  return text
+    .split("")
+    .map((char, index) => {
+      if (char === " ") return " ";
+      if (index < revealed) return char;
+      return GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+    })
+    .join("");
+}
+
+async function showAnswer(message) {
+  const plainText = decodeHtml(message.text);
+  const article = displayMessage(message);
+  const bodyEl = article.querySelector("p");
+  const timeEl = article.querySelector("time");
+  const realTime = timeEl?.textContent;
+
+  article.classList.add("is-decrypting");
+  if (timeEl) timeEl.textContent = "--:--";
+  bodyEl.textContent = scramble(plainText, 0);
+
+  await playDecode(bodyEl, plainText);
+
+  article.classList.remove("is-decrypting");
+  if (timeEl) timeEl.textContent = realTime;
+}
+
+function decodeHtml(html) {
+  const textarea = document.createElement("textarea");
+  textarea.innerHTML = html;
+  return textarea.value;
+}
+
+const TICK_MS = 45; // hvor ofte tegnene flimrer (ms)
+
+function playDecode(element, text, { hold = 1000, duration = 900 } = {}) {
+  return new Promise((resolve) => {
+    const startTime = Date.now();
+
+    const timer = setInterval(() => {
+      const elapsed = Date.now() - startTime;
+      const progress = Math.min(Math.max((elapsed - hold) / duration, 0), 1);
+      const revealed = Math.floor(progress * text.length);
+
+      element.textContent = scramble(text, revealed);
+
+      if (progress === 1) {
+        clearInterval(timer);
+        element.textContent = text;
+        resolve();
+      }
+    }, TICK_MS);
+  });
+}
+
 function displayMessage(message) {
-  const html = /*html*/ `<article class="${message.type}"><p>${message.text}</p></article>`;
+  const time = formatTime(message.createdAt);
+  const timeHtml = time
+    ? /*html*/ `<time datetime="${message.createdAt}">${time}</time>`
+    : "";
+  const html = /*html*/ `<article class="${message.type}">${timeHtml}<p>${message.text}</p></article>`;
 
   messagesContainer.insertAdjacentHTML("beforeend", html);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  return messagesContainer.lastElementChild;
 }
 
 const MAX_LENGTH = 280; // Skal matche maxlength på input-feltet i index.html.
@@ -142,7 +215,7 @@ async function sendQuestion(question) {
     const data = await fetchPromise;
     updateView(1);
     displayMessage(data.question);
-    displayMessage(data.answer);
+    await showAnswer(data.answer);
     return;
   }
 
@@ -175,6 +248,8 @@ async function sendQuestion(question) {
   setTimeout(() => {
     messagesPanel.classList.remove("is-opening");
   }, CHAT_OPEN_MS);
+
+  await showAnswer(data.answer);
 }
 
 clearMessagesButton.addEventListener("click", async () => {

@@ -551,20 +551,109 @@ main {
   background: var(--color-aqua);
 }
 
-/* Beskedbobler — fyldte, tonede baggrunde med asymmetriske hjørner
-   (en lille "hale" peger mod afsenderen) i stedet for en sidekant */
+/* Beskeder — "fane-kort" med skrå kant.
+   Hver besked = en lille header-fane (tidspunkt) + en krop med én skrå side.
+   Svarets skrå kant sidder til højre, brugerens til venstre, og de to former
+   er hinandens spejlbillede (180°), så de passer visuelt sammen.
+
+   Kanten (1px) laves uden border, fordi border ikke følger et clip-path:
+   selve <p> er farvet i accent-farven og klippet i formen, og ::before
+   lægger en 1px mindre fyldflade med samme form oven på. */
 
 .messages article {
+  --accent: var(--color-aqua);
+  --fill: #0c2437;
+  --slant: 16px; /* hvor skrå den skrå kant er */
+  --tab-slant: 10px;
+
   max-width: 75%;
   min-width: 0;
-  padding: 0.55rem 0.85rem;
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.messages article.question {
+  --accent: var(--color-coral);
+  --fill: #26132d;
+  align-self: flex-end;
+  align-items: flex-end;
+}
+
+.messages article.answer {
+  align-self: flex-start;
+  align-items: flex-start;
+}
+
+/* Header-fane med tidspunkt */
+.messages article time {
+  display: block;
+  padding: 4px 12px;
+  background: var(--accent);
+  color: #03121a;
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+}
+
+.messages article.answer time {
+  padding-right: 22px;
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--tab-slant)) 100%, 0 100%);
+}
+
+.messages article.question time {
+  padding-left: 22px;
+  color: #1a0512;
+  clip-path: polygon(var(--tab-slant) 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Krop */
+.messages article p {
+  position: relative;
+  isolation: isolate; /* holder ::before (z-index: -1) inde i kortet */
+  margin: 0;
+  background: var(--accent);
+  line-height: 1.45;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  color: var(--color-text);
+}
+
+.messages article p::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  background: var(--fill);
+}
+
+/* Svar: skrå kant til højre (bunden trukket ind) */
+.messages article.answer p {
+  padding: 0.75rem calc(var(--slant) + 14px) 0.75rem 1.1rem;
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--slant)) 100%, 0 100%);
+}
+.messages article.answer p::before {
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--slant)) 100%, 0 100%);
+}
+
+/* Spørgsmål: skrå kant til venstre (toppen trukket ind) */
+.messages article.question p {
+  padding: 0.75rem 1.1rem 0.75rem calc(var(--slant) + 14px);
+  clip-path: polygon(var(--slant) 0, 100% 0, 100% 100%, 0 100%);
+}
+.messages article.question p::before {
+  clip-path: polygon(var(--slant) 0, 100% 0, 100% 100%, 0 100%);
 }
 
 /* Kun de to seneste beskeder (nyt spørgsmål + svar) får en
    "materialiserings"-animation — resten af historikken skal
-   ikke re-animere ved hvert page reload. */
+   ikke re-animere ved hvert page reload.
+   Glødet bruger drop-shadow i stedet for box-shadow: en box-shadow ville
+   tegne et rektangel rundt om hele kortet (også det tomme ved fanen),
+   mens drop-shadow følger den klippede form. */
 
 .messages article.question:nth-last-child(-n + 2) {
   animation: spawnQuestion 0.5s ease-out forwards;
@@ -578,7 +667,7 @@ main {
   0% {
     opacity: 0;
     transform: translateY(14px) scale(0.94);
-    box-shadow: 0 0 24px rgba(234, 72, 132, 0.55);
+    filter: drop-shadow(0 0 12px rgba(234, 72, 132, 0.7));
   }
   60% {
     opacity: 1;
@@ -586,7 +675,7 @@ main {
   }
   100% {
     transform: scale(1);
-    box-shadow: 0 0 0 rgba(234, 72, 132, 0);
+    filter: drop-shadow(0 0 0 rgba(234, 72, 132, 0));
   }
 }
 
@@ -594,7 +683,7 @@ main {
   0% {
     opacity: 0;
     transform: translateY(14px) scale(0.94);
-    box-shadow: 0 0 24px rgba(51, 194, 204, 0.55);
+    filter: drop-shadow(0 0 12px rgba(51, 194, 204, 0.7));
   }
   60% {
     opacity: 1;
@@ -602,35 +691,29 @@ main {
   }
   100% {
     transform: scale(1);
-    box-shadow: 0 0 0 rgba(51, 194, 204, 0);
+    filter: drop-shadow(0 0 0 rgba(51, 194, 204, 0));
   }
 }
 
-.messages article.question {
-  align-self: flex-end;
-  background: rgba(234, 72, 132, 0.14);
-  border-radius: 12px 12px 2px 12px;
+/* Mens svaret "dekrypteres": dæmpet aqua, som om signalet ikke er låst endnu.
+   Når klassen fjernes, glider farverne op til fuld styrke. */
+.messages article.answer.is-decrypting {
+  --accent: rgba(51, 194, 204, 0.4);
 }
 
-.messages article.answer {
-  align-self: flex-start;
-  background: rgba(51, 194, 204, 0.12);
-  border-radius: 12px 12px 12px 2px;
+.messages article.answer.is-decrypting time {
+  color: rgba(232, 246, 248, 0.6);
 }
 
-.messages article time {
-  display: block;
-  font-size: 0.65rem;
-  color: var(--color-text-dim);
-  letter-spacing: 0.05em;
-  margin-bottom: 0.2rem;
+.messages article.answer.is-decrypting p {
+  color: #4fb3bc;
 }
 
+.messages article time,
 .messages article p {
-  margin: 0;
-  line-height: 1.4;
-  overflow-wrap: break-word;
-  word-break: break-word;
+  transition:
+    color 0.3s ease,
+    background-color 0.3s ease;
 }
 
 /* --- Input-felt --- */

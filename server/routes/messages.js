@@ -6,6 +6,8 @@ import {
   saveTopicStats,
 } from "../data/messages.js";
 import { loadAnswers, findBestAnswer } from "../data/answers.js";
+import { detectAttack, attackReply } from "../data/security.js";
+const MAX_QUESTION_LENGTH = 280; // samme som maxlength i klienten
 
 function sanitizeQuestion(input) {
   return input.replace(/[\u0000-\u001F\u007F]/g, "");
@@ -36,7 +38,7 @@ function buildContext(messages) {
 
   // Fallback og "det var alt"-svar er ikke emner, man kan uddybe, så vi
   // husker det seneste rigtige emne.
-  const notATopic = ["fallback", "opfoelgning"];
+  const notATopic = ["fallback", "opfoelgning", "angreb"];
   const lastTopicAnswer = previousAnswers
     .filter((message) => !notATopic.includes(message.category))
     .at(-1);
@@ -62,6 +64,13 @@ router.post("/", async (request, response) => {
   const topicStats = await loadTopicStats();
   const question = sanitizeQuestion(request.body.question).trim();
 
+  if (question.length > MAX_QUESTION_LENGTH) {
+    response.status(400).json({
+      error: `Spørgsmålet må højst være ${MAX_QUESTION_LENGTH} tegn.`,
+    });
+    return;
+  }
+
   if (!question) {
     response.status(400).json({ error: "Skriv et spørgsmål, før du sender." });
     return;
@@ -69,7 +78,20 @@ router.post("/", async (request, response) => {
 
   const answers = await loadAnswers();
   const context = buildContext(messages);
-  const result = findBestAnswer(question, answers, context);
+  const attempts = messages.filter(
+    (message) => message.type === "answer" && message.category === "angreb",
+  ).length;
+
+  const result = detectAttack(question)
+    ? {
+        matched: true,
+        category: "angreb",
+        pool: "main",
+        variant: 0,
+        answer: attackReply(attempts),
+        image: null,
+      }
+    : findBestAnswer(question, answers, context);
 
   const message = {
     type: "question",

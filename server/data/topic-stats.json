@@ -1,7 +1,7 @@
 {
   "navn": 86,
   "bosted": 38,
-  "fritid": 57,
+  "fritid": 58,
   "capabilities": 22,
   "hvordan-gaar-det": 3,
   "positiv": 3,
@@ -13,7 +13,7 @@
   "musik": 4,
   "musik-start": 2,
   "musik-yndlings": 2,
-  "in-flames": 2,
+  "in-flames": 3,
   "uddannelse": 7,
   "studie-hvorfor": 1,
   "opfoelgning": 4,
@@ -27,5 +27,6 @@
   "film": 4,
   "bands": 2,
   "band-svartsot": 20,
-  "albums": 1
+  "albums": 1,
+  "angreb": 7
 }

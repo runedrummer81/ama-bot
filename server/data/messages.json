@@ -1,62 +1,22 @@
 [
   {
     "type": "question",
-    "text": "Hvad hedder du?",
-    "createdAt": "2026-09-29T10:04:35.381Z"
+    "text": "Hvem er du?",
+    "createdAt": "2026-09-29T11:02:32.704Z"
   },
   {
     "type": "answer",
     "text": "Jeg hedder Rune",
-    "createdAt": "2026-09-29T10:04:35.382Z"
+    "createdAt": "2026-09-29T11:02:32.705Z"
   },
   {
     "type": "question",
-    "text": "hvad laver du i din fritid?",
-    "createdAt": "2026-09-29T10:04:49.969Z"
+    "text": "okay, og hvorfor det?",
+    "createdAt": "2026-09-29T11:02:45.995Z"
   },
   {
     "type": "answer",
-    "text": "Jeg elsker virkelig at læse en god bog",
-    "createdAt": "2026-09-29T10:04:49.970Z"
-  },
-  {
-    "type": "question",
-    "text": "fritid?",
-    "createdAt": "2026-09-29T10:04:57.142Z"
-  },
-  {
-    "type": "answer",
-    "text": "Jeg elsker virkelig at læse en god bog",
-    "createdAt": "2026-09-29T10:04:57.143Z"
-  },
-  {
-    "type": "question",
-    "text": "fritid!?",
-    "createdAt": "2026-09-29T10:05:02.025Z"
-  },
-  {
-    "type": "answer",
-    "text": "Jeg elsker virkelig at læse en god bog",
-    "createdAt": "2026-09-29T10:05:02.026Z"
-  },
-  {
-    "type": "question",
-    "text": "fritid",
-    "createdAt": "2026-09-29T10:05:05.461Z"
-  },
-  {
-    "type": "answer",
-    "text": "Jeg elsker virkelig at læse en god bog",
-    "createdAt": "2026-09-29T10:05:05.462Z"
-  },
-  {
-    "type": "question",
-    "text": "fritid",
-    "createdAt": "2026-09-29T10:05:11.164Z"
-  },
-  {
-    "type": "answer",
-    "text": "I min fritid spiller jeg trommer og hører musik",
-    "createdAt": "2026-09-29T10:05:11.165Z"
+    "text": "Det kender jeg ikke svaret på endnu.",
+    "createdAt": "2026-09-29T11:02:45.997Z"
   }
 ]

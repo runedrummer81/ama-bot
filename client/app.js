@@ -278,9 +278,14 @@ questionForm.addEventListener("submit", async (event) => {
 
 chatInputForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  await handleQuestionSubmit(chatQuestionInput);
+  const question = chatQuestionInput.value.trim();
+  if (!question) return;
+
+  chatQuestionInput.value = "";
   updateCharCounter(chatQuestionInput, chatCharCounter, chatSendButton);
   chatQuestionInput.focus();
+
+  await sendQuestion(question);
 });
 
 // Rene UI-togglere for nu — ingen af dem er koblet til rigtig lyd,

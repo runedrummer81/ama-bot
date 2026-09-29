@@ -166,11 +166,49 @@ main {
 }
 
 .chat-toolbar {
-  display: flex;
-  justify-content: flex-start;
-  flex-shrink: 0;
+  position: absolute;
+  left: -1px; /* på linje med panelets ydre venstre kant */
+  bottom: 100%; /* fanens bund = kantens position */
+  z-index: 5;
+}
+
+.chat-tab {
   position: relative;
-  z-index: 3;
+  height: var(--tab-h);
+  filter: drop-shadow(0 0 15px rgba(51, 194, 204, 0.35));
+}
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 100%;
+  padding: 0 44px 0 18px;
+  border: 0;
+  border-radius: 0;
+  background: var(--frame);
+  color: var(--color-text);
+  clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 100%, 0 100%);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.tab-btn svg {
+  flex: none;
+}
+
+.tab-btn:hover,
+.tab-btn:focus-visible {
+  background: var(--color-aqua);
+  color: #03121a;
+}
+
+.tab-btn:focus-visible {
+  outline: none;
 }
 
 /* --- Velkomstskærm — vist når der ikke er nogen beskeder endnu --- */
@@ -345,6 +383,9 @@ main {
    panelet her skal bare læse som lys, ikke som en boks. */
 
 .messages {
+  --frame: #247a88; /* NY: massiv kantfarve, delt med fanen */
+  --tab-h: 40px; /* NY */
+  margin-top: var(--tab-h); /* NY: plads til fanen over panelet */
   display: flex;
   flex-direction: column;
   position: relative;
@@ -358,12 +399,12 @@ main {
      er det der gør det til hologram frem for solid flade — man aner
      stadig scenen bagved. */
   background: rgba(51, 194, 204, 0.1);
-  border: 1px solid rgba(51, 194, 204, 0.55);
+  border: 1px solid var(--frame);
   border-radius: var(--radius);
   box-shadow:
     0 0 30px rgba(51, 194, 204, 0.35),
     inset 0 0 24px rgba(51, 194, 204, 0.12);
-  overflow: hidden;
+  overflow: visible;
   /* To animationer med forskellig varighed (6s / 9s) i stedet for én —
      de driver ud af fase med hinanden (mødes først igen efter 18s), så
      det ikke føles som ét fast, forudsigeligt loop. box-shadow og

@@ -47,6 +47,7 @@ function playWelcomeExit() {
 }
 
 function resetWelcomeExit() {
+  heroWrap?.classList.remove("is-hidden");
   heroWrap?.classList.remove("is-exiting");
   suggestionsEl.classList.remove("is-exiting");
   welcomePanel?.classList.remove("is-sending", "is-collapsing", "is-flying");
@@ -195,6 +196,7 @@ async function getMessages() {
     }
 
     updateView(messages.length);
+    if (messages.length > 0) heroWrap?.classList.add("is-hidden");
   } catch (error) {
     console.error("Kunne ikke hente beskeder:", error);
     updateView(0); // fald tilbage til velkomstskærmen i stedet for at hænge

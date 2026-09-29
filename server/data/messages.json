@@ -2,21 +2,11 @@
   {
     "type": "question",
     "text": "Hvem er du?",
-    "createdAt": "2026-09-29T11:02:32.704Z"
+    "createdAt": "2026-09-29T11:42:03.192Z"
   },
   {
     "type": "answer",
     "text": "Jeg hedder Rune",
-    "createdAt": "2026-09-29T11:02:32.705Z"
-  },
-  {
-    "type": "question",
-    "text": "okay, og hvorfor det?",
-    "createdAt": "2026-09-29T11:02:45.995Z"
-  },
-  {
-    "type": "answer",
-    "text": "Det kender jeg ikke svaret på endnu.",
-    "createdAt": "2026-09-29T11:02:45.997Z"
+    "createdAt": "2026-09-29T11:42:03.193Z"
   }
 ]

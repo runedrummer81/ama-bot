@@ -86,6 +86,8 @@ router.post("/", async (request, response) => {
     pool: result.pool,
     variant: result.variant,
   };
+  // Valgfrit billede fra answers.json ({ src, alt }).
+  if (result.image) answerMessage.image = result.image;
   messages.push(answerMessage);
 
   // Spørgsmål uden træffer tælles under "ukendt", så du kan se, hvad besøgende

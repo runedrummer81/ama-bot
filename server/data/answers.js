@@ -224,6 +224,8 @@ function buildAnswer(group, pool, context) {
     pool,
     variant,
     matched: group.category !== "fallback",
+    // Billede der "spawner" ved siden af chatten (kun første gang emnet besvares).
+    image: group.image ?? null,
   };
 }
 

@@ -286,6 +286,12 @@
   {
     "category": "band-svartsot",
     "topic": "musik",
+    "image": [
+      { "src": "img/svartsot1.webp", "alt": "Svartsot på scenen" },
+      { "src": "img/svartsot2.webp", "alt": "Svartsot live" },
+      { "src": "img/svartsot3.webp", "alt": "Svartsot live igen" },
+      { "src": "img/svartsot4.webp", "alt": "Svartsot lcover" }
+    ],
     "follows": ["musik"],
     "keywords": ["svartsot"],
     "contextKeywords": ["nuværende", "nye band", "det andet band", "det andet"],
@@ -339,6 +345,10 @@
   },
   {
     "category": "albums",
+    "image": [
+      { "src": "img/svartsot4.webp", "alt": "Svartsot cover" },
+      { "src": "img/foreverstill.webp", "alt": "forever still cover" }
+    ],
     "topic": "musik",
     "follows": ["musik"],
     "keywords": [
@@ -359,6 +369,10 @@
   },
   {
     "category": "in-flames",
+    "image": [
+      { "src": "img/inflames1.webp", "alt": "In Flames bandpic" },
+      { "src": "img/inflames2.webp", "alt": "In Flames logo" }
+    ],
     "topic": "musik",
     "follows": ["musik"],
     "keywords": ["in flames", "inflames"],
@@ -483,6 +497,12 @@
   {
     "category": "musik",
     "topic": "musik",
+    "image": [
+      { "src": "img/svartsot1.webp", "alt": "Svartsot på scenen" },
+      { "src": "img/svartsot2.webp", "alt": "Svartsot live" },
+      { "src": "img/svartsot3.webp", "alt": "Svartsot live igen" },
+      { "src": "img/svartsot4.webp", "alt": "Svartsot lcover" }
+    ],
     "keywords": [
       "musik*",
       "trommer*",

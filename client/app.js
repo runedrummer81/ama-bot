@@ -113,9 +113,199 @@ function scramble(text, revealed) {
     .join("");
 }
 
+// ---------- Sidebilleder (spawner i whitespace ved siden af chatten) ----------
+
+const SIDE_IMAGE_MIN_SPACE = 150; // px whitespace pr. side, før der er plads
+const SIDE_IMAGE_MAX_WIDTH = 440; // px, størst mulige bredde
+const SIDE_IMAGE_MAX_HEIGHT = 0.55; // størst mulige højde (andel af vinduet)
+const SIDE_IMAGE_LEAVE_MS = 450; // skal matche sideOut i styles.css
+const SIDE_IMAGE_MIN_TOP = 90; // px, under knapperne øverst til højre
+
+const SIDE_IMAGE_GAP = 20; // px mellem to billeder oven på hinanden
+const SIDE_IMAGE_FLOOR_MARGIN = 20; // px luft over grid-gulvet
+
+let nextSide = "left"; // billederne skifter side fra emne til emne
+let imageCategory = null; // hvilket emne billederne lige nu hører til
+let imageToken = 0; // så et forsinket spawn kan aflyses, hvis emnet skifter
+
+function removeSideImage(figure) {
+  if (figure.classList.contains("is-leaving")) return;
+  figure.classList.add("is-leaving");
+  setTimeout(
+    () => figure.remove(),
+    reducedMotion.matches ? 0 : SIDE_IMAGE_LEAVE_MS,
+  );
+}
+
+// Alle billeder glitcher væk, og et evt. ventende spawn aflyses.
+function clearSideImages() {
+  imageToken++;
+  let nextSide = "left"; // billederne skifter side fra emne til emne
+  imageCategory = null;
+  document.querySelectorAll(".side-image").forEach(removeSideImage);
+}
+
+function getSideSpace() {
+  return (window.innerWidth - chatSection.getBoundingClientRect().width) / 2;
+}
+
+// Kaldes for hvert svar. Billederne hører til emnet (kategorien):
+// - samme emne som sidst -> billederne bliver stående
+// - nyt emne -> de gamle glitcher væk, og (hvis emnet har billeder) spawner
+//   der to nye, når de gamle er væk, så de aldrig ligger oven på hinanden.
+function updateSideImages(message) {
+  if (message.category === imageCategory) return;
+
+  const hadImages = document.querySelector(".side-image:not(.is-leaving)");
+  clearSideImages();
+  imageCategory = message.category;
+
+  const images = pickImages(message.image);
+  if (images.length === 0) return;
+
+  const token = imageToken;
+  const wait = hadImages && !reducedMotion.matches ? SIDE_IMAGE_LEAVE_MS : 0;
+  setTimeout(() => spawnSideImages(images, token), wait);
+}
+
+// message.image = ét billede eller en liste. Vi vælger højst 2 tilfældige.
+//   { src: "img/svartsot.jpg", alt: "Svartsot på scenen", scale: 1 }
+function pickImages(images) {
+  const list = (Array.isArray(images) ? images : [images]).filter(
+    (image) => image?.src,
+  );
+
+  // Fuld URL for hvert billede, så "img/a.webp" og "./img/a.webp" tæller som det samme
+  const toUrl = (src) => new URL(src, document.baseURI).href;
+
+  // 1) Fjern dubletter i selve listen (samme src)
+  const unique = [
+    ...new Map(list.map((image) => [toUrl(image.src), image])).values(),
+  ];
+
+  // 2) Spring billeder over, der allerede er på skærmen (og ikke er ved at forsvinde)
+  const onScreen = new Set(
+    [...document.querySelectorAll(".side-image:not(.is-leaving)")].map(
+      (el) => el.src,
+    ),
+  );
+  const fresh = unique.filter((image) => !onScreen.has(toUrl(image.src)));
+
+  return fresh.sort(() => Math.random() - 0.5).slice(0, 2);
+}
+
+// Henter billedet først, så vi kender formatet (stående/liggende/kvadratisk).
+// Vi bruger DOM-metoder (ikke innerHTML) til src/alt, så teksten ikke kan
+// snige HTML ind.
+function loadImageElement(image) {
+  return new Promise((resolve) => {
+    const img = document.createElement("img");
+    img.className = "side-image__img";
+    img.alt = image.alt ?? "";
+    img.addEventListener("load", () => resolve(img), { once: true });
+    img.addEventListener("error", () => resolve(null), { once: true });
+    img.src = image.src;
+  });
+}
+
+// Nederste grænse for billederne: lige over grid-gulvets horisontlinje.
+function getImageAreaBottom() {
+  const floor = document.getElementById("grid-floor");
+  const floorHeight = floor?.offsetHeight || window.innerHeight * 0.25;
+  return window.innerHeight - floorHeight - SIDE_IMAGE_FLOOR_MARGIN;
+}
+
+async function spawnSideImages(images, token) {
+  if (getSideSpace() < SIDE_IMAGE_MIN_SPACE) return; // for smalt: skip
+
+  const loaded = await Promise.all(images.map(loadImageElement));
+  if (token !== imageToken) return; // emnet nåede at skifte, mens de hentede
+
+  // Kun de billeder, der faktisk blev hentet.
+  const items = images
+    .map((image, index) => ({ image, img: loaded[index] }))
+    .filter((item) => item.img);
+  if (items.length === 0) return;
+
+  // Alle billederne står i samme side, oven på hinanden. Siden skifter
+  // fra emne til emne.
+  const side = nextSide;
+  nextSide = side === "left" ? "right" : "left";
+
+  const space = getSideSpace();
+  const top = SIDE_IMAGE_MIN_TOP;
+  const bottom = Math.max(getImageAreaBottom(), top + 100);
+  const areaHeight = bottom - top;
+
+  // Hvert billede må højst fylde sin del af højden (og ikke blive for bredt).
+  const maxHeight =
+    items.length === 1
+      ? Math.min(window.innerHeight * SIDE_IMAGE_MAX_HEIGHT, areaHeight)
+      : (areaHeight - SIDE_IMAGE_GAP * (items.length - 1)) / items.length;
+  const maxWidth = Math.min(space - 24, SIDE_IMAGE_MAX_WIDTH);
+
+  for (const item of items) {
+    const aspect = item.img.naturalWidth / item.img.naturalHeight || 1;
+    item.width = Math.min(
+      Math.min(maxWidth, maxHeight * aspect) * (item.image.scale ?? 1),
+      space - 24,
+    );
+    item.height = item.width / aspect;
+  }
+
+  // Stakken centreres lodret midt for chatvinduet, men holdes over gulvet.
+  const stackHeight =
+    items.reduce((sum, item) => sum + item.height, 0) +
+    SIDE_IMAGE_GAP * (items.length - 1);
+  const chatRect = chatSection.getBoundingClientRect();
+  let y = Math.min(
+    Math.max(chatRect.top + (chatRect.height - stackHeight) / 2, top),
+    bottom - stackHeight,
+  );
+
+  // Alle spawner samtidig.
+  for (const item of items) {
+    placeSideImage(item, side, y, space);
+    y += item.height + SIDE_IMAGE_GAP;
+  }
+}
+
+function placeSideImage({ img, image, width }, side, top, space) {
+  const offset = (space - width) / 2; // centreret i whitespace
+  const glitchDelay = -(Math.random() * 6).toFixed(1); // så de ikke glitcher synkront
+
+  const figure = document.createElement("figure");
+  figure.className = `side-image side-image--${side}`;
+  figure.style.setProperty("--img", `url("${image.src}")`);
+  figure.style.setProperty("--w", `${width}px`);
+  figure.style.setProperty("--offset", `${offset}px`);
+  figure.style.setProperty("--top", `${top}px`);
+  figure.style.setProperty("--tilt", "0deg"); // billederne står lige
+  figure.style.setProperty("--gd", `${glitchDelay}s`);
+
+  figure.append(img);
+  for (const cls of [
+    "side-image__tint",
+    "side-image__slice side-image__slice--1",
+    "side-image__slice side-image__slice--2",
+    "side-image__slice side-image__slice--3",
+    "side-image__slice side-image__slice--4",
+    "side-image__rgb side-image__rgb--r",
+    "side-image__rgb side-image__rgb--b",
+    "side-image__noise",
+  ]) {
+    const layer = document.createElement("div");
+    layer.className = cls;
+    figure.append(layer);
+  }
+
+  document.body.append(figure);
+}
+
 async function showAnswer(message) {
   const plainText = decodeHtml(message.text);
   const article = displayMessage(message, { smooth: true });
+  updateSideImages(message);
   const bodyEl = article.querySelector("p");
   const timeEl = article.querySelector("time");
   const realTime = timeEl?.textContent;
@@ -246,6 +436,8 @@ async function getMessages() {
     if (messages.length > 0) {
       heroWrap?.classList.add("is-hidden");
       chatQuestionInput.focus();
+      const lastAnswer = messages.filter((m) => m.type === "answer").at(-1);
+      if (lastAnswer) updateSideImages(lastAnswer);
     }
   } catch (error) {
     console.error("Kunne ikke hente beskeder:", error);
@@ -314,6 +506,7 @@ clearMessagesButton.addEventListener("click", async () => {
     const deleting = fetch(`${API_URL}/messages`, { method: "DELETE" });
 
     // 1) Chatvinduet slukker.
+    clearSideImages();
     await playChatClose();
     await deleting;
 

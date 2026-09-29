@@ -269,13 +269,14 @@ main {
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
-  background: rgba(6, 9, 31, 0.82);
-  border: 1px solid var(--color-aqua-dim);
-  border-radius: var(--radius);
+  background: rgba(12, 36, 55, 0.88);
+  border: 1px solid var(--color-aqua);
+  border-radius: 0;
   padding: clamp(1.75rem, 5vw, 3.5rem);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
-  box-shadow: 0 0 24px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 0 10px rgba(51, 194, 204, 0.3);
+  transition: box-shadow 0.25s ease;
 }
 
 .welcome-panel .chat-input {
@@ -293,83 +294,37 @@ main {
   color: var(--color-text-dim);
 }
 
-.panel-corner {
+/* Aktiv (markøren står i feltet): lidt kraftigere glød + lysstrejf */
+.welcome-panel.is-active {
+  box-shadow: 0 0 20px rgba(51, 194, 204, 0.55);
+}
+
+/* Fane øverst til venstre som NY_CHAT-fanen: samme farve som kanten, og
+   den skrå ende peger ned i panelet. */
+.panel-tab {
   position: absolute;
-  width: 22px;
-  height: 22px;
+  left: -1px;
+  bottom: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  height: 34px;
+  padding: 0 40px 0 16px;
+  background: var(--color-aqua);
+  color: #03121a;
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 100%, 0 100%);
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
   pointer-events: none;
-  opacity: 0.5;
-  transition:
-    top 0.25s ease,
-    right 0.25s ease,
-    bottom 0.25s ease,
-    left 0.25s ease,
-    opacity 0.25s ease;
 }
 
-.panel-corner--tl {
-  top: -1px;
-  left: -1px;
-  border-top: 2px solid var(--color-aqua);
-  border-left: 2px solid var(--color-aqua);
-}
-
-.panel-corner--tr {
-  top: -1px;
-  right: -1px;
-  border-top: 2px solid var(--color-aqua);
-  border-right: 2px solid var(--color-aqua);
-}
-
-.panel-corner--bl {
-  bottom: -1px;
-  left: -1px;
-  border-bottom: 2px solid var(--color-aqua);
-  border-left: 2px solid var(--color-aqua);
-}
-
-.panel-corner--br {
-  bottom: -1px;
-  right: -1px;
-  border-bottom: 2px solid var(--color-aqua);
-  border-right: 2px solid var(--color-aqua);
-}
-
-.welcome-panel.is-active .panel-corner {
-  opacity: 1;
-  animation: cornerPulse 1.6s ease-in-out infinite;
-}
-
-.welcome-panel.is-active .panel-corner--tl {
-  top: -12px;
-  left: -12px;
-}
-
-.welcome-panel.is-active .panel-corner--tr {
-  top: -12px;
-  right: -12px;
-}
-
-.welcome-panel.is-active .panel-corner--bl {
-  bottom: -12px;
-  left: -12px;
-}
-
-.welcome-panel.is-active .panel-corner--br {
-  bottom: -12px;
-  right: -12px;
-}
-
-@keyframes cornerPulse {
-  0%,
-  100% {
-    opacity: 0.6;
-    filter: drop-shadow(0 0 0 transparent);
-  }
-  50% {
-    opacity: 1;
-    filter: drop-shadow(0 0 4px var(--color-aqua));
-  }
+.panel-tab-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #03121a;
 }
 
 /* Fælles hjælpeklasse til at skjule velkomst/beskeder efter behov */
@@ -973,43 +928,68 @@ button:focus-visible {
   transform: translateY(0);
 }
 
+/* Forslag: ens parallelogrammer, der hælder til venstre. Kanten (1px)
+   laves som på beskederne: chippen er farvet i accent-farven, og ::before
+   lægger fyldet 1px inde med samme form. */
 .suggestions {
+  --chip-accent: var(--color-aqua);
+  --chip-fill: #0c2437;
+  --chip-slant: 16px;
+
   display: flex;
   gap: 0.75rem;
+  filter: drop-shadow(0 0 10px rgba(51, 194, 204, 0.3));
 }
 
 .suggestion-chip {
   flex: 1;
+  position: relative;
+  isolation: isolate;
   text-align: center;
-  background: rgba(6, 9, 31, 0.82);
-  border: 1px solid var(--color-aqua-dim);
-  color: var(--color-aqua);
-  font-family: var(--font-body);
+  background: var(--chip-accent);
+  border: 0;
+
+  border-radius: 0;
+  color: var(--chip-accent);
+  font-family: var(--font-mono);
   font-size: clamp(0.95rem, 1.9vw, 1.15rem);
   letter-spacing: 0.03em;
-  padding: clamp(0.85rem, 2vw, 1.3rem) 1rem;
+  padding: clamp(0.85rem, 2vw, 1.3rem) calc(var(--chip-slant) + 0.6rem);
   cursor: pointer;
-  box-shadow: 0 0 12px rgba(51, 194, 204, 0.12);
   clip-path: polygon(
     0 0,
-    calc(100% - 14px) 0,
-    100% 14px,
+    calc(100% - var(--chip-slant)) 0,
     100% 100%,
-    14px 100%,
-    0 calc(100% - 14px)
+    var(--chip-slant) 100%
   );
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    box-shadow 0.2s ease,
-    border-color 0.2s ease;
+  transition: color 0.2s ease;
+}
+
+.suggestion-chip::before {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  z-index: -1;
+  background: var(--chip-fill);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--chip-slant)) 0,
+    100% 100%,
+    var(--chip-slant) 100%
+  );
+  transition: background 0.2s ease;
 }
 
 .suggestion-chip:hover,
 .suggestion-chip:focus-visible {
-  background: var(--color-aqua);
-  color: var(--color-primary);
-  box-shadow: 0 0 16px var(--color-aqua);
+  background: var(--chip-accent);
+  color: #1a0512;
+  box-shadow: none;
+}
+
+.suggestion-chip:hover::before,
+.suggestion-chip:focus-visible::before {
+  background: var(--chip-accent);
 }
 
 /* --- Top-actions (lyd / sprog / tema) ---
@@ -1417,6 +1397,10 @@ button:focus-visible {
   }
 }
 
+.welcome-panel.is-sending {
+  animation: panelPulseFeedback 0.25s ease-out 1;
+}
+
 main,
 footer {
   pointer-events: none;
@@ -1503,26 +1487,17 @@ footer {
 @keyframes panelPulseFeedback {
   0%,
   100% {
-    box-shadow: 0 0 24px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 0 10px rgba(51, 194, 204, 0.3);
   }
   30% {
     box-shadow: 0 0 36px rgba(51, 194, 204, 0.7);
   }
   60% {
-    box-shadow: 0 0 18px rgba(0, 0, 0, 0.35);
+    box-shadow: 0 0 14px rgba(51, 194, 204, 0.35);
   }
   80% {
     box-shadow: 0 0 30px rgba(51, 194, 204, 0.55);
   }
-}
-
-.welcome-panel.is-sending {
-  animation: panelPulseFeedback 0.25s ease-out 1;
-}
-
-.welcome-panel.is-sending .panel-corner {
-  opacity: 1;
-  animation: cornerPulse 0.25s ease-out 1;
 }
 
 @keyframes panelCollapse {
@@ -1579,8 +1554,8 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(6, 9, 31, 0.82);
-  border: 1px solid var(--color-aqua-dim);
+  background: var(--chip-fill);
+  border: 1px solid var(--chip-accent);
   opacity: 0;
   pointer-events: none;
 }
@@ -1607,6 +1582,10 @@ footer {
     background 0.3s ease,
     border-color 0.3s ease,
     box-shadow 0.3s ease;
+}
+
+.suggestions.is-exiting .suggestion-chip::before {
+  opacity: 0;
 }
 
 .suggestions.is-exiting .chip-label {

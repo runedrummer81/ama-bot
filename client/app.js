@@ -353,6 +353,22 @@ questionForm.addEventListener("submit", async (event) => {
   updateCharCounter(questionInput, charCounter, sendButton);
 });
 
+// Klik på et forslag = samme flow som at skrive spørgsmålet og trykke send.
+// Spørgsmålet er den tekst, der står på knappen, så du kun skal ændre den ét
+// sted i index.html. Teksten lægges i feltet, så den flyver væk med panelet.
+suggestionsEl.addEventListener("click", async (event) => {
+  const chip = event.target.closest(".suggestion-chip");
+  if (!chip || suggestionsEl.classList.contains("is-exiting")) return;
+
+  pauseTypewriter();
+  questionInput.placeholder = "";
+  questionInput.value = chip.querySelector(".chip-label").textContent.trim();
+  updateCharCounter(questionInput, charCounter, sendButton);
+
+  await handleQuestionSubmit(questionInput);
+  updateCharCounter(questionInput, charCounter, sendButton);
+});
+
 chatInputForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const question = chatQuestionInput.value.trim();

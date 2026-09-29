@@ -409,7 +409,11 @@
     "category": "musik-fokus",
     "topic": "musik",
     "keywords": [
-      "resident evil",
+      "resident evil + ambience*",
+      "resident evil + musik*",
+      "resident evil + fokus*",
+      "hører + resident evil",
+      "hvad hører + programmerer*",
       "eksamen*",
       "fokus*",
       "fokus* + hører*",
@@ -884,7 +888,404 @@
     ],
     "more": [
       "Det er fedt for ham, at det er noget, der faktisk bliver brugt af mennesker hver dag, og museet har indtil videre haft god succes med det.",
-      "De lærte utroligt meget undervejs."
+      "De lærte utroligt meget undervejs.",
+      "Et andet projekt fra samme uddannelse er 'The Overseer's Vault', en webapp til Dungeons & Dragons, som han lavede i en gruppe på 3. semester."
+    ]
+  },
+  {
+    "category": "dnd-router",
+    "topic": "dnd",
+    "follows": ["dnd"],
+    "keywords": [
+      "react router*",
+      "location state*",
+      "uselocation*",
+      "navigate*",
+      "optional chaining",
+      "d d + navigation*",
+      "dm + navigation*",
+      "isdraft",
+      "draft session*",
+      "dnd + navigation*"
+    ],
+    "contextKeywords": [
+      "navigation*",
+      "router*",
+      "state",
+      "hvordan navigerer den",
+      "useLocation"
+    ],
+    "answers": [
+      "Rune forklarer i sin rapport, hvordan React Router bruges til at navigere mellem sider uden page refresh, som en Single Page Application. Data følger med navigationen i et location state-objekt, så DM'en ikke skal taste noget ind igen, når man fx går fra en session til at redigere den."
+    ],
+    "more": [
+      "På modtagersiden læser useLocation()-hooket state-objektet, og optional chaining (?.) sikrer, at der ikke kommer fejl, hvis state ikke findes. Et tjek af isDraft afgør, om der skal startes en ny session med de medsendte data, som session-nummer og campaign-ID."
+    ]
+  },
+  {
+    "category": "dnd-firebase",
+    "topic": "dnd",
+    "follows": ["dnd"],
+    "keywords": [
+      "firestore*",
+      "d d + firebase*",
+      "overseer* + firebase*",
+      "firebase + combat*",
+      "firebase + initiative*",
+      "firebase + database*",
+      "d d + database*",
+      "startcombat*",
+      "async*",
+      "d20",
+      "dexterity*",
+      "dnd + firebase*",
+      "dnd + database*"
+    ],
+    "contextKeywords": [
+      "firebase*",
+      "database*",
+      "hvor gemmer den data",
+      "hvordan hentes data"
+    ],
+    "answers": [
+      "Firebase Firestore er webappens database. Når en combat startes, hentes data om creatures asynkront med async/await, og det rigtige antal tokens dukker automatisk op på combat mappet med korrekt data. Rune viser i rapporten, hvordan koden bruger .map() og spread til at omsætte Firestore-dokumenter til JavaScript-objekter."
+    ],
+    "more": [
+      "Funktionen startCombat() gennemløber hvert creature i det valgte encounter og opretter det angivne antal. Initiative rulles automatisk med et d20-rul plus creaturets dexterity modifier, og combatants sorteres efter initiative i faldende rækkefølge."
+    ]
+  },
+  {
+    "category": "dnd-react",
+    "topic": "dnd",
+    "follows": ["dnd"],
+    "keywords": [
+      "spa",
+      "single page*",
+      "d d + react*",
+      "overseer* + react*",
+      "dm + react*",
+      "context api",
+      "prop drilling",
+      "virtual dom",
+      "actionbutton*",
+      "protectedroute*",
+      "komponent*",
+      "dnd + react*"
+    ],
+    "contextKeywords": [
+      "react*",
+      "komponent*",
+      "context*",
+      "virtual dom",
+      "genbrug*"
+    ],
+    "answers": [
+      "Webappen er en Single Page Application i React, hvor hele appen loader én gang, og al navigation håndteres af JavaScript. Det giver en hurtigere og mere flydende oplevelse, fordi kun de nødvendige dele af UI'en opdateres. Komponenterne er genbrugelige byggeklodser, fx en ActionButton, der bruges til alt fra 'Create Campaign' til 'Enter Combat'."
+    ],
+    "more": [
+      "For at undgå prop drilling bruger de Reacts Context API. I CombatStateContext ligger den globale combat-state, så både DMPanel og InitiativeTracker kan læse den med useCombatState() uden at få den sendt igennem props.",
+      "Routes er pakket ind i ProtectedRoute-komponenter, så kun loggede brugere kan se indholdet, og der er dynamiske routes med parametre, fx /run-session/:sessionId. Reacts virtual DOM sørger for, at kun de ændrede elementer opdateres, fx når et creature tager skade."
+    ]
+  },
+  {
+    "category": "dnd-teknik",
+    "topic": "dnd",
+    "follows": ["dnd"],
+    "keywords": [
+      "d d + teknisk*",
+      "d d + teknik*",
+      "d d + kode*",
+      "d d + teknologi*",
+      "overseer* + teknisk*",
+      "overseer* + kode*",
+      "dm + teknisk*",
+      "dnd + teknisk*",
+      "dnd + teknik*",
+      "dnd + kode*",
+      "dnd + teknologi*"
+    ],
+    "contextKeywords": [
+      "teknisk*",
+      "teknik*",
+      "kode*",
+      "teknologi*",
+      "hvordan er den lavet",
+      "hvordan blev den lavet",
+      "hvad er den lavet i",
+      "hvad bruger den"
+    ],
+    "answers": [
+      "Webappen er bygget som en Single Page Application i React med React Router, og Firebase Firestore fungerer som database. Den globale combat-state deles via Reacts Context API, og siderne har ensartede overgange med Framer Motion."
+    ],
+    "more": [
+      "I sin del af rapporten gennemgår Rune tre tekniske eksempler: React Router med state, Firebase i initiative-systemet og React som SPA med Context API."
+    ]
+  },
+  {
+    "category": "dnd-overgange",
+    "topic": "dnd",
+    "keywords": [
+      "framer*",
+      "are you sure",
+      "ugemte*",
+      "ugemt*",
+      "smooth*",
+      "overgange*",
+      "hakkende"
+    ],
+    "answers": [
+      "Den heuristiske evaluering afslørede, at navigationen føltes hakkende, fordi siderne manglede smooth overgange. Det blev løst med Framer Motion på alle sider, så overgangene er ens. Gruppen tilføjede også en 'Are you sure?'-pop-up, der advarer, hvis man forlader en side med ugemte ændringer, så DM'en ikke mister sit arbejde."
+    ]
+  },
+  {
+    "category": "dnd-adjust",
+    "topic": "dnd",
+    "keywords": ["adjust*", "plus knap*", "plusknap*", "terminologi*"],
+    "answers": [
+      "Under tænke-højt-testene troede testpersonerne hele tiden, at knappen 'adjust' kun kunne redigere eksisterende encounters. De forstod ikke, at man også kunne tilføje nye, og savnede en simpel plus-knap. Siden blev derfor redesignet med tydelige plus-knapper."
+    ]
+  },
+  {
+    "category": "dnd-test",
+    "topic": "dnd",
+    "follows": ["dnd"],
+    "keywords": [
+      "d d + test*",
+      "d d + brugertest*",
+      "d d + heuristisk*",
+      "d d + tænke højt",
+      "dm + test*",
+      "overseer* + test*",
+      "overseer* + brugertest*",
+      "dnd + test*",
+      "dnd + brugertest*",
+      "dnd + heuristisk*",
+      "dnd + tænke højt"
+    ],
+    "contextKeywords": [
+      "test*",
+      "testede*",
+      "testet",
+      "brugertest*",
+      "heuristisk*",
+      "tænke højt",
+      "hvad fandt i",
+      "hvad fandt testene",
+      "hvad fandt i ud af",
+      "hvad var svært",
+      "hvad var sværest",
+      "hvad gik galt",
+      "udfordring*",
+      "problem*"
+    ],
+    "answers": [
+      "Gruppen testede prototypen med tænke-højt-tests på både erfarne og nye Dungeon Masters og på folk uden D&D-erfaring, og lavede desuden en heuristisk evaluering. Testene afslørede konkrete problemer, som blev rettet, før webappen blev programmeret."
+    ],
+    "more": [
+      "Den heuristiske evaluering fandt, at overgangene mellem siderne var hakkende og at der manglede en advarsel ved ugemte ændringer. Begge dele blev rettet, og siden med encounters blev redesignet, fordi testpersonerne ikke forstod en knap, der hed 'adjust'."
+    ]
+  },
+  {
+    "category": "dnd-combat",
+    "topic": "dnd",
+    "follows": ["dnd"],
+    "keywords": [
+      "combat*",
+      "enter combat",
+      "initiative*",
+      "overraskelse*",
+      "tokens",
+      "creature*",
+      "health + damage"
+    ],
+    "contextKeywords": ["kamp*", "hvordan virker combat"],
+    "answers": [
+      "Combat er lavet, så en DM hurtigt kan sætte en kamp op uden at spillerne opdager det på forhånd. DM'en vælger et encounter, tilføjer spillere og creatures til initiative-rækkefølgen og holder styr på health og damage fra sin egen skærm. Først når DM'en trykker 'Enter Combat', opdateres spillernes skærm, så kampen stadig kan komme som en overraskelse."
+    ],
+    "more": [
+      "Når combat starter, oprettes det rigtige antal tokens automatisk på kortet med data fra databasen, og initiative bliver rullet for hver creature med et d20-rul plus dens dexterity modifier."
+    ]
+  },
+  {
+    "category": "dnd-maalgruppe",
+    "topic": "dnd",
+    "follows": ["dnd"],
+    "keywords": [
+      "d d + målgruppe*",
+      "dm + målgruppe*",
+      "dungeon master* + målgruppe*",
+      "overseer* + målgruppe*",
+      "dnd + målgruppe*"
+    ],
+    "contextKeywords": [
+      "målgruppe*",
+      "hvem er det til",
+      "hvem bruger den",
+      "hvem er den til",
+      "hvem er den lavet til"
+    ],
+    "answers": [
+      "Målgruppen er både erfarne og nye Dungeon Masters, som gerne vil bruge digitale elementer i fysiske D&D-sessions for at få bedre overblik og give spillerne en mere indlevende oplevelse. Det er kreativt orienterede mennesker, som bruger meget tid på at skabe og dele oplevelser."
+    ],
+    "more": [
+      "Gruppen brugte user-story mapping til at bryde hver user story ned i aktiviteter og trin. En af dem lød: 'Som DM vil jeg hurtigt kunne forberede mine næste par sessions og bibeholde overblikket, så jeg er forberedt'."
+    ]
+  },
+  {
+    "category": "dnd-design",
+    "topic": "dnd",
+    "follows": ["dnd"],
+    "keywords": [
+      "d d + design*",
+      "dm + design*",
+      "overseer* + design*",
+      "d d + udseende",
+      "d d + ser ud",
+      "garamond*",
+      "cinzel*",
+      "style tile*",
+      "gyldne*",
+      "gylden*",
+      "fantasy æstetik*",
+      "continue campaign*",
+      "new campaign",
+      "load campaign",
+      "æstetik*",
+      "dnd + design*",
+      "dnd + udseende",
+      "dnd + ser ud"
+    ],
+    "contextKeywords": [
+      "design*",
+      "udseende",
+      "hvordan ser den ud",
+      "farve*",
+      "font*",
+      "æstetik*",
+      "forsiden"
+    ],
+    "answers": [
+      "Designet har en fantasy-æstetik med gyldne accenter, som skal give en varm, gylden stemning, der passer til D&D-målgruppen. Knapperne bruger fonten EB Garamond med dekorative pile, og logoet bruger Cinzel Decorative. Gyldne hjørne-dekorationer rammer siden ind."
+    ],
+    "more": [
+      "På forsiden ligger 'Continue Campaign' øverst med den mest fremtrædende styling, fordi den er den primære handling for tilbagevendende brugere. Testpersonerne kiggede også efter den først. Derefter kommer 'Load Campaign' og 'New Campaign', mens Encounters og Information ligger nederst, fordi de bruges sjældnere.",
+      "Alle primære knapper har samme stil med gylden baggrund og mørk tekst, så man kan genkende dem overalt. Nede i højre hjørne ligger dato, sessionsnummer og kampagnens navn, så DM'en hele tiden ved, hvilken campaign den er i gang med."
+    ]
+  },
+  {
+    "category": "dnd-proces",
+    "topic": "dnd",
+    "follows": ["dnd"],
+    "keywords": [
+      "double diamond",
+      "fasemodel*",
+      "discover*",
+      "d d + proces*",
+      "dm + proces*",
+      "overseer* + proces*",
+      "creative brief",
+      "user stor*",
+      "iterativ*",
+      "d d + prototype*",
+      "d d + figma",
+      "dnd + proces*",
+      "dnd + prototype*",
+      "dnd + figma"
+    ],
+    "contextKeywords": [
+      "proces*",
+      "hvordan arbejdede i",
+      "hvordan arbejdede du",
+      "hvordan gik det til",
+      "hvordan startede i"
+    ],
+    "answers": [
+      "Gruppen brugte fasemodellen The Double Diamond med de fire faser Discover, Define, Develop og Deliver. Først undersøgte de målgruppen og eksisterende løsninger, så lavede de en creative brief og user stories, derefter prototyper i Figma, og til sidst programmerede og deployede de webappen."
+    ],
+    "more": [
+      "Processen var iterativ. Testresultaterne fra Develop-fasen ændrede både prioriteringen af features og måden, de programmerede funktionaliteterne på, så gruppen hoppede frem og tilbage mellem faserne.",
+      "Prototyperne startede som lo-fi og blev til hi-fi i Figma. De blev testet med tænke-højt-tests og en heuristisk evaluering, før programmeringen gik i gang."
+    ]
+  },
+  {
+    "category": "dnd-funktioner",
+    "topic": "dnd",
+    "follows": ["dnd"],
+    "keywords": [
+      "funktion*",
+      "features",
+      "d d + kan",
+      "hvad kan den",
+      "hvad gør den",
+      "hvad går den ud på",
+      "quick note*",
+      "campaign*",
+      "module*",
+      "infobox*",
+      "vejr*",
+      "battle map*",
+      "worldmap*",
+      "grid",
+      "dnd + kan"
+    ],
+    "contextKeywords": [
+      "hvad kan den",
+      "hvad gør den",
+      "hvad går den ud på",
+      "hvad går det ud på",
+      "hvordan virker den",
+      "funktion*",
+      "features"
+    ],
+    "answers": [
+      "Webappen har tre hovedting. Man kan forberede sessions med noter, kort og encounters ét sted, man kan styre, hvad spillerne ser på den eksterne skærm, og man kan sætte en combat op med initiative, health og damage. DM'en styrer det hele fra sin egen skærm."
+    ],
+    "more": [
+      "Til forberedelsen kan en DM oprette campaigns og moduler og skrive quick notes undervejs. Noterne bliver sorteret, så de er klar til næste session.",
+      "På worldmappet kan DM'en tilføje vejr-effekter, og i combat kan der sættes et grid op, så man kan se bevægelsesafstande. Det styres via en infobox, så spillerne ser det på den eksterne skærm."
+    ]
+  },
+  {
+    "category": "dnd-projekt",
+    "topic": "dnd",
+    "follows": ["steno", "erfaring", "studie"],
+    "keywords": [
+      "d d",
+      "dnd",
+      "dungeons*",
+      "dungeon master*",
+      "overseer*",
+      "vault*",
+      "rollespil*",
+      "tredje semester",
+      "3 semester",
+      "frontend linjen",
+      "frontendlinjen",
+      "frontend linje*",
+      "webapp*",
+      "web app*",
+      "dm"
+    ],
+    "contextKeywords": [
+      "det andet projekt",
+      "andet projekt",
+      "et andet projekt",
+      "andre projekter",
+      "flere projekter",
+      "hvad med det andet",
+      "hvad ellers har du lavet"
+    ],
+    "answers": [
+      "Rune har også lavet en webapp til Dungeons & Dragons, 'The Overseer's Vault'. Den blev lavet i en gruppe på 3. semester af multimediedesigner-uddannelsen, hvor de gik på frontend-linjen. Det er et værktøj til Dungeon Masters, som samler forberedelse og afvikling af spilsessions ét sted, når spillerne sidder fysisk sammen.",
+      "Et af Runes tidligere projekter er 'The Overseer's Vault', en webapp til D&D. Den hjælper en Dungeon Master med at holde styr på sin kampagne, mens spillerne sidder rundt om et bord og kigger på en ekstern skærm. Projektet blev lavet i en gruppe på 3. semester."
+    ],
+    "repeat": [
+      "Som sagt: 'The Overseer's Vault', en webapp til Dungeon Masters i D&D."
+    ],
+    "more": [
+      "Idéen kom af, at eksisterende værktøjer som Roll20 og D&D Beyond er lavet til at spille online. Gruppen fandt ud af, at Dungeon Masters, der spiller fysisk sammen med deres spillere, mangler ét samlet værktøj til både forberedelse og afvikling.",
+      "Processen fulgte fasemodellen The Double Diamond, og undervejs testede de en prototype på brugere. Testene ændrede både design og programmering.",
+      "Teknisk er den bygget som en Single Page Application i React med Firebase som database. Det færdige produkt kunne bruges i rigtige D&D-sessions."
     ]
   },
   {
@@ -1049,11 +1450,13 @@
     ],
     "more": [
       "Hans største projekt er hovedopgaven til Steno Museet, en interaktiv touch-skærm, som bliver brugt af rigtige mennesker i en udstilling.",
-      "Musikalsk har han spillet på festivaler som Bloodstock Open Air, Summer Breeze og Sabaton Open Air og indspillet to albums."
+      "Musikalsk har han spillet på festivaler som Bloodstock Open Air, Summer Breeze og Sabaton Open Air og indspillet to albums.",
+      "Han har også lavet en webapp til Dungeons & Dragons, 'The Overseer's Vault', i en gruppe på 3. semester af multimediedesigner-uddannelsen."
     ]
   },
   {
     "category": "fritid",
+    "topic": "fritid",
     "keywords": [
       "fritid*",
       "hobby*",
@@ -1062,28 +1465,482 @@
       "interesse*",
       "hvad laver du",
       "for sjov",
-      "i weekenden"
+      "i weekenden",
+      "fritidsinteresse*"
     ],
     "answers": [
-      "Rune bruger meget af sin fritid på musik. Han spiller trommer i bandet Svartsot og hører en masse musik. Ellers læser han gerne en god bog.",
-      "Trommer, musik og bøger er kernen i Runes fritid."
+      "Rune bruger meget af sin fritid på musik: han spiller trommer i Svartsot og hører en masse metal. Ellers læser han fantasy, spiller spil og D&D og ser gyserfilm.",
+      "Trommer, bøger, spil og gyserfilm er kernen i Runes fritid."
     ],
-    "repeat": ["Stadig musik og bøger."]
+    "repeat": ["Stadig musik, bøger, spil og film."],
+    "more": [
+      "Bøger: Rune læser mest skønlitteratur, især fantasy og dystopiske fortællinger, som en flugt fra hverdagen.",
+      "Spil: han spiller multiplayer som Valheim og Helldivers, singleplayer på sin PS5, og så har han spillet D&D i mange år.",
+      "Film: gyser og sci-fi er hans yndlingsgenrer, og han kan også lide fantasy-film."
+    ]
+  },
+  {
+    "category": "boeger-yndling",
+    "topic": "boeger",
+    "follows": ["boeger"],
+    "keywords": [
+      "yndlingsbog*",
+      "yndlingsbøger",
+      "favoritbog*",
+      "favoritbøger",
+      "yndlingsserie*",
+      "ringenes herre",
+      "hobbitten",
+      "hobbit*",
+      "tolkien",
+      "lord of the rings",
+      "lotr"
+    ],
+    "contextKeywords": ["yndling*", "favorit*", "bedste", "hvilken er bedst"],
+    "answers": [
+      "Ringenes Herre og Hobbitten er nogle af Runes absolutte favoritter, og de bliver ved med at være det. Han har læst dem begge."
+    ],
+    "more": [
+      "Han er særligt glad for fantasy, hvor man kan flygte helt væk fra virkeligheden. Witcher-bøgerne og Warcraft-romanerne hører også til dem, han er vild med."
+    ]
+  },
+  {
+    "category": "boeger-seneste",
+    "topic": "boeger",
+    "follows": ["boeger"],
+    "keywords": [
+      "senest læst",
+      "sidst læst",
+      "seneste bog",
+      "sidste bog",
+      "læser + lige nu",
+      "læste + sidst",
+      "sunrise*",
+      "reaping*"
+    ],
+    "contextKeywords": [
+      "senest*",
+      "seneste",
+      "sidste",
+      "lige nu",
+      "for nyligt"
+    ],
+    "answers": [
+      "Den seneste bog, Rune har læst, er 'Sunrise on the Reaping', en prequel til Hunger Games-bøgerne. Han syntes, den var overraskende god."
+    ]
+  },
+  {
+    "category": "boeger-hungergames",
+    "topic": "boeger",
+    "follows": ["boeger"],
+    "keywords": [
+      "hunger games",
+      "hungergames",
+      "panem",
+      "prequel*",
+      "katniss*",
+      "ballad of songbirds"
+    ],
+    "contextKeywords": ["dystopi*"],
+    "answers": [
+      "Rune har læst Hunger Games-bøgerne og for nylig også de to prequels. Den seneste er 'Sunrise on the Reaping', som han syntes var overraskende god."
+    ],
+    "more": [
+      "Hunger Games hører til de dystopiske fortællinger, som han er vild med ved siden af fantasy."
+    ]
+  },
+  {
+    "category": "boeger-witcher",
+    "topic": "boeger",
+    "follows": ["boeger"],
+    "keywords": ["witcher*", "heksemester*", "sapkowski"],
+    "contextKeywords": ["witcher*"],
+    "answers": [
+      "Rune er meget imponeret over Witcher-bøgerne. Han synes, de var vildt fede at læse, og de forklarede meget af loren, som han senere kunne genkende, da han spillede Witcher 3."
+    ]
+  },
+  {
+    "category": "boeger-warcraft",
+    "topic": "boeger",
+    "follows": ["boeger", "spil"],
+    "keywords": [
+      "warcraft* + bog*",
+      "warcraft* + bøger",
+      "warcraft* + roman*",
+      "wow + bog*",
+      "wow + bøger",
+      "wow + roman*",
+      "world of warcraft + bog*",
+      "world of warcraft + bøger",
+      "world of warcraft + roman*",
+      "lore*",
+      "lich king*",
+      "wotlk"
+    ],
+    "contextKeywords": ["romaner*", "hvor mange", "bøgerne"],
+    "answers": [
+      "Rune har læst over 14 forskellige World of Warcraft-romaner, fordi spillets lore også kommer til udtryk i en række fantasy-romaner. Han synes, de er virkelig gode, og han elsker generelt den gamle lore i Warcraft og World of Warcraft, særligt Lich King-æraen."
+    ]
+  },
+  {
+    "category": "boeger-harrypotter",
+    "topic": "boeger",
+    "follows": ["boeger"],
+    "keywords": ["harry potter*", "hogwarts*", "potter*"],
+    "contextKeywords": ["harry potter*"],
+    "answers": ["Selvfølgelig har Rune også læst Harry Potter."]
+  },
+  {
+    "category": "boeger-udgaver",
+    "topic": "boeger",
+    "follows": ["boeger"],
+    "keywords": [
+      "limited edition*",
+      "special edition*",
+      "udgave*",
+      "samler*",
+      "samle på",
+      "old school",
+      "old school*",
+      "papirbog*",
+      "e bog*",
+      "e bøger",
+      "lydbog*",
+      "fysiske bøger",
+      "købe bøger",
+      "køber bøger"
+    ],
+    "contextKeywords": ["udgave*", "hvordan køber", "hvordan læser"],
+    "answers": [
+      "Rune er old-school og elsker at købe en bog i en bestemt limited eller special edition, som ser flot ud og ligger godt i hånden, når man læser den."
+    ]
+  },
+  {
+    "category": "boeger-tempo",
+    "topic": "boeger",
+    "follows": ["boeger"],
+    "keywords": [
+      "hvor ofte + læse*",
+      "hvor meget + læse*",
+      "hvor hurtigt + læse*",
+      "læsehastighed*",
+      "hvor lang tid + bog*",
+      "hvor lang tid + læse*",
+      "hvor mange bøger",
+      "læser du meget",
+      "læser rune meget",
+      "læser meget"
+    ],
+    "contextKeywords": ["hvor ofte", "hvor hurtigt", "hvor lang tid"],
+    "answers": [
+      "Det svinger meget, hvor ofte Rune læser. Men når en god bog fanger ham, kan han sagtens få den læst inden for et par uger."
+    ]
   },
   {
     "category": "boeger",
+    "topic": "boeger",
+    "follows": ["fritid"],
     "keywords": [
       "bog",
       "bogen",
       "bøger",
+      "bøgerne",
       "læse*",
       "læsning",
       "roman*",
-      "forfatter*"
+      "forfatter*",
+      "litteratur*",
+      "skønlitteratur*",
+      "faglitteratur*",
+      "fagbog*",
+      "fagbøger",
+      "bøger + lide",
+      "hvorfor + læse*",
+      "flugt",
+      "escape*",
+      "eskapisme"
     ],
     "answers": [
-      "Rune læser gerne en god bog — det er en af hans faste fritidsting. Hvad hans yndlingsbog er, har han ikke fortalt mig endnu.",
-      "Bøger er en fast del af Runes fritid. Hvilke, ved jeg desværre ikke."
+      "Rune læser mest skønlitteratur. Faglitteratur gider han ikke, for der er rigeligt at læse op på via studiet. Når han læser, skal det være en flugt til noget helt andet, så han er vild med fantasy og dystopiske fortællinger.",
+      "Bøger er en fast del af Runes fritid, og han vælger skønlitteratur, helst fantasy eller dystopi. Han bruger læsningen til at tage en flugt fra hverdagen og studiet."
+    ],
+    "repeat": [
+      "Som sagt: skønlitteratur, især fantasy og dystopi. Faglitteratur læser han kun, når han skal."
+    ],
+    "more": [
+      "Ringenes Herre og Hobbitten er nogle af hans favoritter. Han har også læst Harry Potter, Hunger Games og Witcher-bøgerne, og over 14 romaner fra World of Warcraft-universet.",
+      "Den seneste bog, han har læst, er 'Sunrise on the Reaping', en prequel til Hunger Games. Den var overraskende god.",
+      "Han er old-school og elsker at købe bøger i flotte limited eller special editions, som ligger godt i hånden."
+    ]
+  },
+  {
+    "category": "spil-dnd",
+    "topic": "spil",
+    "follows": ["spil"],
+    "keywords": [
+      "d d + spiller*",
+      "dnd + spiller*",
+      "d d + spillet",
+      "dnd + spillet",
+      "d d + privat",
+      "dnd + privat",
+      "d d + kaos*",
+      "dnd + kaos*",
+      "game master*",
+      "gamemaster*",
+      "dungeon master* + spiller*",
+      "været + dm",
+      "er du dm",
+      "er rune dm",
+      "dm + gruppe*",
+      "dm + spiller*"
+    ],
+    "contextKeywords": ["d d", "dnd", "dungeons*"],
+    "answers": [
+      "Rune har spillet D&D i mange år og har også været game master for flere grupper. Han elsker, at det altid bliver kaotisk, sjovt og tilfældigt, for man kan forberede sig nok så meget, men partyet vender alligevel op og ned på det hele, og så må man improvisere."
+    ],
+    "more": [
+      "Han har også lavet en webapp til D&D som projekt på studiet, 'The Overseer's Vault', som hjælper en Dungeon Master med forberedelse og afvikling."
+    ]
+  },
+  {
+    "category": "spil-wow",
+    "topic": "spil",
+    "follows": ["spil"],
+    "keywords": ["wow", "world of warcraft", "warcraft*", "mmo*"],
+    "contextKeywords": ["warcraft*", "wow"],
+    "answers": [
+      "Rune voksede op med World of Warcraft, og det hang ved i mange år. Men han synes, spillet mistede sin charme undervejs, og han har ikke spillet det i 8 år."
+    ],
+    "more": [
+      "Han holder stadig af den gamle lore, særligt fra Lich King-æraen, og har læst over 14 romaner fra World of Warcraft-universet."
+    ]
+  },
+  {
+    "category": "spil-horror",
+    "topic": "spil",
+    "follows": ["spil"],
+    "keywords": [
+      "resident evil",
+      "resident evil + spil*",
+      "dead space",
+      "callisto*",
+      "survival horror",
+      "horror + spil*",
+      "gyser + spil*",
+      "sci fi horror"
+    ],
+    "contextKeywords": ["horror*", "gyser*", "alene"],
+    "answers": [
+      "Rune elsker horror-spil, især Resident Evil-serien, Dead Space og The Callisto Protocol, som han kalder virkelig fede sci-fi horror-spil. Der er en hage: Han kan ikke spille dem alene, så han skal have en kammerat til at sidde ved siden af."
+    ],
+    "more": [
+      "Når han programmerer sent på et projekt, hører han typisk ambience fra Resident Evil-spillene for at kunne fokusere."
+    ]
+  },
+  {
+    "category": "spil-multiplayer",
+    "topic": "spil",
+    "follows": ["spil"],
+    "keywords": [
+      "multiplayer*",
+      "multi player*",
+      "co op*",
+      "coop*",
+      "valheim",
+      "helldivers*",
+      "online spil"
+    ],
+    "contextKeywords": [
+      "multiplayer*",
+      "sammen med andre",
+      "sammen med venner"
+    ],
+    "answers": [
+      "Når det er multiplayer, spiller Rune mest Valheim og Helldivers."
+    ]
+  },
+  {
+    "category": "spil-singleplayer",
+    "topic": "spil",
+    "follows": ["spil"],
+    "keywords": [
+      "singleplayer*",
+      "single player*",
+      "ps5",
+      "playstation*",
+      "konsol*",
+      "assassin*",
+      "crimson desert",
+      "kena",
+      "witcher 3",
+      "witcher + spil*"
+    ],
+    "contextKeywords": ["singleplayer*", "alene", "ps5", "konsol*"],
+    "answers": [
+      "På sin PS5 spiller Rune mest singleplayer: Assassin's Creed (han kan lide de fleste spil i serien), Witcher 3, Crimson Desert, Kena: Bridge of Spirits og især Resident Evil."
+    ]
+  },
+  {
+    "category": "spil-yndling",
+    "topic": "spil",
+    "follows": ["spil"],
+    "keywords": [
+      "yndlingsspil*",
+      "favoritspil*",
+      "bedste spil",
+      "yndlings spil"
+    ],
+    "contextKeywords": ["yndling*", "favorit*", "bedste"],
+    "answers": [
+      "Rune har ikke udpeget ét yndlingsspil over for mig, men Resident Evil-serien er den, han især holder af, og den spiller han sammen med en kammerat."
+    ]
+  },
+  {
+    "category": "spil",
+    "topic": "spil",
+    "follows": ["fritid"],
+    "keywords": [
+      "spil",
+      "spillene",
+      "computerspil*",
+      "gamer*",
+      "gaming",
+      "games",
+      "hvilke spil",
+      "spiller du spil",
+      "spiller rune spil",
+      "spiller han spil",
+      "spiller du computerspil",
+      "spiller + spil",
+      "videospil + spiller*",
+      "videospil + rune",
+      "hvilke videospil",
+      "spil + lide",
+      "spil + interesse*"
+    ],
+    "answers": [
+      "Rune gamer meget. Multiplayer er det mest Valheim og Helldivers, og på sin PS5 spiller han singleplayer, blandt andet Assassin's Creed, Witcher 3 og Resident Evil. Så har han også spillet D&D i mange år.",
+      "Spil fylder en del i Runes fritid: Valheim og Helldivers sammen med andre, Assassin's Creed, Witcher 3 og især Resident Evil alene på PS5, og D&D med sine grupper."
+    ],
+    "repeat": [
+      "Som sagt: Valheim, Helldivers, Assassin's Creed, Witcher 3, Resident Evil og D&D."
+    ],
+    "more": [
+      "På PS5 spiller han singleplayer som Assassin's Creed (de fleste i serien), Witcher 3, Crimson Desert, Kena: Bridge of Spirits og især Resident Evil.",
+      "Horror-spil er noget helt særligt for ham: Resident Evil, Dead Space og The Callisto Protocol, men de skal helst spilles med en kammerat ved siden af.",
+      "Han voksede op med World of Warcraft, men har ikke spillet det i 8 år, fordi det mistede sin charme."
+    ]
+  },
+  {
+    "category": "film-king",
+    "topic": "film",
+    "follows": ["film"],
+    "keywords": [
+      "stephen king",
+      "welcome to derry",
+      "it film*",
+      "it filmene",
+      "pennywise*"
+    ],
+    "contextKeywords": ["stephen king", "it"],
+    "answers": [
+      "Rune er meget imponeret over nærmest alle filmatiseringer af Stephen King, særligt de nyere IT-film og serien 'Welcome to Derry'."
+    ]
+  },
+  {
+    "category": "film-yndling",
+    "topic": "film",
+    "follows": ["film"],
+    "keywords": [
+      "yndlingsfilm*",
+      "favoritfilm*",
+      "bedste film*",
+      "yndlingsserie*"
+    ],
+    "contextKeywords": ["yndling*", "favorit*", "bedste"],
+    "answers": [
+      "En enkelt yndlingsfilm har Rune ikke udpeget for mig, men i gyser-genren er han især imponeret over Insidious, The Conjuring, Saw og filmatiseringerne af Stephen King."
+    ]
+  },
+  {
+    "category": "film-titler",
+    "topic": "film",
+    "follows": ["film"],
+    "keywords": [
+      "insidious",
+      "insidous",
+      "conjuring*",
+      "saw",
+      "hvilke gyserfilm",
+      "hvilke gyser film",
+      "hvilke horrorfilm"
+    ],
+    "contextKeywords": ["hvilke film", "titler", "eksempler"],
+    "answers": [
+      "Rune er meget imponeret over Insidious-filmene, The Conjuring og Saw. Han synes også, at næsten alle filmatiseringer af Stephen King er gode."
+    ]
+  },
+  {
+    "category": "film-fantasy",
+    "topic": "film",
+    "follows": ["film"],
+    "keywords": [
+      "ringenes herre + film*",
+      "fantasyfilm*",
+      "fantasy film*",
+      "hobbit* + film*"
+    ],
+    "contextKeywords": ["fantasy*"],
+    "answers": [
+      "Rune er også til fantasy-film som Ringenes Herre og lignende. Bøgerne er blandt hans favoritter."
+    ]
+  },
+  {
+    "category": "film-scifi",
+    "topic": "film",
+    "follows": ["film"],
+    "keywords": ["sci fi", "scifi", "science fiction"],
+    "contextKeywords": ["sci fi", "scifi"],
+    "answers": [
+      "Rune er pjattet med sci-fi, og det kan man vist se på mig. Mit eget udseende er sci-fi-inspireret."
+    ]
+  },
+  {
+    "category": "film",
+    "topic": "film",
+    "follows": ["fritid"],
+    "keywords": [
+      "film*",
+      "filmatisering*",
+      "biograf*",
+      "gyser*",
+      "gyserfilm*",
+      "horror*",
+      "serier",
+      "tv serier",
+      "film + lide",
+      "gyser + lide"
+    ],
+    "answers": [
+      "Rune er helt pjattet med gyser og sci-fi. Han elsker især horror, fordi genren altid eksperimenterer med forskellige filmiske virkemidler.",
+      "Gyser og sci-fi er Runes yndlingsgenrer på film. Horror fascinerer ham, fordi den hele tiden prøver nye filmiske virkemidler af."
+    ],
+    "repeat": [
+      "Som sagt: gyser og sci-fi, og især horror på grund af de filmiske virkemidler."
+    ],
+    "more": [
+      "Han er meget imponeret over Insidious, The Conjuring, Saw og nærmest alle filmatiseringer af Stephen King, særligt de nyere IT-film og serien 'Welcome to Derry'.",
+      "Han indrømmer, at der er langt mellem de gode gyserfilm, men synes, der er kommet meget godt de sidste 10 år.",
+      "Han er også til fantasy-film som Ringenes Herre og lignende."
+    ]
+  },
+  {
+    "category": "fritid-genrer",
+    "topic": "fritid",
+    "keywords": ["fantasy*", "dystopi*", "dystopiske"],
+    "answers": [
+      "Rune er vild med fantasy og dystopiske fortællinger, og det går igen i det, han læser, spiller og ser. Ved siden af er han glad for horror og sci-fi."
     ]
   },
   {
@@ -1264,10 +2121,11 @@
     "category": "fallback",
     "keywords": [],
     "answers": [
-      "Det har Rune ikke fortalt mig noget om endnu.",
-      "Hov, den ramte ved siden af. Jeg er bedst til: {forslag}",
-      "Der har jeg desværre ikke svaret.",
-      "Den forstod jeg ikke helt. Prøv fx: {forslag}"
+      "Det har Rune ikke fortalt mig noget om endnu. Ellers tag og spørg Rune næste gang du ser ham! Jeg er trods alt bare en bot, og har mine begrænsninger :P",
+      "Hov, den ramte ved siden af. Jeg er bedst til: {forslag}. Ellers kan du jo spørge Rune selv næste gang, du ser ham. Jeg er trods alt bare en bot.",
+      "Der har jeg desværre ikke svaret. Ellers tag og spørg Rune næste gang du ser ham! Jeg har mine begrænsninger.",
+      "Den forstod jeg ikke helt. Prøv fx: {forslag}. Eller spørg Rune selv næste gang du ser ham, jeg er trods alt bare en bot.",
+      "Jeg har måske misforstået dig, men jeg bruger ingen LLM, så medmindre min laaaaaange JSON-fil indeholder det du søger, så må jeg melde pas. Ellers så prøv at spørge mig om noget andet!"
     ]
   }
 ]

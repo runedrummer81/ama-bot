@@ -1,44 +1,367 @@
 [
   {
-    "category": "bosted",
-    "keywords": ["bor", "fra", "by"],
-    "answers": ["Jeg bor i Højbjerg", "Jeg bor i Aarhus kommune"]
-  },
-  {
-    "category": "fritid",
-    "keywords": ["fritid", "hobby", "kan lide"],
+    "category": "om-mig",
+    "keywords": [
+      "fortæl om dig",
+      "fortæl om dig selv",
+      "fortæl om rune",
+      "fortæl noget",
+      "fortæl mig noget",
+      "om dig",
+      "om rune",
+      "hvem er rune",
+      "præsenter dig",
+      "beskriv dig"
+    ],
     "answers": [
-      "I min fritid spiller jeg trommer og hører musik",
-      "Jeg elsker virkelig at læse en god bog"
+      "Jeg hedder Rune, er {alder} år og bor i Højbjerg. Jeg spiller trommer, læser gerne en god bog og elsker lasagne (jeg er vegetar). Spørg endelig løs om mere!",
+      "Kort version: Rune, {alder} år, fra Højbjerg ved Aarhus. Trommer, bøger og vegetarisk lasagne fylder meget. Hvad vil du vide mere om?"
+    ],
+    "more": [
+      "Jeg læser til webudvikler, og det her er faktisk et af mine skoleprojekter. Botten er bygget med HTML, CSS, JavaScript og Node.js."
     ]
   },
   {
-    "category": "om-mig",
-    "keywords": ["fortæl", "om dig", "om rune", "hvem er rune"],
+    "category": "navn",
+    "keywords": ["navn", "hedder", "hvem er du", "hvad kalder"],
     "answers": [
-      "Jeg hedder Rune, er 25 år og bor i Højbjerg. Jeg spiller trommer, læser gerne en god bog, og elsker lasagne (jeg er vegetar). Spørg endelig løs om mere!"
+      "Jeg hedder Rune.",
+      "Rune — fornøjelsen er på min side.",
+      "Mit navn er Rune. Hvad skal jeg kalde dig?"
     ]
   },
   {
     "category": "alder",
-    "keywords": ["alder", "gammel", "fødselsdag"],
-    "answers": ["Jeg er 28 år."]
+    "keywords": [
+      "alder",
+      "gammel",
+      "hvor gammel",
+      "år gammel",
+      "hvor mange år",
+      "fødselsdag*",
+      "født"
+    ],
+    "answers": [
+      "Jeg er {alder} år gammel.",
+      "{alder} år.",
+      "Jeg er {alder}. Og alderen regner sig selv ud fra min fødselsdato, så svaret er altid rigtigt."
+    ]
+  },
+  {
+    "category": "bosted",
+    "keywords": [
+      "bor",
+      "bo",
+      "bosted*",
+      "by",
+      "aarhus",
+      "århus",
+      "højbjerg",
+      "adresse*",
+      "hvor kommer du fra",
+      "hvor er du fra",
+      "kommer du fra",
+      "hvor holder du til"
+    ],
+    "answers": [
+      "Jeg bor i Højbjerg.",
+      "Jeg bor i Højbjerg, som er en del af Aarhus kommune.",
+      "Højbjerg, lige syd for Aarhus."
+    ],
+    "repeat": [
+      "Stadig i Højbjerg. Jeg har ikke flyttet mig siden sidst.",
+      "Som jeg sagde: Højbjerg i Aarhus kommune."
+    ],
+    "more": [
+      "Højbjerg ligger lige syd for Aarhus centrum, og det er en del af Aarhus kommune."
+    ]
+  },
+  {
+    "category": "fritid",
+    "keywords": [
+      "fritid*",
+      "hobby*",
+      "hobbies",
+      "kan lide",
+      "interesse*",
+      "hvad laver du",
+      "for sjov",
+      "i weekenden"
+    ],
+    "answers": [
+      "I min fritid spiller jeg trommer og hører musik. Og så læser jeg gerne en god bog.",
+      "Trommer, musik og bøger — det er kernen i min fritid.",
+      "Jeg bruger min fritid på at spille trommer, høre musik og læse."
+    ],
+    "repeat": [
+      "Stadig trommer, musik og bøger. Ellers spørg mere specifikt, fx om musik eller bøger.",
+      "Fritiden er stadig den samme: trommer, musik og en god bog."
+    ],
+    "more": [
+      "Vil du vide mere, så spørg fx til min musik eller mine bøger — dem har jeg flere svar om."
+    ]
+  },
+  {
+    "category": "musik",
+    "keywords": [
+      "musik*",
+      "trommer*",
+      "trommeslager*",
+      "instrument*",
+      "spiller du",
+      "band",
+      "koncert*"
+    ],
+    "answers": [
+      "Jeg spiller trommer, og jeg hører meget musik.",
+      "Trommer er mit instrument.",
+      "Musik er en stor del af min fritid — både at spille trommer og at lytte."
+    ],
+    "repeat": [
+      "Stadig trommer. Det er det instrument, jeg spiller.",
+      "Musik og trommer, som før — der er ikke kommet et nyt instrument til."
+    ]
+  },
+  {
+    "category": "boeger",
+    "keywords": [
+      "bog",
+      "bogen",
+      "bøger",
+      "læse*",
+      "læsning",
+      "roman*",
+      "forfatter*"
+    ],
+    "answers": [
+      "Jeg læser gerne en god bog — det er en af mine faste fritidsting.",
+      "Bøger? Ja, jeg elsker at læse en god bog."
+    ]
   },
   {
     "category": "livret",
-    "keywords": ["mad", "dessert", "kok"],
-    "answers": ["Jeg elsker lasagne", "jeg er desuden vegetar"]
+    "keywords": [
+      "mad",
+      "livret*",
+      "yndlingsmad",
+      "spiser",
+      "spise",
+      "lasagne",
+      "dessert*",
+      "vegetar*",
+      "kød",
+      "madlavning",
+      "lave mad"
+    ],
+    "answers": [
+      "Jeg elsker lasagne — og jeg er vegetar.",
+      "Lasagne er min livret. Jeg spiser ikke kød, så den er selvfølgelig vegetarisk.",
+      "Mad? Lasagne, hele vejen. (Vegetar, hvis du undrede dig.)"
+    ],
+    "repeat": [
+      "Stadig lasagne. Nogle ting ændrer sig ikke.",
+      "Som sagt: lasagne, og stadig vegetarisk."
+    ],
+    "more": [
+      "Jeg er vegetar, så lasagnen er helt uden kød. Det er stadig min favorit."
+    ]
   },
   {
-    "category": "navn",
-    "keywords": ["navn", "hedder", "hvem er du"],
-    "answers": ["Jeg hedder Rune"]
+    "category": "uddannelse",
+    "keywords": [
+      "uddannelse*",
+      "studerer",
+      "studerende",
+      "studie*",
+      "skole*",
+      "webudvikler*",
+      "webudvikling",
+      "læser du til",
+      "programmering",
+      "programmere",
+      "koder du",
+      "hvad laver du til daglig",
+      "hvad laver du til hverdag"
+    ],
+    "answers": [
+      "Jeg er studerende på webudvikler-uddannelsen.",
+      "Jeg læser til webudvikler — og du snakker faktisk med et af mine skoleprojekter lige nu.",
+      "Webudvikling! Det er det, jeg studerer."
+    ],
+    "more": [
+      "Botten her er bygget med HTML, CSS, JavaScript og Node.js — så den er et godt eksempel på, hvad jeg arbejder med."
+    ]
+  },
+  {
+    "category": "om-botten",
+    "keywords": [
+      "robot*",
+      "bot",
+      "ai",
+      "kunstig intelligens",
+      "llm",
+      "chatgpt",
+      "hvordan virker du",
+      "hvordan fungerer du",
+      "hvordan er du lavet",
+      "hvem har lavet dig",
+      "hvem har bygget dig",
+      "lavet af",
+      "teknologi*"
+    ],
+    "answers": [
+      "Jeg er en bot uden AI. Jeg leder efter nøgleord i dit spørgsmål og vælger et svar, som Rune har skrevet.",
+      "Bag mig ligger en Node.js-server med Express. Mine svar ligger i en JSON-fil, og jeg finder dem med regex.",
+      "Rune har bygget mig som skoleprojekt. Ingen sprogmodel — bare nøgleord, regex og en portion tilfældighed."
+    ],
+    "more": [
+      "Hver gang du skriver noget, renser jeg teksten, leder efter nøgleord og vælger den kategori med flest træffere. Så trækker jeg en variant af svaret, som du ikke har set endnu."
+    ]
   },
   {
     "category": "capabilities",
-    "keywords": ["hvad kan du", "hvad kan jeg spørge", "hjælp"],
+    "keywords": [
+      "hvad kan du",
+      "hvad kan jeg spørge",
+      "hvad kan man spørge",
+      "hvad ved du",
+      "hvad skal jeg spørge",
+      "hjælp",
+      "muligheder",
+      "kommandoer"
+    ],
     "answers": [
-      "Jeg kan svare på spørgsmål om mig selv — fx hvor jeg bor, min alder, min fritid og min livret. Spørg bare løs!"
+      "Jeg kan svare på spørgsmål om Rune — fx hvor jeg bor, min alder, min fritid, min musik, min uddannelse og min livret. Prøv fx: {forslag}",
+      "Spørg mig om Rune! Jeg ved en del om bosted, fritid, mad, musik og uddannelse. Prøv fx: {forslag}"
+    ]
+  },
+  {
+    "category": "tid",
+    "keywords": ["klokken", "hvad er klokken", "hvad tid", "tidspunkt"],
+    "answers": ["Klokken er {tid} hos mig.", "Mit ur siger {tid}."]
+  },
+  {
+    "category": "hvordan-gaar-det",
+    "keywords": [
+      "hvordan har du det",
+      "hvordan går det",
+      "har du det godt",
+      "hvad så",
+      "hvad sker der"
+    ],
+    "answers": [
+      "Systemerne kører fint, tak! Hvordan har du det?",
+      "Alt kører stabilt her. Og dig?",
+      "Jeg har det fint — ingen fejl i loggen i dag. Hvordan går det med dig?"
+    ]
+  },
+  {
+    "category": "positiv",
+    "keywords": [
+      "godt",
+      "fint",
+      "super",
+      "fedt",
+      "dejligt",
+      "strålende",
+      "det går fint",
+      "det går godt"
+    ],
+    "answers": [
+      "Dejligt at høre! Hvad har du lyst til at vide om Rune?",
+      "Fedt! Spørg løs, hvis der er noget, du er nysgerrig på."
+    ]
+  },
+  {
+    "category": "kompliment",
+    "keywords": [
+      "sejt",
+      "sej",
+      "cool",
+      "nice",
+      "fed",
+      "imponerende",
+      "flot",
+      "godt lavet",
+      "du er sjov",
+      "sjov"
+    ],
+    "answers": [
+      "Tak, det er rart at høre!",
+      "Tak! Jeg giver den videre til Rune.",
+      "Det varmer i kredsløbene. Tak!"
+    ]
+  },
+  {
+    "category": "tak",
+    "keywords": ["tak", "mange tak", "tusind tak", "tak for hjælpen"],
+    "answers": [
+      "Selv tak!",
+      "Det var så lidt.",
+      "Bare spørg igen, hvis du vil vide mere."
+    ]
+  },
+  {
+    "category": "farvel",
+    "keywords": [
+      "farvel",
+      "hej hej",
+      "vi ses",
+      "ses",
+      "hav det godt",
+      "godnat",
+      "bye"
+    ],
+    "answers": [
+      "Vi ses! Kom endelig tilbage, hvis du får flere spørgsmål.",
+      "Farvel og tak for snakken!",
+      "Hav en god dag — og tak for besøget."
+    ]
+  },
+  {
+    "category": "hilsen",
+    "keywords": [
+      "hej",
+      "hejsa",
+      "hallo",
+      "hey",
+      "hi",
+      "hello",
+      "davs",
+      "halløj",
+      "yo",
+      "goddag",
+      "godmorgen",
+      "godaften"
+    ],
+    "answers": [
+      "{hilsen}! Jeg er Rune-botten. Spørg mig om hvad som helst om Rune.",
+      "Hej med dig! Hvad har du lyst til at vide om Rune?",
+      "{hilsen} og velkommen! Prøv fx: {forslag}"
+    ],
+    "repeat": [
+      "Hej igen! Hvad kan jeg hjælpe med?",
+      "Vi har allerede sagt hej — men jeg siger det gerne en gang til. Hvad vil du vide?",
+      "Hej igen! Prøv fx: {forslag}"
+    ]
+  },
+  {
+    "category": "opfoelgning",
+    "keywords": [],
+    "answers": [
+      "Det var faktisk alt, hvad jeg har om det emne. Prøv fx: {forslag}",
+      "Der er ikke mere i den skuffe endnu. Spørg fx: {forslag}",
+      "Jeg er ikke sikker på, hvad du henviser til. Stil gerne hele spørgsmålet, fx: {forslag}"
+    ]
+  },
+  {
+    "category": "fallback",
+    "keywords": [],
+    "answers": [
+      "Det kender jeg desværre ikke svaret på endnu. Prøv fx: {forslag}",
+      "Hov, den ramte ved siden af. Jeg er bedst til: {forslag}",
+      "Der har Rune ikke lært mig noget om endnu. Spørg fx: {forslag}",
+      "Den forstod jeg ikke helt. Prøv fx: {forslag}"
     ]
   }
 ]

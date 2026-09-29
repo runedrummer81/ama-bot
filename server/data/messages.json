@@ -1,1 +1,28 @@
-[]
+[
+  {
+    "type": "question",
+    "text": "Fortæl om Rune",
+    "createdAt": "2026-09-29T15:07:36.106Z"
+  },
+  {
+    "type": "answer",
+    "text": "Jeg hedder Rune, er 28 år og bor i Højbjerg. Jeg spiller trommer, læser gerne en god bog og elsker lasagne (jeg er vegetar). Spørg endelig løs om mere!",
+    "createdAt": "2026-09-29T15:07:36.106Z",
+    "category": "om-mig",
+    "pool": "answers",
+    "variant": 0
+  },
+  {
+    "type": "question",
+    "text": "yoh",
+    "createdAt": "2026-09-29T15:07:59.316Z"
+  },
+  {
+    "type": "answer",
+    "text": "Der har Rune ikke lært mig noget om endnu. Spørg fx: Hvad er din livret? · Hvordan virker du? · Hvad er dine hobbyer?",
+    "createdAt": "2026-09-29T15:07:59.316Z",
+    "category": "fallback",
+    "pool": "answers",
+    "variant": 2
+  }
+]

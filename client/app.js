@@ -397,18 +397,6 @@ function setupUtilityToggle(selector) {
 setupUtilityToggle("#sound-toggle-btn");
 setupUtilityToggle("#theme-toggle-btn");
 
-const languageToggleButton = document.querySelector("#language-toggle-btn");
-if (languageToggleButton) {
-  languageToggleButton.addEventListener("click", () => {
-    const isEnglish =
-      languageToggleButton.getAttribute("aria-pressed") === "true";
-    const next = !isEnglish;
-
-    languageToggleButton.setAttribute("aria-pressed", String(next));
-    languageToggleButton.textContent = next ? "EN" : "DA";
-  });
-}
-
 const TYPEWRITER_EXAMPLES = [
   "Hvor bor du?",
   "Hvad kan du?",

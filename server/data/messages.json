@@ -1,28 +1,41 @@
 [
   {
     "type": "question",
-    "text": "Fortæl om Rune",
-    "createdAt": "2026-09-29T15:07:36.106Z"
+    "text": "hvad er runes erfaring?",
+    "createdAt": "2026-09-29T16:45:09.299Z"
   },
   {
     "type": "answer",
-    "text": "Jeg hedder Rune, er 28 år og bor i Højbjerg. Jeg spiller trommer, læser gerne en god bog og elsker lasagne (jeg er vegetar). Spørg endelig løs om mere!",
-    "createdAt": "2026-09-29T15:07:36.106Z",
-    "category": "om-mig",
+    "text": "Runes baggrund er både kreativ og teknisk: mange år som trommeslager i to bands, en uddannelse som multimediedesigner og nu webudvikling på EAAA.",
+    "createdAt": "2026-09-29T16:45:09.299Z",
+    "category": "erfaring",
     "pool": "answers",
-    "variant": 0
+    "variant": 1
   },
   {
     "type": "question",
-    "text": "yoh",
-    "createdAt": "2026-09-29T15:07:59.316Z"
+    "text": "kan du fortælle mig mere?",
+    "createdAt": "2026-09-29T16:45:25.660Z"
   },
   {
     "type": "answer",
-    "text": "Der har Rune ikke lært mig noget om endnu. Spørg fx: Hvad er din livret? · Hvordan virker du? · Hvad er dine hobbyer?",
-    "createdAt": "2026-09-29T15:07:59.316Z",
+    "text": "Hov, den ramte ved siden af. Jeg er bedst til: Fortæl om Rune · Hvordan virker du? · Hvad studerer Rune?",
+    "createdAt": "2026-09-29T16:45:25.660Z",
     "category": "fallback",
     "pool": "answers",
-    "variant": 2
+    "variant": 1
+  },
+  {
+    "type": "question",
+    "text": "mere?",
+    "createdAt": "2026-09-29T16:45:31.235Z"
+  },
+  {
+    "type": "answer",
+    "text": "Hans største projekt er hovedopgaven til Steno Museet, en interaktiv touch-skærm, som bliver brugt af rigtige mennesker i en udstilling.",
+    "createdAt": "2026-09-29T16:45:31.235Z",
+    "category": "erfaring",
+    "pool": "more",
+    "variant": 0
   }
 ]

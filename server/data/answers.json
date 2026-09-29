@@ -1,33 +1,57 @@
 [
   {
-    "category": "om-mig",
+    "category": "privat",
     "keywords": [
-      "fortæl om dig",
-      "fortæl om dig selv",
-      "fortæl om rune",
-      "fortæl noget",
-      "fortæl mig noget",
-      "om dig",
-      "om rune",
-      "hvem er rune",
-      "præsenter dig",
-      "beskriv dig"
+      "telefon*",
+      "tlf",
+      "mobilnummer*",
+      "hvad er dit nummer",
+      "cpr*",
+      "adresse*",
+      "hjemmeadresse",
+      "gadenavn",
+      "vejnavn",
+      "præcis + bor",
+      "kontonummer*",
+      "adgangskode*",
+      "password*",
+      "løn",
+      "hvad tjener"
     ],
     "answers": [
-      "Jeg hedder Rune, er {alder} år og bor i Højbjerg. Jeg spiller trommer, læser gerne en god bog og elsker lasagne (jeg er vegetar). Spørg endelig løs om mere!",
-      "Kort version: Rune, {alder} år, fra Højbjerg ved Aarhus. Trommer, bøger og vegetarisk lasagne fylder meget. Hvad vil du vide mere om?"
-    ],
-    "more": [
-      "Jeg læser til webudvikler, og det her er faktisk et af mine skoleprojekter. Botten er bygget med HTML, CSS, JavaScript og Node.js."
+      "Det ved jeg, at Rune ikke vil have, at jeg deler med andre.",
+      "Den slags holder Rune for sig selv, så det deler jeg ikke.",
+      "Det er privat, og Rune vil ikke have, at jeg giver det videre."
     ]
   },
   {
-    "category": "navn",
-    "keywords": ["navn", "hedder", "hvem er du", "hvad kalder"],
+    "category": "kontakt",
+    "keywords": [
+      "mail*",
+      "e mail",
+      "email*",
+      "kontakt*",
+      "skrive til rune",
+      "få fat i rune",
+      "hvordan får jeg fat"
+    ],
     "answers": [
-      "Jeg hedder Rune.",
-      "Rune — fornøjelsen er på min side.",
-      "Mit navn er Rune. Hvad skal jeg kalde dig?"
+      "Du kan skrive til Rune på runedrummer18@gmail.com.",
+      "Runes email er runedrummer18@gmail.com."
+    ],
+    "repeat": ["Som før: runedrummer18@gmail.com."]
+  },
+  {
+    "category": "foedselsdag",
+    "keywords": [
+      "fødselsdag*",
+      "fødselsdato*",
+      "hvornår er du født",
+      "hvornår er rune født"
+    ],
+    "answers": [
+      "Den præcise dato holder jeg for mig selv, men Rune er {alder} år gammel.",
+      "Selve datoen deler jeg ikke, men han er {alder} år."
     ]
   },
   {
@@ -38,158 +62,21 @@
       "hvor gammel",
       "år gammel",
       "hvor mange år",
-      "fødselsdag*",
       "født"
     ],
     "answers": [
-      "Jeg er {alder} år gammel.",
-      "{alder} år.",
-      "Jeg er {alder}. Og alderen regner sig selv ud fra min fødselsdato, så svaret er altid rigtigt."
+      "Rune er {alder} år gammel.",
+      "Han er {alder} år.",
+      "Rune er {alder}. Og alderen regner sig selv ud, så svaret er altid rigtigt."
     ]
   },
   {
-    "category": "bosted",
-    "keywords": [
-      "bor",
-      "bo",
-      "bosted*",
-      "by",
-      "aarhus",
-      "århus",
-      "højbjerg",
-      "adresse*",
-      "hvor kommer du fra",
-      "hvor er du fra",
-      "kommer du fra",
-      "hvor holder du til"
-    ],
+    "category": "navn",
+    "keywords": ["navn", "hedder", "hvem er du", "hvad kalder"],
     "answers": [
-      "Jeg bor i Højbjerg.",
-      "Jeg bor i Højbjerg, som er en del af Aarhus kommune.",
-      "Højbjerg, lige syd for Aarhus."
-    ],
-    "repeat": [
-      "Stadig i Højbjerg. Jeg har ikke flyttet mig siden sidst.",
-      "Som jeg sagde: Højbjerg i Aarhus kommune."
-    ],
-    "more": [
-      "Højbjerg ligger lige syd for Aarhus centrum, og det er en del af Aarhus kommune."
-    ]
-  },
-  {
-    "category": "fritid",
-    "keywords": [
-      "fritid*",
-      "hobby*",
-      "hobbies",
-      "kan lide",
-      "interesse*",
-      "hvad laver du",
-      "for sjov",
-      "i weekenden"
-    ],
-    "answers": [
-      "I min fritid spiller jeg trommer og hører musik. Og så læser jeg gerne en god bog.",
-      "Trommer, musik og bøger — det er kernen i min fritid.",
-      "Jeg bruger min fritid på at spille trommer, høre musik og læse."
-    ],
-    "repeat": [
-      "Stadig trommer, musik og bøger. Ellers spørg mere specifikt, fx om musik eller bøger.",
-      "Fritiden er stadig den samme: trommer, musik og en god bog."
-    ],
-    "more": [
-      "Vil du vide mere, så spørg fx til min musik eller mine bøger — dem har jeg flere svar om."
-    ]
-  },
-  {
-    "category": "musik",
-    "keywords": [
-      "musik*",
-      "trommer*",
-      "trommeslager*",
-      "instrument*",
-      "spiller du",
-      "band",
-      "koncert*"
-    ],
-    "answers": [
-      "Jeg spiller trommer, og jeg hører meget musik.",
-      "Trommer er mit instrument.",
-      "Musik er en stor del af min fritid — både at spille trommer og at lytte."
-    ],
-    "repeat": [
-      "Stadig trommer. Det er det instrument, jeg spiller.",
-      "Musik og trommer, som før — der er ikke kommet et nyt instrument til."
-    ]
-  },
-  {
-    "category": "boeger",
-    "keywords": [
-      "bog",
-      "bogen",
-      "bøger",
-      "læse*",
-      "læsning",
-      "roman*",
-      "forfatter*"
-    ],
-    "answers": [
-      "Jeg læser gerne en god bog — det er en af mine faste fritidsting.",
-      "Bøger? Ja, jeg elsker at læse en god bog."
-    ]
-  },
-  {
-    "category": "livret",
-    "keywords": [
-      "mad",
-      "livret*",
-      "yndlingsmad",
-      "spiser",
-      "spise",
-      "lasagne",
-      "dessert*",
-      "vegetar*",
-      "kød",
-      "madlavning",
-      "lave mad"
-    ],
-    "answers": [
-      "Jeg elsker lasagne — og jeg er vegetar.",
-      "Lasagne er min livret. Jeg spiser ikke kød, så den er selvfølgelig vegetarisk.",
-      "Mad? Lasagne, hele vejen. (Vegetar, hvis du undrede dig.)"
-    ],
-    "repeat": [
-      "Stadig lasagne. Nogle ting ændrer sig ikke.",
-      "Som sagt: lasagne, og stadig vegetarisk."
-    ],
-    "more": [
-      "Jeg er vegetar, så lasagnen er helt uden kød. Det er stadig min favorit."
-    ]
-  },
-  {
-    "category": "uddannelse",
-    "keywords": [
-      "uddannelse*",
-      "studerer",
-      "studerende",
-      "studie*",
-      "skole*",
-      "webudvikler*",
-      "webudvikling",
-      "læser du til",
-      "programmering",
-      "programmere",
-      "koder du",
-      "hvad laver du til daglig",
-      "hvad laver du til hverdag"
-    ],
-    "answers": [
-      "Jeg er studerende på webudvikler-uddannelsen.",
-      "Jeg læser til webudvikler — og du snakker faktisk med et af mine skoleprojekter lige nu.",
-      "Webudvikling! Det er det, jeg studerer."
-    ],
-    "more": [
-      "Botten her er bygget med HTML, CSS, JavaScript og Node.js — så den er et godt eksempel på, hvad jeg arbejder med."
+      "Jeg har ikke noget navn. Jeg er bare en bot, som Rune har lavet som projekt på sin uddannelse til webudvikler. Han hedder Rune.",
+      "Mig hedder ingenting, men min skaber hedder Rune. Jeg er hans AMA-bot.",
+      "Jeg er en bot uden navn, lavet af Rune. Det er ham, du kan spørge mig om."
     ]
   },
   {
@@ -210,29 +97,1041 @@
       "teknologi*"
     ],
     "answers": [
-      "Jeg er en bot uden AI. Jeg leder efter nøgleord i dit spørgsmål og vælger et svar, som Rune har skrevet.",
+      "Jeg er en bot, som Rune har lavet som en del af sin uddannelse til webudvikler. Jeg bruger ingen AI, kun nøgleord, regex og en portion tilfældighed.",
       "Bag mig ligger en Node.js-server med Express. Mine svar ligger i en JSON-fil, og jeg finder dem med regex.",
-      "Rune har bygget mig som skoleprojekt. Ingen sprogmodel — bare nøgleord, regex og en portion tilfældighed."
+      "Rune har bygget mig som skoleprojekt. Ingen sprogmodel — bare nøgleord og en stor portion viden om Rune."
     ],
     "more": [
       "Hver gang du skriver noget, renser jeg teksten, leder efter nøgleord og vælger den kategori med flest træffere. Så trækker jeg en variant af svaret, som du ikke har set endnu."
     ]
   },
   {
+    "category": "om-mig",
+    "keywords": [
+      "fortæl om dig",
+      "fortæl om dig selv",
+      "fortæl om rune",
+      "fortæl noget",
+      "fortæl mig noget",
+      "om dig",
+      "om rune",
+      "hvem er rune",
+      "præsenter dig",
+      "præsenter rune",
+      "beskriv dig",
+      "beskriv rune"
+    ],
+    "answers": [
+      "Rune er {alder} år, bor i Højbjerg ved Aarhus og læser til webudvikler. Han er trommeslager i folk-metal-bandet Svartsot, elsker lasagne og er vegetar.",
+      "Kort om Rune: {alder} år, fra Højbjerg, webudvikler-studerende og trommeslager i Svartsot. Han er vegetar og elsker lasagne."
+    ],
+    "more": [
+      "Han har spillet trommer i over 15 år og har blandt andet turneret Europa rundt.",
+      "Jeg er i øvrigt en bot, som Rune har lavet som projekt på sin uddannelse til webudvikler."
+    ]
+  },
+  {
+    "category": "bosted",
+    "keywords": [
+      "bor",
+      "bo",
+      "bosted*",
+      "by",
+      "aarhus",
+      "århus",
+      "højbjerg",
+      "hvor kommer du fra",
+      "hvor er du fra",
+      "kommer du fra",
+      "hvor holder du til"
+    ],
+    "answers": [
+      "Rune bor i Højbjerg, lige syd for Aarhus.",
+      "Han bor i Højbjerg, som er en del af Aarhus kommune.",
+      "Højbjerg ved Aarhus er Runes hjemsted."
+    ],
+    "repeat": [
+      "Stadig Højbjerg. Han har ikke flyttet sig siden sidst.",
+      "Som jeg sagde: Højbjerg i Aarhus kommune."
+    ],
+    "more": [
+      "Højbjerg ligger lige syd for Aarhus centrum, og det er en del af Aarhus kommune."
+    ]
+  },
+  {
+    "category": "musik-jazz-metal",
+    "topic": "musik",
+    "follows": ["musik"],
+    "keywords": [
+      "jazz",
+      "musikskole*",
+      "underviser*",
+      "lærer*",
+      "hvorfor + metal",
+      "troublemaker",
+      "trouble maker"
+    ],
+    "contextKeywords": ["hvorfor metal"],
+    "answers": [
+      "Rune gik på den ordinære musikskole, men hans underviser var rigtig god til jazz, og det passede ikke helt til ham — han ville hellere spille metal. Han indrømmer selv, at han nok var lidt af en troublemaker."
+    ],
+    "more": [
+      "Så fandt han en ny underviser inden for metal, og pludselig blev det meget sjovere at spille trommer. Nogle år senere kom han med i sit første rigtige band, Forever Still."
+    ]
+  },
+  {
+    "category": "musik-start",
+    "topic": "musik",
+    "follows": ["musik"],
+    "keywords": [
+      "længe + trommer*",
+      "længe + spillet",
+      "begyndte + trommer*",
+      "begyndte + spille*",
+      "startede + trommer*",
+      "startede + spille*",
+      "kom i gang",
+      "hvornår + trommer*",
+      "folkeskole*"
+    ],
+    "contextKeywords": [
+      "længe",
+      "hvornår",
+      "hvordan begyndte",
+      "hvordan startede",
+      "hvordan kom",
+      "hvordan gik det"
+    ],
+    "answers": [
+      "Rune har spillet trommer i over 15 år. Han startede i folkeskolens musikundervisning og blev mere og mere ambitiøs — han ville noget mere.",
+      "Over 15 år! Det begyndte med musikundervisning i folkeskolen, og så tog det fart."
+    ],
+    "more": [
+      "Han gik på den ordinære musikskole, men hans underviser var rigtig god til jazz, og det passede ikke helt til Rune — han ville hellere spille metal. Han indrømmer selv, at han nok var lidt af en troublemaker.",
+      "Så fandt han en ny underviser inden for metal, og pludselig blev det meget sjovere at spille trommer. Nogle år senere kom han med i sit første rigtige band, Forever Still."
+    ]
+  },
+  {
+    "category": "burnout",
+    "topic": "musik",
+    "follows": ["band-forever-still", "festivaler", "gymnasium", "albums"],
+    "keywords": [
+      "burnout",
+      "udbrændt",
+      "forlod + band*",
+      "stoppede + band*",
+      "holdt pause",
+      "pause + trommer*"
+    ],
+    "contextKeywords": ["hvorfor", "forlod", "stoppede", "hvad skete der"],
+    "answers": [
+      "Efter nogle år med Forever Still fik Rune et burnout og forlod bandet — uden dårlig stemning. Der gik omkring et år, før han fik lyst til at spille trommer igen.",
+      "Rune fik et burnout og valgte at forlade Forever Still. Der var ingen hårde følelser, og efter cirka et år fik han lyst til at spille igen."
+    ],
+    "more": ["I 2024 kom han så med i Svartsot, og der har han spillet siden."]
+  },
+  {
+    "category": "musik-hvorfor",
+    "topic": "musik",
+    "follows": ["musik"],
+    "keywords": [
+      "hvorfor + trommer*",
+      "bedste + trommer*",
+      "fedeste + trommer*",
+      "fedt + trommer*",
+      "kreativ*",
+      "rytme*"
+    ],
+    "contextKeywords": ["hvorfor", "bedste", "fedeste", "hvad er så fedt"],
+    "answers": [
+      "Rune fortæller, at det bedste ved trommer er, at man kan være kreativ, og at trommerne afgør, hvordan resten af musikken opfattes. Rytmen bestemmer, hvordan alt andet bliver hørt.",
+      "Ifølge Rune afgør trommerne den overordnede opfattelse af musikken, for det er rytmen, der bestemmer, hvordan resten bliver hørt. Og så kan man være kreativ."
+    ]
+  },
+  {
+    "category": "musik-stil",
+    "topic": "musik",
+    "follows": ["musik"],
+    "keywords": [
+      "spillestil",
+      "trommestil",
+      "hurtig*",
+      "dynamisk*",
+      "hvordan spiller + trommer*",
+      "stil + trommer*",
+      "type + trommeslager*",
+      "slags + trommeslager*"
+    ],
+    "contextKeywords": ["stil", "hvordan spiller", "hurtig*"],
+    "answers": [
+      "Rune går efter at være både en meget hurtig og typisk metal-trommeslager og samtidig meget dynamisk og svingende."
+    ]
+  },
+  {
+    "category": "band-forever-still",
+    "topic": "musik",
+    "follows": ["musik"],
+    "keywords": ["forever still"],
+    "contextKeywords": ["første band", "forrige", "tidligere"],
+    "answers": [
+      "Forever Still er et hård-rock-band, som Rune spillede i i en årrække. Det var hans første rigtige band, og med dem spillede han mange koncerter i udlandet.",
+      "Forever Still var Runes første rigtige band, et hård-rock-band, som han spillede mange udenlandske koncerter med."
+    ],
+    "more": [
+      "Rune var på 7 EU-tours med Forever Still. Den første tog han som 18-årig, og han droppede ud af gymnasiet for at turnere rundt med dem.",
+      "Med Forever Still udgav han albummet 'Breathe in Colours' i 2019.",
+      "Efter nogle år fik Rune et burnout og forlod bandet. Der var ingen dårlig stemning."
+    ]
+  },
+  {
+    "category": "band-svartsot",
+    "topic": "musik",
+    "follows": ["musik"],
+    "keywords": ["svartsot"],
+    "contextKeywords": ["nuværende", "nye band", "det andet band", "det andet"],
+    "answers": [
+      "Svartsot er et folk-metal-band, som Rune har spillet i siden 2024. Han elsker de folkemusikalske elementer, fordi de giver mange skæve taktarter og temposkift.",
+      "Siden 2024 har Rune spillet i Svartsot, et folk-metal-band. Det er ifølge ham rigtig sjovt at spille med folkemusikken, for der er mange taktarter og temposkift."
+    ],
+    "more": [
+      "Rune har fuld frihed fra bandets side til at skrive trommerne, som han vil, og det synes han er rigtig fedt.",
+      "Svartsots seneste album, 'Perigrinus', udkom i 2025, og Rune spiller med på det."
+    ]
+  },
+  {
+    "category": "festivaler",
+    "topic": "musik",
+    "follows": ["musik"],
+    "keywords": [
+      "festival*",
+      "bloodstock",
+      "summer breeze",
+      "summerbreeze",
+      "sabaton",
+      "tour*",
+      "turné*",
+      "turne*",
+      "turnere*",
+      "koncert*",
+      "optrådt",
+      "optræde*",
+      "amon amarth",
+      "whitechapel",
+      "soilwork",
+      "main stage"
+    ],
+    "contextKeywords": ["hvordan var det", "det største"],
+    "answers": [
+      "Med Forever Still har Rune spillet på store festivaler som Bloodstock Open Air, Summer Breeze og Sabaton Open Air. Han har været på 7 EU-tours.",
+      "Rune har spillet store festivaler med Forever Still, blandt andet Bloodstock Open Air, Summer Breeze og Sabaton Open Air."
+    ],
+    "more": [
+      "Det vildeste var Bloodstock i 2017: Forever Still åbnede festivalens main stage, delte scene med bl.a. Amon Amarth, Whitechapel og Soilwork og spillede for mindst 10.000 mennesker."
+    ]
+  },
+  {
+    "category": "gymnasium",
+    "topic": "musik",
+    "keywords": ["gymnasium*", "gymnasiet", "droppede ud", "droppet ud"],
+    "answers": [
+      "Rune droppede ud af gymnasiet som 18-årig for at tage på sin første EU-tour med Forever Still."
+    ]
+  },
+  {
+    "category": "albums",
+    "topic": "musik",
+    "follows": ["musik"],
+    "keywords": [
+      "album*",
+      "udgivelse*",
+      "indspillet",
+      "indspille*",
+      "plade*",
+      "breathe in colours",
+      "perigrinus",
+      "peregrinus",
+      "diskografi"
+    ],
+    "contextKeywords": ["album*", "hvad hedder de"],
+    "answers": [
+      "Rune har indspillet to albums i alt: 'Breathe in Colours' med Forever Still (2019) og 'Perigrinus' med Svartsot (2025)."
+    ]
+  },
+  {
+    "category": "in-flames",
+    "topic": "musik",
+    "follows": ["musik"],
+    "keywords": ["in flames", "inflames"],
+    "contextKeywords": ["hvorfor"],
+    "answers": [
+      "In Flames fra Sverige er Runes absolutte yndlingsband. Han har set dem live 7 gange og mener, at de er det bedste band i verden.",
+      "Runes yndlingsband er In Flames. Han har set dem 7 gange live og synes, de er verdens bedste band."
+    ],
+    "more": [
+      "Han lyttede meget til dem som teenager, når han havde det svært. Han elsker alt fra teksterne til de melodiske guitarer og brugen af synthesizer og keyboard."
+    ]
+  },
+  {
+    "category": "korn",
+    "topic": "musik",
+    "keywords": ["korn", "ray luzier"],
+    "answers": [
+      "Korn er en af Runes favoritter. Han elsker deres måde at skrive musik på — det svinger bare, siger han.",
+      "Rune er vild med Korn og deres sangskrivning. Trommeslageren Ray Luzier er en kæmpe inspiration for ham."
+    ],
+    "more": ["Trommeslageren Ray Luzier er en kæmpe inspiration for Rune."]
+  },
+  {
+    "category": "sleep-token",
+    "topic": "musik",
+    "keywords": ["sleep token"],
+    "answers": [
+      "Rune hører meget Sleep Token og er vild med, hvordan de blander genrer. Deres trommeslager er i sin egen klasse, mener han."
+    ]
+  },
+  {
+    "category": "musik-inspiration",
+    "topic": "musik",
+    "keywords": [
+      "inspiration*",
+      "inspirerer*",
+      "inspirerede*",
+      "inspireret",
+      "forbillede*",
+      "idol*",
+      "yndlings + trommeslager*"
+    ],
+    "answers": [
+      "Runes største inspiration på trommer er Ray Luzier fra Korn. Han fremhæver også trommeslageren i Sleep Token som noget helt for sig."
+    ]
+  },
+  {
+    "category": "musik-fokus",
+    "topic": "musik",
+    "keywords": [
+      "resident evil",
+      "eksamen*",
+      "fokus*",
+      "fokus* + hører*",
+      "når + fokus*",
+      "koncentration*",
+      "hører + programmerer*",
+      "hører + studerer",
+      "studere + musik*",
+      "programmerer + musik*",
+      "musik + læse"
+    ],
+    "answers": [
+      "Når Rune sidder sent og programmerer på et eksamensprojekt, hører han typisk ambience fra Resident Evil-spillene. Det hjælper ham med at fokusere."
+    ]
+  },
+  {
+    "category": "musik-genrer",
+    "topic": "musik",
+    "follows": ["musik"],
+    "keywords": [
+      "klassisk",
+      "elektronisk",
+      "dubstep",
+      "folkemusik",
+      "ambience",
+      "filmmusik",
+      "spilmusik",
+      "videospil",
+      "genre*",
+      "udover metal"
+    ],
+    "contextKeywords": ["ellers", "andet"],
+    "answers": [
+      "Udover metal hører Rune også klassisk, elektronisk musik som dubstep og folkemusik med fløjter og sækkepiber. Han er også glad for ambience fra film og videospil."
+    ]
+  },
+  {
+    "category": "musik-yndlings",
+    "topic": "musik",
+    "keywords": [
+      "yndlingsband",
+      "yndlingsmusik",
+      "favoritband*",
+      "favoritmusik",
+      "musiksmag",
+      "hvilken musik",
+      "hvad hører",
+      "hører du",
+      "hører rune",
+      "hører han",
+      "lytter"
+    ],
+    "answers": [
+      "Runes absolutte yndlingsband er In Flames. Derudover hører han meget Korn og Sleep Token.",
+      "Rune elsker In Flames mest af alt. Korn og Sleep Token er også faste favoritter."
+    ]
+  },
+  {
+    "category": "bands",
+    "topic": "musik",
+    "keywords": ["band", "bands", "bandet", "i et band", "i band", "orkester"],
+    "answers": [
+      "Rune spiller i dag i folk-metal-bandet Svartsot. Før det spillede han i hård-rock-bandet Forever Still.",
+      "Svartsot er Runes nuværende band, og Forever Still er hans tidligere."
+    ]
+  },
+  {
+    "category": "musik",
+    "topic": "musik",
+    "keywords": [
+      "musik*",
+      "trommer*",
+      "trommeslager*",
+      "instrument*",
+      "spiller du",
+      "spiller rune",
+      "spiller han"
+    ],
+    "answers": [
+      "Rune er trommeslager og har spillet i over 15 år. I dag spiller han i folk-metal-bandet Svartsot.",
+      "Musik fylder meget hos Rune. Han har spillet trommer i mere end 15 år og er med i bandet Svartsot."
+    ],
+    "repeat": ["Som sagt: trommer i over 15 år, og i dag i Svartsot."],
+    "more": [
+      "Han startede i folkeskolens musikundervisning og blev mere og mere ambitiøs. Spørg gerne til, hvordan det gik derfra.",
+      "Rune har indspillet to albums i alt, ét med hvert af sine bands."
+    ]
+  },
+  {
+    "category": "studie-hvorfor",
+    "topic": "studie",
+    "follows": [
+      "uddannelse",
+      "studie-tid",
+      "studie-multimedie",
+      "studie-teknik"
+    ],
+    "keywords": [
+      "hvorfor + webudvikl*",
+      "hvorfor + studere*",
+      "hvorfor valgte",
+      "valgte + webudvikl*",
+      "top up",
+      "topup",
+      "top op"
+    ],
+    "contextKeywords": ["hvorfor"],
+    "answers": [
+      "Rune valgte webudvikling, fordi han gerne ville blive bedre til det tekniske. På multimediedesigner-uddannelsen havde han altid svært ved programmering, og han ville gerne kunne alt det, det indebærer.",
+      "Fordi Rune gerne ville blive bedre til det tekniske. Programmering var noget, han altid kæmpede med på sin forrige uddannelse, så webudvikling som top-up var det oplagte næste skridt."
+    ]
+  },
+  {
+    "category": "studie-tid",
+    "topic": "studie",
+    "follows": ["uddannelse"],
+    "keywords": [
+      "hvornår + færdig*",
+      "hvornår + uddannet",
+      "færdig + 2028",
+      "hvor længe + studere*",
+      "semester*",
+      "hvor langt + studie*",
+      "hvor langt + uddannelse*"
+    ],
+    "contextKeywords": ["hvornår", "hvor længe", "hvor langt"],
+    "answers": [
+      "Rune regner med at være færdig i starten af 2028, hvis alt går vel.",
+      "Studiet slutter i starten af 2028, hvis alt går efter planen."
+    ]
+  },
+  {
+    "category": "studie-teknik",
+    "topic": "studie",
+    "follows": ["uddannelse"],
+    "keywords": [
+      "hvad har + lært",
+      "hvad lærer",
+      "programmeringssprog*",
+      "sprog + kan",
+      "react",
+      "tailwind*",
+      "javascript",
+      "html",
+      "css",
+      "node",
+      "express",
+      "firebase",
+      "ssr",
+      "csr",
+      "serverside",
+      "clientside"
+    ],
+    "contextKeywords": [
+      "hvad har i lært",
+      "hvad lærer i",
+      "hvilke sprog",
+      "teknisk"
+    ],
+    "answers": [
+      "Rune har erfaring med HTML, CSS, JavaScript og React, og han har selv brugt TailwindCSS. På webudvikler-uddannelsen har de så småt kigget på server-side og client-side rendering og brugt Node og Express. Firebase har han brugt i tidligere projekter."
+    ]
+  },
+  {
+    "category": "studie-fremtid",
+    "topic": "studie",
+    "follows": ["studie"],
+    "keywords": [
+      "efter + uddannelsen",
+      "efter + studiet",
+      "fremtid*",
+      "drømmejob",
+      "drømme*",
+      "læse videre",
+      "praktik",
+      "fremtidsplaner",
+      "hvad vil du bagefter",
+      "hvad skal du bagefter"
+    ],
+    "contextKeywords": ["bagefter", "derefter", "efter det"],
+    "answers": [
+      "Det ved Rune ikke helt endnu. Når han er færdig, kan han enten vælge at læse videre eller komme ud og få noget erfaring. Det må tiden vise."
+    ]
+  },
+  {
+    "category": "studie-multimedie",
+    "topic": "studie",
+    "keywords": [
+      "multimedie*",
+      "multimediedesigner*",
+      "tidligere uddannelse",
+      "forrige uddannelse",
+      "hovedopgave*",
+      "afgangsprojekt*",
+      "uddannet"
+    ],
+    "answers": [
+      "Rune er uddannet multimediedesigner fra 2026. Bagefter valgte han at tage webudvikling som top-up.",
+      "Før webudvikling blev Rune færdig som multimediedesigner i 2026."
+    ],
+    "more": [
+      "Hans hovedopgave derfra er det projekt, han er mest stolt af: to interaktive touch-skærme til Steno Museet i Aarhus."
+    ]
+  },
+  {
+    "category": "steno-quiz",
+    "topic": "steno",
+    "follows": ["steno"],
+    "keywords": ["quiz*", "konkurrence*", "konkurrerende"],
+    "contextKeywords": ["hvad med quizzen"],
+    "answers": [
+      "Løsningen har en quiz med spørgsmål, som Steno selv har skrevet. Bagefter kan man se, hvordan man klarede sig i forhold til tidligere besøgende. Det konkurrerende element er der, fordi målgruppen efterspurgte det."
+    ]
+  },
+  {
+    "category": "steno-kraeft",
+    "topic": "steno",
+    "keywords": [
+      "brystkræft",
+      "kræft*",
+      "tumor*",
+      "strålebehandling",
+      "stråler*"
+    ],
+    "answers": [
+      "På kræft-siden holder man fingeren på en tumor i to sekunder for at give strålebehandling. Så bliver tumoren fjernet, og fokus skifter til hjertet, som har taget skade af behandlingen. Animationen er lavet i After Effects."
+    ]
+  },
+  {
+    "category": "steno-rygning",
+    "topic": "steno",
+    "keywords": ["rygning", "ryger*", "lunge*", "cigaret*"],
+    "answers": [
+      "På rygning-siden er der en slider, man kan trække mellem en sund og en syg lunge. Både teksten og illustrationen ændrer sig, så man kan se, hvad rygning gør ved lungerne og dermed hjertet."
+    ]
+  },
+  {
+    "category": "steno-hormoner",
+    "topic": "steno",
+    "keywords": [
+      "hormon*",
+      "blodkar*",
+      "østrogen*",
+      "menstruation*",
+      "æggestokke*"
+    ],
+    "answers": [
+      "På hormon-siden trækker man i en slider gennem forskellige aldersintervaller, og en animation viser, hvordan kvinders blodkar ændrer sig med alderen: blodets hastighed, karvæggenes elasticitet og mængden af plak. Det illustrerer, hvordan hormoner beskytter kvinder mod hjerte-kar-sygdomme."
+    ]
+  },
+  {
+    "category": "steno-depression",
+    "topic": "steno",
+    "keywords": [
+      "depression*",
+      "hjerne*",
+      "neuron*",
+      "psykisk*",
+      "det psykiske"
+    ],
+    "answers": [
+      "På depression-siden ser man fire neuroner, som man kan trykke på. Hver gang skifter indholdet i tekstboksen, og det ser ud, som om neuronen sender informationen videre. Siden viser koblingen mellem det psykiske og hjertet, som Steno mente var hovedpointen."
+    ]
+  },
+  {
+    "category": "steno-diabetes",
+    "topic": "steno",
+    "keywords": ["diabetes*", "blodsukker*", "sukkerknald*", "bugspytkirtel*"],
+    "answers": [
+      "Blodsukker-siden har en lodret slider med tre trin. Jo højere man skruer op, desto flere sukkerknalder flyder i blodet, og teksten forklarer, hvordan et højt blodsukker øger risikoen for hjertesygdom. Den blev lavet i en meget komprimeret fase sidst i projektet."
+    ]
+  },
+  {
+    "category": "steno-graviditet",
+    "topic": "steno",
+    "keywords": [
+      "graviditet*",
+      "gravid*",
+      "svangerskab*",
+      "for tidlig fødsel",
+      "speedometer*"
+    ],
+    "answers": [
+      "Graviditets-siden er den, de ikke nåede at blive helt færdige med. Steno var selv i tvivl om, hvad der fagligt skulle formidles, og planen var en speedometer-lignende interaktion, hvor man trækker rundt mellem emner som graviditetsdiabetes, for tidlig fødsel og svangerskabsforgiftning."
+    ]
+  },
+  {
+    "category": "steno-brugertest",
+    "topic": "steno",
+    "follows": ["steno"],
+    "keywords": [
+      "tænke højt",
+      "testet",
+      "hi fi",
+      "hifi",
+      "heuristisk*",
+      "test + prototype*",
+      "testede*",
+      "testpersoner*",
+      "brugertest* + steno",
+      "brugertest* + hjertet"
+    ],
+    "contextKeywords": ["hvordan testede i", "blev det testet", "testet"],
+    "answers": [
+      "Rune og hans makker testede en hi-fi-prototype i Figma på seks elever fra udskolingen med tænke-højt-tests. Testen bekræftede, at navigationen var intuitiv, og at de pulserende punkter på forsiden virkede godt. Den viste også, at det skulle være tydeligere, hvad man kunne klikke på.",
+      "Før brugertestene lavede de en heuristisk evaluering af prototypen ud fra Jakob Nielsens 10 usability-heuristikker. Derefter testede de på seks elever, og feedbacken blev delt med Steno."
+    ]
+  },
+  {
+    "category": "steno-udfordring",
+    "topic": "steno",
+    "follows": ["steno"],
+    "keywords": [
+      "udfordring*",
+      "udfordrende",
+      "svært + projekt*",
+      "designskift",
+      "scenograf*",
+      "krisemøde",
+      "frustrerende",
+      "farvepalette*",
+      "font + steno",
+      "krav + steno",
+      "ændre + design*"
+    ],
+    "contextKeywords": ["hvad var svært", "hvad var sværest", "hvad gik galt"],
+    "answers": [
+      "Den største udfordring var, at Steno sent i forløbet fik en scenograf involveret, som mente, at det blå og kantede sci-fi-design ikke passede til udstillingen. Efter et krisemøde skulle designet laves om til et organisk og rundt formsprog med afdæmpede, varmere farver.",
+      "Det, der gjorde mest ondt, var designskiftet: Steno havde godkendt det første design over flere møder, men fik så en scenograf på, og det skulle ændres, da Rune og hans makker næsten var færdige."
+    ],
+    "more": [
+      "Hardwaren voldte også problemer: Stenos BrightSign-boks kunne ikke køre projektet, så de skiftede til en Raspberry Pi.",
+      "Steno var også selv i tvivl om noget af indholdet, fx graviditets-siden og diabetes-siden, som derfor endte med at blive lavet meget sent."
+    ]
+  },
+  {
+    "category": "steno-teknik",
+    "topic": "steno",
+    "follows": ["steno"],
+    "keywords": [
+      "raspberry*",
+      "brightsign",
+      "kiosk*",
+      "offline",
+      "hardware",
+      "github pages",
+      "autostart",
+      "pi",
+      "hvordan kører den",
+      "hvad kører den på"
+    ],
+    "contextKeywords": ["og teknisk", "hvordan kører den"],
+    "answers": [
+      "Løsningen er bygget i React og kører lokalt og offline på en Raspberry Pi i kiosk-mode. Rune og hans makker valgte først Stenos BrightSign-boks, men den kunne ikke køre projektet, så de skiftede til en Raspberry Pi."
+    ],
+    "more": [
+      "Pi'en åbner projektet automatisk ved opstart og kan ikke lukkes ved et uheld. Skærmen står på højkant, så visningen er roteret 90 grader, og lyden går via et USB-lydkort og en forstærker.",
+      "Rune og hans makker skrev kommentarer i koden og en trin-for-trin opsætningsmanual, så Steno kan vedligeholde den. Der ligger også en online version på GitHub Pages."
+    ]
+  },
+  {
+    "category": "steno-ai",
+    "topic": "steno",
+    "keywords": [
+      "claude",
+      "brugte + ai",
+      "brugt + ai",
+      "brugte du ai",
+      "ai + kode",
+      "ai + animation*",
+      "ai + projekt*",
+      "ai + steno",
+      "genereret + kode"
+    ],
+    "answers": [
+      "Ja, og det står Rune åbent om i sin rapport. De brugte Claude til at oversætte Stenos tekster til engelsk og som hjælp til de mest komplekse dele af koden, fx blodkar-animationen, SVG-grafik og de animerede baggrunde. Det var et bevidst valg på grund af tidspres.",
+      "De brugte AI til nogle dele af projektet, blandt andet en kompleks animation. Rune skriver selv, at ulempen er, at der er dele af koden, de ikke fuldt ud forstår, og derfor har de kommenteret koden grundigt."
+    ]
+  },
+  {
+    "category": "steno-laert",
+    "topic": "steno",
+    "follows": ["steno"],
+    "keywords": [
+      "lært + steno",
+      "lærte + steno",
+      "lært + projektet",
+      "lærte + projektet",
+      "gøre anderledes",
+      "ville + anderledes",
+      "selvkritik",
+      "scrum",
+      "agil*",
+      "refleksion*"
+    ],
+    "contextKeywords": [
+      "hvad lærte i",
+      "hvad lærte du",
+      "hvad ville i gøre anderledes"
+    ],
+    "answers": [
+      "Rune og hans makker ville have arbejdet mere agilt, fx med SCRUM, med kortere sprints og hyppigere møder med Steno, så misforståelser var blevet fanget tidligere. De ville også have lavet en lo-fi-test og vist kunden flere versioner, fordi ikke alle kunder ved, hvad de vil have, før de ser det."
+    ]
+  },
+  {
+    "category": "steno-maalgruppe",
+    "topic": "steno",
+    "follows": ["steno"],
+    "keywords": [
+      "målgruppe*",
+      "udskoling*",
+      "elever*",
+      "unge",
+      "persona*",
+      "interview*",
+      "observation*",
+      "research"
+    ],
+    "contextKeywords": ["hvem er det til", "hvem er målgruppen"],
+    "answers": [
+      "Målgruppen er elever i udskolingen, omkring 14-15 år. Rune og hans makker lavede interviews, observerede elever på museet og lavede to personas. Den vigtigste indsigt var, at eleverne ikke gider læse lange tekster, gerne vil styre oplevelsen selv og motiveres af at samarbejde eller konkurrere med klassen."
+    ],
+    "more": [
+      "Eleverne ville heller ikke have, at museet blev en legeplads. De ville have en balance, hvor det stadig føltes seriøst."
+    ]
+  },
+  {
+    "category": "steno-loesning",
+    "topic": "steno",
+    "follows": ["steno"],
+    "keywords": [
+      "hjertet",
+      "kønsforskelle*",
+      "forskel + køn",
+      "hvad går den ud på",
+      "hvad kan den",
+      "hvad gør den",
+      "hvordan fungerer + skærmen",
+      "undersider*",
+      "silhuet*"
+    ],
+    "contextKeywords": ["hvordan virker den", "hvad går det ud på"],
+    "answers": [
+      "Løsningen hedder 'Det Oversete Hjerte'. Startsiden er en kropssilhuet med pulserende punkter, som leder til undersider om fx kræftbehandling, rygning, hormoner, depression og blodsukker. Man udforsker selv, og der er også en video og en quiz. Alt findes på dansk og engelsk."
+    ],
+    "more": [
+      "Steno havde bedt om, at man selv skulle kunne styre oplevelsen. Derfor er strukturen fri navigation fra en central startside i stedet for en fast rækkefølge."
+    ]
+  },
+  {
+    "category": "steno-projekt",
+    "topic": "steno",
+    "follows": ["studie", "uddannelse", "studie-multimedie"],
+    "keywords": [
+      "steno*",
+      "stenomuseet",
+      "museum*",
+      "den oversete krop",
+      "det oversete hjerte",
+      "touch*",
+      "udstilling*",
+      "stolt*",
+      "projekter",
+      "dine projekter",
+      "hvilke projekter",
+      "hvad har du lavet"
+    ],
+    "contextKeywords": ["hvad var det", "fortæl mere om projektet"],
+    "answers": [
+      "Rune er mest stolt af sin hovedopgave fra multimediedesigner-uddannelsen, 'Det Oversete Hjerte'. Sammen med sin makker lavede han en interaktiv touch-skærm til Steno Museets udstilling 'Den Oversete Krop' i Aarhus. Den formidler, hvordan hjerte-kar-sygdomme påvirker kønnene forskelligt, til elever i udskolingen.",
+      "Det projekt, Rune er mest stolt af, er en interaktiv touch-skærm til udstillingen 'Den Oversete Krop' på Steno Museet i Aarhus. Han lavede den sammen med sin makker som hovedopgave, og den handler om kønsforskelle ved hjertesygdomme."
+    ],
+    "more": [
+      "Det er fedt for ham, at det er noget, der faktisk bliver brugt af mennesker hver dag, og museet har indtil videre haft god succes med det.",
+      "De lærte utroligt meget undervejs."
+    ]
+  },
+  {
+    "category": "uddannelse",
+    "topic": "studie",
+    "keywords": [
+      "uddannelse*",
+      "studerer",
+      "studerende",
+      "studie*",
+      "skole*",
+      "webudvikler*",
+      "webudvikling",
+      "eaaa",
+      "erhvervsakademi*",
+      "læser du til",
+      "læser rune til",
+      "hvad laver du til daglig",
+      "hvad laver du til hverdag"
+    ],
+    "answers": [
+      "Rune læser webudvikling som top-up på Erhvervsakademiet Aarhus (EAAA). Han regner med at være færdig i starten af 2028.",
+      "Webudvikling på EAAA i Aarhus, som Rune læser oven på sin uddannelse som multimediedesigner."
+    ],
+    "more": [
+      "Han er uddannet multimediedesigner og valgte webudvikling, fordi han gerne ville blive bedre til det tekniske.",
+      "Indtil videre har han arbejdet med HTML, CSS, JavaScript, React, Node og Express.",
+      "Jeg er selv et af hans projekter på studiet."
+    ]
+  },
+  {
+    "category": "arbejdsstil",
+    "topic": "samarbejde",
+    "keywords": [
+      "arbejdsstil",
+      "hvordan arbejder du",
+      "pragmatisk*",
+      "virker det",
+      "sent",
+      "nat",
+      "natten",
+      "brænder",
+      "all in",
+      "ambition*",
+      "engageret*",
+      "forventer",
+      "forventninger",
+      "doven*",
+      "dovenskab",
+      "ligesindede"
+    ],
+    "answers": [
+      "Rune går virkelig all in. Han sidder nogle gange og arbejder til langt ud på natten for at få ting til at virke, fordi han brænder for det, og han forventer, at hans medstuderende gør det samme. Han arbejder bedst med ligesindede.",
+      "Rune vil sit studie og vil gerne arbejde med folk, der har det på samme måde. Det er helt fair, hvis noget er svært, men generel dovenskab gider han ikke."
+    ]
+  },
+  {
+    "category": "svagheder",
+    "topic": "samarbejde",
+    "follows": ["samarbejde", "styrker", "uddannelse"],
+    "keywords": [
+      "svaghed*",
+      "dårlig til",
+      "mindre god",
+      "forbedre",
+      "udvikle dig",
+      "blive bedre til",
+      "dårlige sider",
+      "tålmodighed",
+      "utålmodig*",
+      "sværest",
+      "svært + program*",
+      "udfordr*"
+    ],
+    "contextKeywords": ["hvad er sværest", "svagheder", "og det modsatte"],
+    "answers": [
+      "Rune synes selv, at han er mindre god til programmering, og det er netop derfor, han læser webudvikling. Han arbejder også på sin tålmodighed, som godt kan blive udfordret, hvis han ikke oplever, at folk rykker sig.",
+      "Programmering er det, Rune har sværest ved, og derfor er han på studiet. Så kan hans tålmodighed også blive testet, hvis andre ikke rykker sig."
+    ]
+  },
+  {
+    "category": "styrker",
+    "topic": "samarbejde",
+    "follows": ["samarbejde", "svagheder"],
+    "keywords": [
+      "styrke*",
+      "god til",
+      "bedst til",
+      "talent*",
+      "ux",
+      "ui",
+      "brugerrejse*",
+      "userflow*",
+      "user flow*",
+      "brugertest*",
+      "usertest*",
+      "user test*",
+      "brugervenlig*"
+    ],
+    "contextKeywords": ["styrker", "hvad er du god til"],
+    "answers": [
+      "Runes klare styrke er UX og UI. Han synes, det er enormt vigtigt, at en løsning har en god brugerrejse, og han er god til at lave user-tests og bruge feedback til at forbedre et projekt.",
+      "UX og UI er Runes stærkeste side. Han interesserer sig meget for brugerrejsen og for at optimere den ud fra feedback og user-tests."
+    ],
+    "more": [
+      "Han foretrækker at lave en god brugerrejse med userflows, inden han begynder at kode. Det sparer mange problemer senere, hvis man ellers ikke har tænkt over strukturen.",
+      "Han kan også godt lide det multimediale: at formidle og sikre, at brugeren forstår sin vej gennem en løsning, det kan være en app eller noget helt andet."
+    ]
+  },
+  {
+    "category": "samarbejde",
+    "topic": "samarbejde",
+    "keywords": [
+      "samarbejd*",
+      "gruppe*",
+      "gruppearbejde",
+      "gruppedynamik*",
+      "teamplayer",
+      "team",
+      "arbejde sammen",
+      "arbejde med dig",
+      "arbejde med rune",
+      "hvordan er du at",
+      "medstuderende",
+      "makker"
+    ],
+    "answers": [
+      "I en gruppe er Rune typisk den, der gerne vil reflektere og undersøge tingene fra flere vinkler, for det giver ofte den bedste løsning. Andre gange er han meget pragmatisk: Virker det, så videre i processen.",
+      "Som samarbejdspartner er Rune både reflekterende og pragmatisk. Han undersøger gerne en sag fra flere sider, men vil også gerne have, at der sker noget."
+    ],
+    "more": [
+      "Han går selv all in og forventer, at dem, han arbejder sammen med, gør det samme.",
+      "Det er helt fair, hvis noget er svært, men generel dovenskab gider han ikke."
+    ]
+  },
+  {
+    "category": "erfaring",
+    "topic": "erfaring",
+    "keywords": [
+      "erfaring*",
+      "baggrund*",
+      "cv",
+      "kompetence*",
+      "kvalifikation*",
+      "hvad har rune lavet",
+      "hvad har du lavet før",
+      "hvad har du lavet tidligere",
+      "lavet + før",
+      "lavet + tidligere",
+      "karriere*",
+      "hvad kan rune",
+      "hvad har du prøvet",
+      "arbejdserfaring",
+      "hvad har du erfaring med"
+    ],
+    "answers": [
+      "Rune har erfaring fra flere områder. Han har spillet trommer i over 15 år og været på 7 EU-tours med sit tidligere band. Han er uddannet multimediedesigner med UX og UI som sin styrke, og han læser nu webudvikling, hvor han arbejder med HTML, CSS, JavaScript, React, Node og Express.",
+      "Runes baggrund er både kreativ og teknisk: mange år som trommeslager i to bands, en uddannelse som multimediedesigner og nu webudvikling på EAAA."
+    ],
+    "repeat": [
+      "Som sagt: trommer i over 15 år, multimediedesigner og nu webudvikling."
+    ],
+    "more": [
+      "Hans største projekt er hovedopgaven til Steno Museet, en interaktiv touch-skærm, som bliver brugt af rigtige mennesker i en udstilling.",
+      "Musikalsk har han spillet på festivaler som Bloodstock Open Air, Summer Breeze og Sabaton Open Air og indspillet to albums."
+    ]
+  },
+  {
+    "category": "fritid",
+    "keywords": [
+      "fritid*",
+      "hobby*",
+      "hobbies",
+      "kan lide",
+      "interesse*",
+      "hvad laver du",
+      "for sjov",
+      "i weekenden"
+    ],
+    "answers": [
+      "Rune bruger meget af sin fritid på musik. Han spiller trommer i bandet Svartsot og hører en masse musik. Ellers læser han gerne en god bog.",
+      "Trommer, musik og bøger er kernen i Runes fritid."
+    ],
+    "repeat": ["Stadig musik og bøger."]
+  },
+  {
+    "category": "boeger",
+    "keywords": [
+      "bog",
+      "bogen",
+      "bøger",
+      "læse*",
+      "læsning",
+      "roman*",
+      "forfatter*"
+    ],
+    "answers": [
+      "Rune læser gerne en god bog — det er en af hans faste fritidsting. Hvad hans yndlingsbog er, har han ikke fortalt mig endnu.",
+      "Bøger er en fast del af Runes fritid. Hvilke, ved jeg desværre ikke."
+    ]
+  },
+  {
+    "category": "livret",
+    "keywords": [
+      "mad",
+      "livret*",
+      "yndlingsmad",
+      "spiser",
+      "spise",
+      "lasagne",
+      "dessert*",
+      "vegetar*",
+      "kød",
+      "madlavning",
+      "lave mad"
+    ],
+    "answers": [
+      "Runes livret er lasagne, og han er vegetar.",
+      "Rune elsker lasagne. Han spiser ikke kød, så den er selvfølgelig vegetarisk.",
+      "Mad? Lasagne, siger Rune. Han er vegetar, hvis du undrede dig."
+    ],
+    "repeat": [
+      "Stadig lasagne. Nogle ting ændrer sig ikke.",
+      "Som sagt: lasagne, og stadig vegetarisk."
+    ],
+    "more": [
+      "Lasagnen er helt uden kød, for Rune er vegetar. Det er stadig hans favorit."
+    ]
+  },
+  {
     "category": "capabilities",
     "keywords": [
-      "hvad kan du",
+      "=hvad kan du",
+      "=hvad kan du gøre",
+      "=hvad kan du svare på",
+      "=hvad kan du fortælle",
       "hvad kan jeg spørge",
       "hvad kan man spørge",
-      "hvad ved du",
+      "=hvad ved du",
       "hvad skal jeg spørge",
       "hjælp",
       "muligheder",
       "kommandoer"
     ],
     "answers": [
-      "Jeg kan svare på spørgsmål om Rune — fx hvor jeg bor, min alder, min fritid, min musik, min uddannelse og min livret. Prøv fx: {forslag}",
-      "Spørg mig om Rune! Jeg ved en del om bosted, fritid, mad, musik og uddannelse. Prøv fx: {forslag}"
+      "Jeg kan fortælle om Rune: hans musik og bands, uddannelse, mad, hvor han bor og meget mere. Skriv fx: {forslag}",
+      "Spørg mig om Rune! Jeg ved en del om hans musik, uddannelse og mad."
     ]
   },
   {
@@ -335,32 +1234,39 @@
       "godaften"
     ],
     "answers": [
-      "{hilsen}! Jeg er Rune-botten. Spørg mig om hvad som helst om Rune.",
+      "{hilsen}! Jeg er en bot, der kan fortælle om Rune. Spørg løs!",
       "Hej med dig! Hvad har du lyst til at vide om Rune?",
-      "{hilsen} og velkommen! Prøv fx: {forslag}"
+      "{hilsen} og velkommen! Hvad vil du vide om Rune?"
     ],
     "repeat": [
       "Hej igen! Hvad kan jeg hjælpe med?",
       "Vi har allerede sagt hej — men jeg siger det gerne en gang til. Hvad vil du vide?",
-      "Hej igen! Prøv fx: {forslag}"
+      "Hej igen! Hvad er du nysgerrig på?"
+    ]
+  },
+  {
+    "category": "opfoelgning-uden-emne",
+    "keywords": [],
+    "answers": [
+      "Mere om hvad? Jeg kan fortælle om Rune: uddannelse, hans musik, hobbier og meget mere.",
+      "Hvad vil du høre mere om? Spørg fx til Runes erfaring, uddannelse eller projekter."
     ]
   },
   {
     "category": "opfoelgning",
     "keywords": [],
     "answers": [
-      "Det var faktisk alt, hvad jeg har om det emne. Prøv fx: {forslag}",
-      "Der er ikke mere i den skuffe endnu. Spørg fx: {forslag}",
-      "Jeg er ikke sikker på, hvad du henviser til. Stil gerne hele spørgsmålet, fx: {forslag}"
+      "Det var faktisk alt, hvad jeg ved om det emne.",
+      "Der er ikke mere i den skuffe endnu."
     ]
   },
   {
     "category": "fallback",
     "keywords": [],
     "answers": [
-      "Det kender jeg desværre ikke svaret på endnu. Prøv fx: {forslag}",
+      "Det har Rune ikke fortalt mig noget om endnu.",
       "Hov, den ramte ved siden af. Jeg er bedst til: {forslag}",
-      "Der har Rune ikke lært mig noget om endnu. Spørg fx: {forslag}",
+      "Der har jeg desværre ikke svaret.",
       "Den forstod jeg ikke helt. Prøv fx: {forslag}"
     ]
   }

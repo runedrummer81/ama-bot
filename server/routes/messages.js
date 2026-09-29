@@ -34,10 +34,13 @@ function buildContext(messages) {
     usedVariants[key].push(message.variant);
   }
 
-  // Et fallback-svar er ikke et emne, man kan uddybe.
-  const lastAnswer = previousAnswers.at(-1);
-  const lastCategory =
-    lastAnswer && lastAnswer.category !== "fallback" ? lastAnswer.category : "";
+  // Fallback og "det var alt"-svar er ikke emner, man kan uddybe, så vi
+  // husker det seneste rigtige emne.
+  const notATopic = ["fallback", "opfoelgning"];
+  const lastTopicAnswer = previousAnswers
+    .filter((message) => !notATopic.includes(message.category))
+    .at(-1);
+  const lastCategory = lastTopicAnswer ? lastTopicAnswer.category : "";
 
   return { lastCategory, usedVariants };
 }

@@ -4,21 +4,21 @@ import fs from "node:fs/promises";
 //  PROFIL — ret din fødselsdato her (format: ÅÅÅÅ-MM-DD).
 //  Alderen i svarene regnes ud fra den, så den altid er rigtig.
 // ============================================================
-const BIRTH_DATE = "1998-02-18"; // skift til din egen fødselsdag rigtige fødselsdag
+const BIRTH_DATE = "1998-02-18";
 
 // Spørgsmål vi foreslår i fallback og "hvad kan du?". Alle skal ramme en kategori.
 const SUGGESTIONS = [
-  "Hvor bor du?",
-  "Hvad er dine hobbyer?",
-  "Hvad er din livret?",
-  "Hvor gammel er du?",
-  "Spiller du et instrument?",
-  "Hvad studerer du?",
+  "Hvor længe har Rune spillet trommer?",
+  "Hvad er Runes yndlingsband?",
+  "Spiller Rune i et band?",
+  "Hvad er Runes livret?",
+  "Hvor gammel er Rune?",
+  "Hvad studerer Rune?",
   "Hvordan virker du?",
-  "Fortæl om dig selv",
+  "Fortæl om Rune",
 ];
 
-// Korte opfølgninger. Matcher hele beskeden (efter normalisering).
+// Korte opfølgninger uden eget emne. Bruges kun, hvis ingen kategori matcher.
 const FOLLOW_UPS = [
   "og du",
   "og dig",
@@ -36,6 +36,26 @@ const FOLLOW_UPS = [
   "og så",
   "hvordan så",
 ];
+
+// Er beskeden en kort "fortæl mere"-besked? Enten en af de faste sætninger,
+// eller en kort besked (højst 7 ord) med et af disse ord, fx
+// "kan du fortælle mig mere?" eller "hvad mere kan du sige om det?".
+const FOLLOW_UP_WORDS = [
+  "mere",
+  "flere",
+  "uddyb",
+  "uddybe",
+  "videre",
+  "detaljer",
+];
+
+function isFollowUp(normalizedQuestion) {
+  if (FOLLOW_UPS.includes(normalizedQuestion)) return true;
+  const words = normalizedQuestion.split(" ");
+  return (
+    words.length <= 7 && words.some((word) => FOLLOW_UP_WORDS.includes(word))
+  );
+}
 
 // ---------- Dynamiske dele ----------
 
@@ -120,14 +140,50 @@ function keywordToRegex(keyword) {
   return regexCache.get(keyword);
 }
 
-// Hvert keyword, der rammer, giver point = antal ord i keywordet.
-// Så vinder "hvor gammel" (2 point) over bare "gammel" (1 point).
-function scoreKeywords(keywords, normalizedQuestion) {
+// Point for ét keyword (0 = ingen træffer).
+// "længe + trommer*" er et OG-keyword: begge dele skal stå i spørgsmålet,
+// i vilkårlig rækkefølge. Point = antal ord i alle delene.
+function scoreKeyword(keyword, normalizedQuestion) {
+  // "=hvad kan du" matcher kun, hvis HELE spørgsmålet er præcis det.
+  // Så vinder "hvad kan du fortælle om musik" ikke som en generel "hvad kan du".
+  if (keyword.startsWith("=")) {
+    const exact = keyword.slice(1);
+    return normalizedQuestion === exact ? exact.split(" ").length : 0;
+  }
+
+  const parts = keyword.split(" + ");
+  const allMatch = parts.every((part) =>
+    keywordToRegex(part).test(normalizedQuestion),
+  );
+  if (!allMatch) return 0;
+  return parts.join(" ").trim().split(/\s+/).length;
+}
+
+function scoreKeywords(keywords = [], normalizedQuestion) {
   let score = 0;
   for (const keyword of keywords) {
-    if (keywordToRegex(keyword).test(normalizedQuestion)) {
-      score += keyword.trim().split(/\s+/).length;
-    }
+    score += scoreKeyword(keyword, normalizedQuestion);
+  }
+  return score;
+}
+
+// Point for en hel kategori.
+// - keywords tæller altid.
+// - contextKeywords tæller kun, hvis sidste svar hører til "follows"
+//   (enten via emnet, "topic", eller den præcise kategori).
+//   Det er dem, der gør korte spørgsmål som "hvor længe?" forståelige.
+function scoreGroup(group, normalizedQuestion, lastCategory, lastTopic) {
+  let score = scoreKeywords(group.keywords, normalizedQuestion);
+
+  // "follows" kan pege på et emne (topic) eller på en helt bestemt kategori.
+  const isInContext =
+    group.follows?.includes(lastTopic) || group.follows?.includes(lastCategory);
+  if (isInContext) {
+    const contextScore = scoreKeywords(
+      group.contextKeywords,
+      normalizedQuestion,
+    );
+    if (contextScore > 0) score += contextScore + 1; // +1: kontekst vinder uafgjort
   }
   return score;
 }
@@ -148,12 +204,22 @@ function pickVariant(pool, usedIndexes = []) {
 }
 
 // pool: "answers" (normal), "repeat" (spurgt om før) eller "more" (opfølgning)
+// "more" gives i rækkefølge (1., 2., 3. ...), de andre tilfældigt.
 function buildAnswer(group, pool, context) {
   const usedKey = `${group.category}:${pool}`;
+  const used = context.usedVariants?.[usedKey] ?? [];
   const variants = group[pool];
-  const variant = pickVariant(variants, context.usedVariants?.[usedKey]);
+  const variant = pool === "more" ? used.length : pickVariant(variants, used);
+
+  let answer = fillTokens(variants[variant]);
+  // Første gang et emne besvares, guider vi videre med et hint om,
+  // hvad man kan spørge om næste gang (så man undgår blindgyder).
+  if (pool === "answers" && group.hint) {
+    answer += " " + fillTokens(group.hint);
+  }
+
   return {
-    answer: fillTokens(variants[variant]),
+    answer,
     category: group.category,
     pool,
     variant,
@@ -182,30 +248,46 @@ export async function saveAnswers(answers) {
 // ---------- Hovedfunktionen ----------
 
 // context (alle dele er valgfrie):
-//   lastCategory  — kategorien i botten seneste svar (til "hvorfor?", "og du?")
-//   usedVariants  — { "kategori:pool": [brugte index] } (til varianter/"igen")
+//   lastCategory  — kategorien i botten seneste svar
+//   usedVariants  — { "kategori:pool": [brugte index] }
 export function findBestAnswer(question, answers, context = {}) {
   const normalizedQuestion = normalizeQuestion(question);
   const byCategory = (name) => answers.find((group) => group.category === name);
 
-  // 1) Kort opfølgning ("hvorfor?", "og du?") -> byg videre på sidste emne.
-  if (FOLLOW_UPS.includes(normalizedQuestion)) {
-    const lastGroup = byCategory(context.lastCategory);
-    if (lastGroup?.more?.length) {
-      return buildAnswer(lastGroup, "more", context);
-    }
-    return buildAnswer(byCategory("opfoelgning"), "answers", context);
-  }
+  // Sidste svars emne: fx er både "band-svartsot" og "festivaler" emnet "musik".
+  const lastTopic =
+    byCategory(context.lastCategory)?.topic ?? context.lastCategory;
 
-  // 2) Find kategorien med flest point. Uafgjort -> den første i answers.json.
+  // 1) Find kategorien med flest point. Uafgjort -> den første i answers.json.
   let bestGroup = null;
   let bestScore = 0;
   for (const group of answers) {
-    const score = scoreKeywords(group.keywords, normalizedQuestion);
+    const score = scoreGroup(
+      group,
+      normalizedQuestion,
+      context.lastCategory,
+      lastTopic,
+    );
     if (score > bestScore) {
       bestScore = score;
       bestGroup = group;
     }
+  }
+
+  // 2) Ingen træffere, men en kort opfølgning ("mere", "og du?") ->
+  //    byg videre på sidste emne, så længe der er mere at sige.
+  if (!bestGroup && isFollowUp(normalizedQuestion)) {
+    const lastGroup = byCategory(context.lastCategory);
+    const usedMore =
+      context.usedVariants?.[`${context.lastCategory}:more`] ?? [];
+    if (lastGroup?.more && usedMore.length < lastGroup.more.length) {
+      return buildAnswer(lastGroup, "more", context);
+    }
+    // Ingen emne at bygge videre på? Så spørger vi, hvad man vil vide mere om.
+    const category = context.lastCategory
+      ? "opfoelgning"
+      : "opfoelgning-uden-emne";
+    return buildAnswer(byCategory(category), "answers", context);
   }
 
   // 3) Ingen træffere -> pæn fallback med forslag.
